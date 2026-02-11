@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sahyog Sangharsh — Storyboard Wireframe</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        sahyog: { gold: '#D4A843', charcoal: '#32373c', light: '#f8f5ef', cream: '#faf7f0' },
+        wa: { green: '#075E54', teal: '#128C7E', light: '#25D366', bg: '#ECE5DD', incoming: '#FFFFFF', outgoing: '#DCF8C6', header: '#075E54' }
+      },
+      fontFamily: {
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+<style>
+  /* ---- Browser Frame ---- */
+  .browser-frame { background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); overflow: hidden; border: 1px solid #e0e0e0; }
+  .browser-chrome { background: #f0f0f0; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #ddd; }
+  .browser-dots { display: flex; gap: 6px; }
+  .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
+  .browser-dots .red { background: #FF5F56; }
+  .browser-dots .yellow { background: #FFBD2E; }
+  .browser-dots .green { background: #27C93F; }
+  .browser-url { flex: 1; background: #fff; border-radius: 6px; padding: 5px 12px; font-size: 13px; color: #666; border: 1px solid #ddd; }
+  .browser-body { min-height: 400px; }
+
+  /* ---- Phone Frame ---- */
+  .phone-frame { width: 375px; max-width: 100%; margin: 0 auto; background: #000; border-radius: 40px; padding: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+  .phone-notch { width: 150px; height: 28px; background: #000; border-radius: 0 0 20px 20px; margin: 0 auto; position: relative; z-index: 10; margin-top: -12px; }
+  .phone-screen { background: #ECE5DD; border-radius: 28px; overflow: hidden; min-height: 600px; }
+
+  /* ---- WhatsApp Bubbles ---- */
+  .wa-header { background: #075E54; color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .wa-avatar { width: 36px; height: 36px; border-radius: 50%; background: #128C7E; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; font-weight: 600; }
+  .wa-chat { padding: 12px 10px; display: flex; flex-direction: column; gap: 6px; background: #ECE5DD; min-height: 500px; }
+  .wa-date-chip { text-align: center; margin: 8px 0; }
+  .wa-date-chip span { background: #E1F2FB; color: #5a7a8a; font-size: 12px; padding: 4px 12px; border-radius: 8px; }
+  .wa-bubble { max-width: 80%; padding: 8px 10px; border-radius: 8px; font-size: 14px; line-height: 1.45; position: relative; word-wrap: break-word; }
+  .wa-bubble.incoming { background: #FFFFFF; align-self: flex-start; border-top-left-radius: 0; margin-left: 4px; }
+  .wa-bubble.incoming::before { content: ''; position: absolute; top: 0; left: -8px; border-width: 0 8px 8px 0; border-style: solid; border-color: transparent #FFFFFF transparent transparent; }
+  .wa-bubble.outgoing { background: #DCF8C6; align-self: flex-end; border-top-right-radius: 0; margin-right: 4px; }
+  .wa-bubble.outgoing::before { content: ''; position: absolute; top: 0; right: -8px; border-width: 0 0 8px 8px; border-style: solid; border-color: transparent transparent transparent #DCF8C6; }
+  .wa-time { font-size: 11px; color: #8a9a8a; text-align: right; margin-top: 2px; display: flex; align-items: center; justify-content: flex-end; gap: 3px; }
+  .wa-blue-check { color: #53BDEB; font-size: 13px; }
+
+  /* ---- Narrative Bridges ---- */
+  .narrative { max-width: 680px; margin: 0 auto; padding: 48px 24px; }
+  .narrative p { color: #555; font-size: 17px; line-height: 1.7; }
+  .narrative .scene-label { display: inline-block; background: #D4A843; color: #fff; font-size: 13px; font-weight: 600; padding: 3px 12px; border-radius: 20px; margin-bottom: 12px; letter-spacing: 0.5px; }
+
+  /* ---- Status Pills ---- */
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+  .pill-red { background: #FEE2E2; color: #DC2626; }
+  .pill-yellow { background: #FEF3C7; color: #D97706; }
+  .pill-green { background: #D1FAE5; color: #059669; }
+  .pill-blue { background: #DBEAFE; color: #2563EB; }
+
+  /* ---- Status Dots ---- */
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot-green { background: #22C55E; }
+  .dot-yellow { background: #F59E0B; }
+  .dot-red { background: #EF4444; }
+
+  /* ---- Bar Charts ---- */
+  .chart-bar { display: flex; align-items: flex-end; gap: 3px; }
+  .chart-bar-segment { width: 100%; border-radius: 3px 3px 0 0; transition: height 0.3s; }
+  .chart-label { font-size: 10px; color: #888; text-align: center; margin-top: 4px; }
+
+  /* ---- Notification Badge ---- */
+  .notif-badge { position: relative; }
+  .notif-badge::after { content: '3'; position: absolute; top: -6px; right: -6px; background: #EF4444; color: #fff; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+  /* ---- Print ---- */
+  @media print {
+    .browser-frame, .phone-frame, .narrative, section { break-inside: avoid; }
+    .phone-frame { box-shadow: none; border: 2px solid #ddd; }
+    .browser-frame { box-shadow: none; }
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 640px) {
+    .phone-frame { width: 100%; border-radius: 24px; padding: 8px; }
+    .phone-screen { border-radius: 16px; }
+    .browser-body { font-size: 13px; }
+  }
+
+  /* ---- Misc ---- */
+  .divider { width: 80px; height: 3px; background: #D4A843; margin: 0 auto; border-radius: 2px; }
+  .scene-wrapper { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+  .scene-wrapper-wide { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+  .video-placeholder { background: #1a1a2e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 40px; aspect-ratio: 16/9; }
+  .yt-link { color: #FF0000; font-size: 12px; display: inline-flex; align-items: center; gap: 3px; }
+</style>
+</head>
+<body class="bg-sahyog-light text-sahyog-charcoal">
+
+<!-- ============================================================ -->
+<!-- COVER SECTION                                                 -->
+<!-- ============================================================ -->
+<section class="min-h-screen flex items-center justify-center px-4" style="background: linear-gradient(135deg, #32373c 0%, #1a1d20 100%);">
+  <div class="text-center max-w-3xl mx-auto">
+    <!-- Logo mark -->
+    <div class="w-20 h-20 rounded-full bg-sahyog-gold flex items-center justify-center mx-auto mb-6">
+      <span class="text-white text-3xl font-bold">S</span>
+    </div>
+    <h1 class="text-5xl md:text-6xl font-bold text-white mb-2">Sahyog Sangharsh</h1>
+    <p class="text-sahyog-gold text-xl md:text-2xl mb-6 font-medium">WhatsApp-Based Special Education Platform</p>
+    <div class="divider mb-8"></div>
+    <p class="text-gray-300 text-lg leading-relaxed mb-10">
+      A dashboard for Special Educators to orchestrate WhatsApp-based communication with caregivers — delivering weekly education plans, collecting evidence of compliance, and tracking developmental progress using the NIEPID Disha curriculum.
+    </p>
+    <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-400 mb-10">
+      <div>
+        <div class="text-sahyog-gold font-semibold mb-1">Project Partner</div>
+        Dr. Neha Madhiwalla, Sahyog Mumbai
+      </div>
+      <div class="hidden md:block text-gray-600">|</div>
+      <div>
+        <div class="text-sahyog-gold font-semibold mb-1">Faculty Mentor</div>
+        Dr. Azra Ismail, Emory University
+      </div>
+      <div class="hidden md:block text-gray-600">|</div>
+      <div>
+        <div class="text-sahyog-gold font-semibold mb-1">Design Team</div>
+        Lauhitya Reddy
+      </div>
+    </div>
+    <div class="text-gray-500 text-sm">UI/UX Storyboard Wireframe &middot; Academic Year 2025-2026</div>
+  </div>
+</section>
+
+<!-- CONTEXT SECTION -->
+<section class="py-20 px-4 bg-white">
+  <div class="max-w-3xl mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-6 text-sahyog-charcoal">The Challenge</h2>
+    <div class="divider mb-8"></div>
+    <p class="text-gray-600 text-lg leading-relaxed mb-6">
+      Sahyog is a non-profit community organization in Mumbai that works for sustainable change in women and children from marginalized communities. Their <strong>Sangharsh program</strong> focuses on early identification and intervention for children with developmental disabilities — including intellectual disability, autism, cerebral palsy, and hearing impairment.
+    </p>
+    <p class="text-gray-600 text-lg leading-relaxed mb-6">
+      Special Educators (SEs) already use WhatsApp to send education plans to parents and collect video/text evidence of compliance. But the process is manual, scattered across individual chats, and lacks systematic tracking against the <strong>NIEPID Disha</strong> assessment framework.
+    </p>
+    <p class="text-gray-600 text-lg leading-relaxed">
+      This storyboard walks through a <strong>purpose-built dashboard</strong> that orchestrates the entire SE-to-caregiver workflow: from student assessment, to weekly task planning, to WhatsApp delivery, to evidence collection and progress tracking.
+    </p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 1: SE LOGIN                                             -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 1</span>
+  <h2 class="text-2xl font-bold mb-3">Gulshan Ma'am Starts Her Day</h2>
+  <p>It's 8:45 AM in Mumbai. Gulshan Khan, a Special Educator at Sahyog's Sangharsh center, opens the dashboard on her laptop to plan this week's activities for her students.</p>
+</div>
+
+<div class="scene-wrapper mb-16">
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/login</div>
+    </div>
+    <div class="browser-body bg-sahyog-cream flex items-center justify-center" style="min-height:500px;">
+      <div class="w-full max-w-md mx-auto p-8">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+          <div class="w-16 h-16 rounded-full bg-sahyog-gold flex items-center justify-center mx-auto mb-4">
+            <span class="text-white text-2xl font-bold">S</span>
+          </div>
+          <h2 class="text-2xl font-bold text-sahyog-charcoal">Sahyog Sangharsh</h2>
+          <p class="text-gray-500 text-sm mt-1">Special Education Dashboard</p>
+        </div>
+        <!-- Form -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <div class="border border-gray-300 rounded-lg px-3 py-2.5 text-gray-800 bg-gray-50">gulshan.khan@sahyog.org</div>
+          </div>
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <div class="border border-gray-300 rounded-lg px-3 py-2.5 text-gray-400 bg-gray-50">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div>
+          </div>
+          <button class="w-full bg-sahyog-gold text-white font-semibold py-3 rounded-lg hover:opacity-90 transition">Sign In</button>
+          <p class="text-center text-xs text-gray-400 mt-4">Forgot password? Contact your administrator</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 2: STUDENT ROSTER DASHBOARD                             -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 2</span>
+  <h2 class="text-2xl font-bold mb-3">The Student Roster</h2>
+  <p>After logging in, Gulshan sees her student roster — a grid of cards showing each child's name, age, disability type, caregiver, and a color-coded activity indicator. Green means the caregiver responded recently; yellow means they're falling behind; red means no response in over a week.</p>
+</div>
+
+<div class="scene-wrapper-wide mb-16">
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/dashboard</div>
+    </div>
+    <div class="browser-body bg-gray-50">
+      <!-- Nav Bar -->
+      <nav class="bg-sahyog-charcoal text-white px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <span class="font-bold text-sahyog-gold text-lg">Sangharsh</span>
+          <a class="text-sm font-medium border-b-2 border-sahyog-gold pb-0.5">Students</a>
+          <a class="text-sm text-gray-300">Plans</a>
+          <a class="text-sm text-gray-300">Notifications</a>
+          <a class="text-sm text-gray-300">Reports</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-300">Gulshan Khan</span>
+          <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
+        </div>
+      </nav>
+      <!-- Content -->
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h1 class="text-xl font-bold text-sahyog-charcoal">My Students</h1>
+            <p class="text-sm text-gray-500">8 students &middot; Academic Year 2025-2026</p>
+          </div>
+          <div class="flex gap-2">
+            <div class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm text-gray-500 bg-white">&#128269; Search students...</div>
+            <button class="bg-sahyog-gold text-white text-sm px-4 py-1.5 rounded-lg font-medium">+ Add Student</button>
+          </div>
+        </div>
+        <!-- Student Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Aliza -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold">A</div>
+              <span class="status-dot dot-green" title="Active"></span>
+            </div>
+            <h3 class="font-semibold text-sm">Aliza Mansur Shaikh</h3>
+            <p class="text-xs text-gray-500">Age 8 &middot; Intellectual Disability</p>
+            <p class="text-xs text-gray-400 mt-1">Caregiver: Mansur Shaikh (Father)</p>
+            <div class="mt-3 flex gap-1">
+              <span class="pill pill-yellow">PI-Sometimes</span>
+            </div>
+          </div>
+          <!-- Anvika -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">A</div>
+              <span class="status-dot dot-green" title="Active"></span>
+            </div>
+            <h3 class="font-semibold text-sm">Anvika Gupta</h3>
+            <p class="text-xs text-gray-500">Age 6 &middot; Intellectual Disability</p>
+            <p class="text-xs text-gray-400 mt-1">Caregiver: Priya Gupta (Mother)</p>
+            <div class="mt-3 flex gap-1">
+              <span class="pill pill-red">PI-Rarely</span>
+            </div>
+          </div>
+          <!-- Ravi -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">R</div>
+              <span class="status-dot dot-yellow" title="Pending"></span>
+            </div>
+            <h3 class="font-semibold text-sm">Ravi Patil</h3>
+            <p class="text-xs text-gray-500">Age 10 &middot; Cerebral Palsy</p>
+            <p class="text-xs text-gray-400 mt-1">Caregiver: Sunita Patil (Mother)</p>
+            <div class="mt-3 flex gap-1">
+              <span class="pill pill-yellow">PI-Sometimes</span>
+            </div>
+          </div>
+          <!-- Meera -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold">M</div>
+              <span class="status-dot dot-green" title="Active"></span>
+            </div>
+            <h3 class="font-semibold text-sm">Meera Joshi</h3>
+            <p class="text-xs text-gray-500">Age 7 &middot; Down Syndrome</p>
+            <p class="text-xs text-gray-400 mt-1">Caregiver: Kavita Joshi (Mother)</p>
+            <div class="mt-3 flex gap-1">
+              <span class="pill pill-green">PI-Often</span>
+            </div>
+          </div>
+          <!-- Aarav -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold">A</div>
+              <span class="status-dot dot-red" title="Inactive"></span>
+            </div>
+            <h3 class="font-semibold text-sm">Aarav Sharma</h3>
+            <p class="text-xs text-gray-500">Age 9 &middot; Autism</p>
+            <p class="text-xs text-gray-400 mt-1">Caregiver: Deepak Sharma (Father)</p>
+            <div class="mt-3 flex gap-1">
+              <span class="pill pill-red">Dependent</span>
+            </div>
+          </div>
+          <!-- Fatima -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold">F</div>
+              <span class="status-dot dot-green" title="Active"></span>
+            </div>
+            <h3 class="font-semibold text-sm">Fatima Ansari</h3>
+            <p class="text-xs text-gray-500">Age 5 &middot; Hearing Impairment</p>
+            <p class="text-xs text-gray-400 mt-1">Caregiver: Nazia Ansari (Mother)</p>
+            <div class="mt-3 flex gap-1">
+              <span class="pill pill-yellow">PI-Sometimes</span>
+            </div>
+          </div>
+          <!-- Rohan -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">R</div>
+              <span class="status-dot dot-yellow" title="Pending"></span>
+            </div>
+            <h3 class="font-semibold text-sm">Rohan Desai</h3>
+            <p class="text-xs text-gray-500">Age 11 &middot; Learning Disability</p>
+            <p class="text-xs text-gray-400 mt-1">Caregiver: Anita Desai (Mother)</p>
+            <div class="mt-3 flex gap-1">
+              <span class="pill pill-yellow">PI-Sometimes</span>
+            </div>
+          </div>
+          <!-- Saima -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 font-bold">S</div>
+              <span class="status-dot dot-green" title="Active"></span>
+            </div>
+            <h3 class="font-semibold text-sm">Saima Patel</h3>
+            <p class="text-xs text-gray-500">Age 8 &middot; ADHD</p>
+            <p class="text-xs text-gray-400 mt-1">Caregiver: Rehana Patel (Mother)</p>
+            <div class="mt-3 flex gap-1">
+              <span class="pill pill-green">PI-Often</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 3: STUDENT PROFILE — ALIZA                              -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 3</span>
+  <h2 class="text-2xl font-bold mb-3">Aliza's Profile &amp; NIEPID Progress</h2>
+  <p>Gulshan clicks on Aliza's card. The profile view shows Aliza's diagnosis, caregiver information, and a detailed NIEPID Disha progress table. Aliza is 8 years old with Intellectual Disability and Hyperactivity. Across most domains, she's progressed from <em>Dependent</em> or <em>Partially Independent - Rarely (&lt;35%)</em> at baseline to <em>PI-Sometimes (36-70%)</em> in the first term — meaningful gains.</p>
+</div>
+
+<div class="scene-wrapper-wide mb-16">
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/students/aliza-mansur-shaikh</div>
+    </div>
+    <div class="browser-body bg-gray-50">
+      <!-- Nav -->
+      <nav class="bg-sahyog-charcoal text-white px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <span class="font-bold text-sahyog-gold text-lg">Sangharsh</span>
+          <a class="text-sm font-medium border-b-2 border-sahyog-gold pb-0.5">Students</a>
+          <a class="text-sm text-gray-300">Plans</a>
+          <a class="text-sm text-gray-300">Notifications</a>
+          <a class="text-sm text-gray-300">Reports</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-300">Gulshan Khan</span>
+          <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
+        </div>
+      </nav>
+      <div class="p-6 flex gap-6 flex-col lg:flex-row">
+        <!-- Sidebar -->
+        <div class="lg:w-72 flex-shrink-0">
+          <div class="bg-white rounded-xl border border-gray-200 p-5">
+            <div class="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-2xl font-bold mx-auto mb-3">A</div>
+            <h2 class="text-center font-bold text-lg">Aliza Mansur Shaikh</h2>
+            <p class="text-center text-sm text-gray-500 mb-4">Age 8 &middot; Female</p>
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between"><span class="text-gray-500">Diagnosis</span><span class="font-medium text-right">Intellectual Disability,<br>Hyperactivity</span></div>
+              <div class="border-t border-gray-100"></div>
+              <div class="flex justify-between"><span class="text-gray-500">Caregiver</span><span class="font-medium">Mansur Shaikh</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">Relation</span><span class="font-medium">Father</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">WhatsApp</span><span class="font-medium text-wa-teal">+91 98XXX XXXXX</span></div>
+              <div class="border-t border-gray-100"></div>
+              <div class="flex justify-between"><span class="text-gray-500">SE</span><span class="font-medium">Gulshan Khan</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">Level</span><span class="font-medium">Level 1 (6-14 yrs)</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">Term</span><span class="font-medium">1st Term</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 min-w-0">
+          <!-- Tabs -->
+          <div class="flex gap-1 mb-4 border-b border-gray-200">
+            <button class="px-4 py-2 text-sm font-medium bg-white border border-gray-200 border-b-white rounded-t-lg -mb-px">NIEPID Disha Progress</button>
+            <button class="px-4 py-2 text-sm text-gray-500 hover:text-gray-700">Contact Info</button>
+            <button class="px-4 py-2 text-sm text-gray-500 hover:text-gray-700">Health Records</button>
+            <button class="px-4 py-2 text-sm text-gray-500 hover:text-gray-700">Chat with Caregiver</button>
+          </div>
+          <!-- NIEPID Table -->
+          <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
+              <h3 class="font-semibold">Domain Assessment — 1st Term</h3>
+              <span class="text-xs text-gray-400">NIEPID Disha Report Card &middot; 09/02/2026</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="text-left px-4 py-2.5 font-semibold text-gray-600">Domain</th>
+                    <th class="text-left px-4 py-2.5 font-semibold text-gray-600">Subject Level</th>
+                    <th class="text-left px-4 py-2.5 font-semibold text-gray-600">Baseline</th>
+                    <th class="text-left px-4 py-2.5 font-semibold text-gray-600">1st Term</th>
+                    <th class="text-left px-4 py-2.5 font-semibold text-gray-600">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                  <tr>
+                    <td class="px-4 py-3 font-medium">
+                      <span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-2"></span>Maths
+                    </td>
+                    <td class="px-4 py-3 text-gray-500">Nursery (3-6 yrs)</td>
+                    <td class="px-4 py-3"><span class="pill pill-red">Dependent</span></td>
+                    <td class="px-4 py-3"><span class="pill pill-yellow">PI-Sometimes (36-70%)</span></td>
+                    <td class="px-4 py-3"><span class="text-green-600 text-xs font-semibold">&#9650; Improved</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium">
+                      <span class="inline-block w-2 h-2 rounded-full bg-purple-500 mr-2"></span>Language
+                    </td>
+                    <td class="px-4 py-3 text-gray-500">Level 1 (6-14 yrs)</td>
+                    <td class="px-4 py-3"><span class="pill pill-red">PI-Rarely (&lt;35%)</span></td>
+                    <td class="px-4 py-3"><span class="pill pill-yellow">PI-Sometimes (36-70%)</span></td>
+                    <td class="px-4 py-3"><span class="text-green-600 text-xs font-semibold">&#9650; Improved</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium">
+                      <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>EVS
+                    </td>
+                    <td class="px-4 py-3 text-gray-500">Level 1 (6-14 yrs)</td>
+                    <td class="px-4 py-3"><span class="pill pill-red">PI-Rarely (&lt;35%)</span></td>
+                    <td class="px-4 py-3"><span class="pill pill-yellow">PI-Sometimes (36-70%)</span></td>
+                    <td class="px-4 py-3"><span class="text-green-600 text-xs font-semibold">&#9650; Improved</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium">
+                      <span class="inline-block w-2 h-2 rounded-full bg-orange-500 mr-2"></span>ADL
+                    </td>
+                    <td class="px-4 py-3 text-gray-500">Level 1 (6-18 yrs)</td>
+                    <td class="px-4 py-3"><span class="pill pill-red">PI-Rarely (&lt;35%)</span></td>
+                    <td class="px-4 py-3"><span class="pill pill-yellow">PI-Sometimes (36-70%)</span></td>
+                    <td class="px-4 py-3"><span class="text-green-600 text-xs font-semibold">&#9650; Improved</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium">
+                      <span class="inline-block w-2 h-2 rounded-full bg-pink-500 mr-2"></span>Communication
+                    </td>
+                    <td class="px-4 py-3 text-gray-500">Level 1 (6-14 yrs)</td>
+                    <td class="px-4 py-3"><span class="pill pill-red">PI-Rarely (&lt;35%)</span></td>
+                    <td class="px-4 py-3"><span class="pill pill-yellow">PI-Sometimes (36-70%)</span></td>
+                    <td class="px-4 py-3"><span class="text-green-600 text-xs font-semibold">&#9650; Improved</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium">
+                      <span class="inline-block w-2 h-2 rounded-full bg-teal-500 mr-2"></span>Life Skills
+                    </td>
+                    <td class="px-4 py-3 text-gray-500">Level 1 (6-14 yrs)</td>
+                    <td class="px-4 py-3"><span class="pill pill-red">PI-Rarely (&lt;35%)</span></td>
+                    <td class="px-4 py-3"><span class="pill pill-yellow">PI-Sometimes (36-70%)</span></td>
+                    <td class="px-4 py-3"><span class="text-green-600 text-xs font-semibold">&#9650; Improved</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium">
+                      <span class="inline-block w-2 h-2 rounded-full bg-gray-500 mr-2"></span>NIOS
+                    </td>
+                    <td class="px-4 py-3 text-gray-500">Level A</td>
+                    <td class="px-4 py-3"><span class="pill pill-red">Dependent</span></td>
+                    <td class="px-4 py-3"><span class="pill pill-red">PI-Rarely (&lt;35%)</span></td>
+                    <td class="px-4 py-3"><span class="text-green-600 text-xs font-semibold">&#9650; Improving</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Summary row -->
+            <div class="px-5 py-3 bg-sahyog-cream border-t border-gray-200 flex items-center justify-between text-sm">
+              <span class="font-medium">Total Goals Assessed: <strong>35</strong></span>
+              <span class="text-gray-500">All 35 goals progressed in 1st Term &middot; <span class="text-green-600 font-semibold">Strong improvement trajectory</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 4: WEEKLY PLANNING VIEW                                 -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 4</span>
+  <h2 class="text-2xl font-bold mb-3">Planning the Week Ahead</h2>
+  <p>Gulshan navigates to the weekly planning view. Based on Aliza's NIEPID levels, the system recommends activities across domains. Each task card shows the domain, a brief description, an estimated duration, and a linked YouTube tutorial. Gulshan can drag tasks onto specific days or use the "Add to Cart" feature to batch-select tasks.</p>
+</div>
+
+<div class="scene-wrapper-wide mb-16">
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/plans/aliza-mansur-shaikh/week/2025-02-10</div>
+    </div>
+    <div class="browser-body bg-gray-50">
+      <!-- Nav -->
+      <nav class="bg-sahyog-charcoal text-white px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <span class="font-bold text-sahyog-gold text-lg">Sangharsh</span>
+          <a class="text-sm text-gray-300">Students</a>
+          <a class="text-sm font-medium border-b-2 border-sahyog-gold pb-0.5">Plans</a>
+          <a class="text-sm text-gray-300">Notifications</a>
+          <a class="text-sm text-gray-300">Reports</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-300">Gulshan Khan</span>
+          <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
+        </div>
+      </nav>
+      <div class="p-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-gray-400 text-sm cursor-pointer">&larr; Back to Aliza's Profile</span>
+            </div>
+            <h1 class="text-xl font-bold">Weekly Plan — Aliza Mansur Shaikh</h1>
+            <p class="text-sm text-gray-500">Week of Feb 10 – 14, 2025</p>
+          </div>
+          <div class="flex gap-2">
+            <button class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm bg-white">&larr; Prev Week</button>
+            <button class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm bg-white">Next Week &rarr;</button>
+          </div>
+        </div>
+
+        <div class="flex gap-5 flex-col lg:flex-row">
+          <!-- Calendar Grid -->
+          <div class="flex-1">
+            <div class="grid grid-cols-5 gap-3">
+              <!-- Monday -->
+              <div class="bg-white rounded-lg border border-gray-200 p-3">
+                <div class="text-xs font-semibold text-gray-500 mb-2">MON, Feb 10</div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-2.5 mb-2">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span class="text-xs text-blue-600 font-medium">Maths</span></div>
+                  <p class="text-xs font-medium">Count objects 1-5</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+                <div class="bg-orange-50 border border-orange-200 rounded-lg p-2.5">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-orange-500"></span><span class="text-xs text-orange-600 font-medium">ADL</span></div>
+                  <p class="text-xs font-medium">Practice buttoning shirt</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Tuesday -->
+              <div class="bg-white rounded-lg border border-gray-200 p-3">
+                <div class="text-xs font-semibold text-gray-500 mb-2">TUE, Feb 11</div>
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-2.5 mb-2">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-purple-500"></span><span class="text-xs text-purple-600 font-medium">Language</span></div>
+                  <p class="text-xs font-medium">Identify letters A-D</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-2.5">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-green-500"></span><span class="text-xs text-green-600 font-medium">EVS</span></div>
+                  <p class="text-xs font-medium">Name 5 body parts</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Wednesday -->
+              <div class="bg-white rounded-lg border border-gray-200 p-3">
+                <div class="text-xs font-semibold text-gray-500 mb-2">WED, Feb 12</div>
+                <div class="bg-pink-50 border border-pink-200 rounded-lg p-2.5 mb-2">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-pink-500"></span><span class="text-xs text-pink-600 font-medium">Communication</span></div>
+                  <p class="text-xs font-medium">Speak in full sentences</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">15 min</span>
+                  </div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-2.5">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span class="text-xs text-blue-600 font-medium">Maths</span></div>
+                  <p class="text-xs font-medium">Name basic shapes</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Thursday -->
+              <div class="bg-white rounded-lg border border-gray-200 p-3">
+                <div class="text-xs font-semibold text-gray-500 mb-2">THU, Feb 13</div>
+                <div class="bg-teal-50 border border-teal-200 rounded-lg p-2.5 mb-2">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-teal-500"></span><span class="text-xs text-teal-600 font-medium">Life Skills</span></div>
+                  <p class="text-xs font-medium">Fold clothes with help</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-2.5">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-green-500"></span><span class="text-xs text-green-600 font-medium">EVS</span></div>
+                  <p class="text-xs font-medium">Name 3 primary colours</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Friday -->
+              <div class="bg-white rounded-lg border border-gray-200 p-3">
+                <div class="text-xs font-semibold text-gray-500 mb-2">FRI, Feb 14</div>
+                <div class="bg-orange-50 border border-orange-200 rounded-lg p-2.5 mb-2">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-orange-500"></span><span class="text-xs text-orange-600 font-medium">ADL</span></div>
+                  <p class="text-xs font-medium">Serve food to self</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-2.5">
+                  <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full bg-purple-500"></span><span class="text-xs text-purple-600 font-medium">Language</span></div>
+                  <p class="text-xs font-medium">Write own name (copy)</p>
+                  <div class="flex items-center justify-between mt-1.5">
+                    <span class="yt-link">&#9654; Video</span>
+                    <span class="text-xs text-gray-400">10 min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side Panel: Recommended Activities -->
+          <div class="lg:w-72 flex-shrink-0">
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <h3 class="font-semibold text-sm mb-1">Recommended Activities</h3>
+              <p class="text-xs text-gray-400 mb-3">Filtered by Aliza's NIEPID levels</p>
+              <div class="space-y-2">
+                <div class="border border-gray-100 rounded-lg p-2.5 hover:bg-gray-50 cursor-pointer">
+                  <div class="flex items-center gap-1 mb-0.5"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span class="text-xs text-blue-600 font-medium">Maths</span></div>
+                  <p class="text-xs font-medium">Identify numerals 1-9</p>
+                  <div class="flex items-center justify-between mt-1">
+                    <span class="text-xs text-gray-400">10 min</span>
+                    <button class="text-xs bg-sahyog-gold text-white px-2 py-0.5 rounded">+ Add</button>
+                  </div>
+                </div>
+                <div class="border border-gray-100 rounded-lg p-2.5 hover:bg-gray-50 cursor-pointer">
+                  <div class="flex items-center gap-1 mb-0.5"><span class="w-2 h-2 rounded-full bg-green-500"></span><span class="text-xs text-green-600 font-medium">EVS</span></div>
+                  <p class="text-xs font-medium">Name 5 fruits/vegetables</p>
+                  <div class="flex items-center justify-between mt-1">
+                    <span class="text-xs text-gray-400">10 min</span>
+                    <button class="text-xs bg-sahyog-gold text-white px-2 py-0.5 rounded">+ Add</button>
+                  </div>
+                </div>
+                <div class="border border-gray-100 rounded-lg p-2.5 hover:bg-gray-50 cursor-pointer">
+                  <div class="flex items-center gap-1 mb-0.5"><span class="w-2 h-2 rounded-full bg-orange-500"></span><span class="text-xs text-orange-600 font-medium">ADL</span></div>
+                  <p class="text-xs font-medium">Wash hands with soap</p>
+                  <div class="flex items-center justify-between mt-1">
+                    <span class="text-xs text-gray-400">5 min</span>
+                    <button class="text-xs bg-sahyog-gold text-white px-2 py-0.5 rounded">+ Add</button>
+                  </div>
+                </div>
+                <div class="border border-gray-100 rounded-lg p-2.5 hover:bg-gray-50 cursor-pointer">
+                  <div class="flex items-center gap-1 mb-0.5"><span class="w-2 h-2 rounded-full bg-pink-500"></span><span class="text-xs text-pink-600 font-medium">Communication</span></div>
+                  <p class="text-xs font-medium">Say 'thank you' and 'please'</p>
+                  <div class="flex items-center justify-between mt-1">
+                    <span class="text-xs text-gray-400">All day</span>
+                    <button class="text-xs bg-sahyog-gold text-white px-2 py-0.5 rounded">+ Add</button>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 pt-3 border-t border-gray-100">
+                <button class="w-full bg-sahyog-charcoal text-white text-sm py-2 rounded-lg flex items-center justify-center gap-2 font-medium">
+                  &#128722; View Cart (10 tasks)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 5: SHOPPING CART / TASK ASSIGNMENT                      -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 5</span>
+  <h2 class="text-2xl font-bold mb-3">Review &amp; Send via WhatsApp</h2>
+  <p>Gulshan reviews her selected tasks in the "cart" — a slide-out panel that shows each task with its YouTube link, allows toggling the message language between English and Hindi, and previews the exact WhatsApp message the caregiver will receive. She schedules daily delivery at 9:00 AM IST.</p>
+</div>
+
+<div class="scene-wrapper-wide mb-16">
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/plans/aliza-mansur-shaikh/cart</div>
+    </div>
+    <div class="browser-body bg-gray-50">
+      <!-- Nav -->
+      <nav class="bg-sahyog-charcoal text-white px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <span class="font-bold text-sahyog-gold text-lg">Sangharsh</span>
+          <a class="text-sm text-gray-300">Students</a>
+          <a class="text-sm font-medium border-b-2 border-sahyog-gold pb-0.5">Plans</a>
+          <a class="text-sm text-gray-300">Notifications</a>
+          <a class="text-sm text-gray-300">Reports</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-300">Gulshan Khan</span>
+          <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
+        </div>
+      </nav>
+      <div class="p-6 flex gap-6 flex-col lg:flex-row">
+        <!-- Task List -->
+        <div class="flex-1">
+          <h2 class="text-lg font-bold mb-1">&#128722; Task Cart — Aliza Mansur Shaikh</h2>
+          <p class="text-sm text-gray-500 mb-4">10 tasks selected for Week of Feb 10-14</p>
+          <div class="space-y-3">
+            <!-- Task 1 -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                  <span class="text-xs font-medium text-blue-600">Maths</span>
+                  <span class="text-xs text-gray-400">&middot; Monday</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded font-medium">Hindi</span>
+                  <span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded cursor-pointer">English</span>
+                </div>
+              </div>
+              <p class="text-sm font-medium mb-1">Count objects 1-5</p>
+              <p class="text-xs text-gray-500">1 se 5 tak cheezein gino — ghar mein ball, spoon, ya toy use karein</p>
+              <div class="flex items-center gap-3 mt-2">
+                <span class="yt-link">&#9654; YouTube tutorial link</span>
+                <span class="text-xs text-gray-400">10 min</span>
+              </div>
+            </div>
+            <!-- Task 2 -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                  <span class="text-xs font-medium text-orange-600">ADL</span>
+                  <span class="text-xs text-gray-400">&middot; Monday</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded font-medium">Hindi</span>
+                  <span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded cursor-pointer">English</span>
+                </div>
+              </div>
+              <p class="text-sm font-medium mb-1">Practice buttoning shirt</p>
+              <p class="text-xs text-gray-500">T-shirt ya frock mein button lagana sikhayein — mummy sir mein daalke aasteen mein haath daiti h</p>
+              <div class="flex items-center gap-3 mt-2">
+                <span class="yt-link">&#9654; YouTube tutorial link</span>
+                <span class="text-xs text-gray-400">10 min</span>
+              </div>
+            </div>
+            <!-- Task 3 -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                  <span class="text-xs font-medium text-purple-600">Language</span>
+                  <span class="text-xs text-gray-400">&middot; Tuesday</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded cursor-pointer">Hindi</span>
+                  <span class="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded font-medium">English</span>
+                </div>
+              </div>
+              <p class="text-sm font-medium mb-1">Identify letters A-D</p>
+              <p class="text-xs text-gray-500">Show flashcards of letters A, B, C, D — ask Aliza to name them and trace with finger</p>
+              <div class="flex items-center gap-3 mt-2">
+                <span class="yt-link">&#9654; YouTube tutorial link</span>
+                <span class="text-xs text-gray-400">10 min</span>
+              </div>
+            </div>
+            <div class="text-center text-sm text-gray-400 py-2">+ 7 more tasks...</div>
+          </div>
+        </div>
+
+        <!-- WhatsApp Preview -->
+        <div class="lg:w-96 flex-shrink-0">
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <h3 class="font-semibold text-sm mb-3">&#128241; WhatsApp Message Preview</h3>
+            <div class="bg-wa-bg rounded-xl p-3" style="font-family: -apple-system, sans-serif;">
+              <div class="wa-bubble incoming" style="max-width:100%;">
+                <p class="text-sm font-semibold mb-1">Namaste! Sahyog Sangharsh se &#128578;</p>
+                <p class="text-sm mb-2">Aaj ka activity Aliza ke liye:</p>
+                <p class="text-sm font-medium">&#128218; Maths: 1 se 5 tak cheezein gino</p>
+                <p class="text-xs text-gray-600 mt-1">Ghar mein ball, spoon, ya toy use karein. Aliza se puchein "kitne hain?"</p>
+                <p class="text-xs mt-2">&#127909; Video dekho: <span class="text-blue-600 underline">youtu.be/xxxxx</span></p>
+                <p class="text-xs mt-1">&#9200; Samay: 10 minute</p>
+                <hr class="my-2 border-gray-200">
+                <p class="text-xs text-gray-500 italic">Today's activity for Aliza: Count objects 1-5. Use balls, spoons, or toys at home. Ask "How many?"</p>
+                <div class="wa-time">9:00 AM <span class="wa-blue-check">&#10003;&#10003;</span></div>
+              </div>
+            </div>
+            <div class="mt-4 space-y-2">
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-500">Scheduled delivery</span>
+                <span class="font-medium">9:00 AM IST daily</span>
+              </div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-500">Recipient</span>
+                <span class="font-medium">Mansur Shaikh (+91 98XXX)</span>
+              </div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-500">Language</span>
+                <span class="font-medium">Hindi + English</span>
+              </div>
+            </div>
+            <button class="w-full mt-4 bg-wa-teal text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.398 0-4.612-.786-6.402-2.114l-.447-.338-2.63.882.882-2.63-.338-.447A9.953 9.953 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+              Send All Tasks (10)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 6: WHATSAPP — TASK RECEIVED                             -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 6</span>
+  <h2 class="text-2xl font-bold mb-3">The Caregiver Receives Today's Task</h2>
+  <p>On Mansur Shaikh's phone, the Sahyog Sangharsh WhatsApp message arrives at 9:00 AM sharp. The message is bilingual — Hindi first (the caregiver's primary language), then English. It includes the activity description, a YouTube tutorial link, and the expected duration.</p>
+</div>
+
+<div class="flex justify-center mb-16 px-4">
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+      <!-- WA Header -->
+      <div class="wa-header">
+        <span class="text-white text-lg">&larr;</span>
+        <div class="wa-avatar">S</div>
+        <div>
+          <div class="font-semibold text-sm">Sahyog Sangharsh</div>
+          <div class="text-xs text-green-200">online</div>
+        </div>
+        <div class="ml-auto flex gap-4 text-white text-lg">
+          <span>&#128249;</span>
+          <span>&#128222;</span>
+          <span>&#8942;</span>
+        </div>
+      </div>
+      <!-- Chat -->
+      <div class="wa-chat">
+        <div class="wa-date-chip"><span>Today</span></div>
+
+        <!-- Hindi message -->
+        <div class="wa-bubble incoming">
+          <p class="font-semibold text-sm mb-1">Namaste Mansur ji! &#128591;</p>
+          <p class="text-sm mb-2">Sahyog Sangharsh se aaj ka activity Aliza ke liye:</p>
+          <p class="text-sm font-semibold">&#128218; Maths: 1 se 5 tak cheezein gino</p>
+          <p class="text-xs text-gray-600 mt-1">Ghar mein ball, spoon, ya toy use karein. Aliza se puchein "kitne hain?" Agar galat bole toh dobara try karein.</p>
+          <p class="text-xs mt-2">&#127909; Video dekhein: <span class="text-blue-600 underline">youtu.be/count-1-5-hindi</span></p>
+          <p class="text-xs mt-1">&#9200; Samay: 10 minute</p>
+          <div class="wa-time">9:00 AM <span class="wa-blue-check">&#10003;&#10003;</span></div>
+        </div>
+
+        <!-- English version -->
+        <div class="wa-bubble incoming">
+          <p class="text-xs text-gray-500 italic mb-1">English version:</p>
+          <p class="text-sm">Today's activity for <strong>Aliza</strong>:</p>
+          <p class="text-sm font-semibold mt-1">&#128218; Maths: Count objects 1-5</p>
+          <p class="text-xs text-gray-600 mt-1">Use balls, spoons, or toys at home. Ask Aliza "How many are there?" If she says the wrong number, try again patiently.</p>
+          <p class="text-xs mt-2">&#127909; Watch video: <span class="text-blue-600 underline">youtu.be/count-1-5-eng</span></p>
+          <p class="text-xs mt-1">&#9200; Time: 10 minutes</p>
+          <div class="wa-time">9:00 AM <span class="wa-blue-check">&#10003;&#10003;</span></div>
+        </div>
+
+        <!-- Spacing -->
+        <div class="flex-1"></div>
+
+        <!-- Input bar -->
+        <div class="bg-white rounded-full mx-1 mb-1 px-4 py-2.5 flex items-center gap-2 shadow-sm">
+          <span class="text-gray-400 text-lg">&#128578;</span>
+          <span class="text-gray-400 text-sm flex-1">Type a message</span>
+          <span class="text-gray-400 text-lg">&#128247;</span>
+          <div class="w-9 h-9 rounded-full bg-wa-teal flex items-center justify-center text-white ml-1">&#127908;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 7: WHATSAPP — REMINDER + GAMIFICATION                   -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 7</span>
+  <h2 class="text-2xl font-bold mb-3">Gentle Reminders &amp; Motivation</h2>
+  <p>The next morning, a gentle reminder goes out about yesterday's incomplete task — not guilt-tripping, but encouraging. It's followed by a gamification message celebrating Aliza's streak and progress level. These nudges are designed around caregivers who are often busy with work and household duties in marginalized communities.</p>
+</div>
+
+<div class="flex justify-center mb-16 px-4">
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+      <!-- WA Header -->
+      <div class="wa-header">
+        <span class="text-white text-lg">&larr;</span>
+        <div class="wa-avatar">S</div>
+        <div>
+          <div class="font-semibold text-sm">Sahyog Sangharsh</div>
+          <div class="text-xs text-green-200">online</div>
+        </div>
+        <div class="ml-auto flex gap-4 text-white text-lg">
+          <span>&#128249;</span>
+          <span>&#128222;</span>
+          <span>&#8942;</span>
+        </div>
+      </div>
+      <!-- Chat -->
+      <div class="wa-chat">
+        <div class="wa-date-chip"><span>Today</span></div>
+
+        <!-- Reminder -->
+        <div class="wa-bubble incoming">
+          <p class="text-sm">&#128276; Mansur ji, kal ka activity abhi baaki hai:</p>
+          <p class="text-sm font-semibold mt-1">&#128218; Maths: 1 se 5 tak cheezein gino</p>
+          <p class="text-xs text-gray-600 mt-2">Koi baat nahi — aaj bhi try kar sakte hain! Bas 10 minute lagenge. Aliza ke liye aapka effort bahut zaroori hai &#10084;&#65039;</p>
+          <p class="text-xs text-gray-500 mt-2 italic">Yesterday's counting activity is still pending — you can try it today! It only takes 10 minutes.</p>
+          <div class="wa-time">8:30 AM <span class="wa-blue-check">&#10003;&#10003;</span></div>
+        </div>
+
+        <!-- Gamification -->
+        <div class="wa-bubble incoming">
+          <p class="text-sm font-semibold">&#11088;&#11088;&#11088; Congratulations! &#11088;&#11088;&#11088;</p>
+          <p class="text-sm mt-2">Aliza ka 3-din ka streak chal raha hai! &#127881;</p>
+          <p class="text-sm mt-1">Current Level: <strong>&#127775; Rising Star</strong></p>
+          <div class="mt-3 bg-gray-50 rounded-lg p-2.5">
+            <div class="flex items-center gap-1 mb-1">
+              <span>&#11088;</span><span>&#11088;</span><span>&#11088;</span>
+              <span class="text-gray-300">&#9734;</span><span class="text-gray-300">&#9734;</span>
+            </div>
+            <p class="text-xs text-gray-600">3/5 stars tak pahunch gayi! 2 aur activities complete karein aur <strong>Super Star</strong> ban jayein!</p>
+          </div>
+          <p class="text-xs text-gray-500 mt-2 italic">Aliza is on a 3-day streak! She's a Rising Star. Complete 2 more activities to reach Super Star level!</p>
+          <div class="wa-time">8:30 AM <span class="wa-blue-check">&#10003;&#10003;</span></div>
+        </div>
+
+        <!-- New task -->
+        <div class="wa-bubble incoming">
+          <p class="text-sm font-semibold">Aaj ka naya activity &#128171;</p>
+          <p class="text-sm font-semibold mt-1">&#128218; Language: A se D tak letters pehchano</p>
+          <p class="text-xs text-gray-600 mt-1">Flashcard dikhayein aur Aliza se naam puchein. Ungli se trace karayein.</p>
+          <p class="text-xs mt-2">&#127909; Video: <span class="text-blue-600 underline">youtu.be/letters-abcd</span></p>
+          <p class="text-xs mt-1">&#9200; Samay: 10 minute</p>
+          <div class="wa-time">9:00 AM <span class="wa-blue-check">&#10003;&#10003;</span></div>
+        </div>
+
+        <div class="flex-1"></div>
+        <!-- Input bar -->
+        <div class="bg-white rounded-full mx-1 mb-1 px-4 py-2.5 flex items-center gap-2 shadow-sm">
+          <span class="text-gray-400 text-lg">&#128578;</span>
+          <span class="text-gray-400 text-sm flex-1">Type a message</span>
+          <span class="text-gray-400 text-lg">&#128247;</span>
+          <div class="w-9 h-9 rounded-full bg-wa-teal flex items-center justify-center text-white ml-1">&#127908;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 8: WHATSAPP — CAREGIVER RESPONSE                        -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 8</span>
+  <h2 class="text-2xl font-bold mb-3">Mansur Sends Evidence</h2>
+  <p>That evening, Mansur records a short video of Aliza counting objects and sends it back via WhatsApp with a caption. The system automatically acknowledges the submission and lets him know Gulshan ma'am will review it soon.</p>
+</div>
+
+<div class="flex justify-center mb-16 px-4">
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+      <!-- WA Header -->
+      <div class="wa-header">
+        <span class="text-white text-lg">&larr;</span>
+        <div class="wa-avatar">S</div>
+        <div>
+          <div class="font-semibold text-sm">Sahyog Sangharsh</div>
+          <div class="text-xs text-green-200">online</div>
+        </div>
+        <div class="ml-auto flex gap-4 text-white text-lg">
+          <span>&#128249;</span>
+          <span>&#128222;</span>
+          <span>&#8942;</span>
+        </div>
+      </div>
+      <!-- Chat -->
+      <div class="wa-chat">
+        <div class="wa-date-chip"><span>Today</span></div>
+
+        <!-- Previous messages (faded) -->
+        <div class="wa-bubble incoming" style="opacity: 0.5;">
+          <p class="text-xs">&#128218; Maths: 1 se 5 tak cheezein gino...</p>
+          <div class="wa-time">9:00 AM</div>
+        </div>
+
+        <!-- Caregiver sends video -->
+        <div class="wa-bubble outgoing">
+          <!-- Video thumbnail placeholder -->
+          <div class="bg-gray-800 rounded-lg mb-2 flex items-center justify-center" style="height: 160px;">
+            <div class="text-center">
+              <div class="w-12 h-12 rounded-full bg-white bg-opacity-30 flex items-center justify-center mx-auto mb-1">
+                <span class="text-white text-2xl ml-1">&#9654;</span>
+              </div>
+              <span class="text-white text-xs">0:42</span>
+            </div>
+          </div>
+          <p class="text-sm">Aliza ne aaj 5 tak count kiya! &#128079; Ball aur spoon se practice ki. Bahut khush hai aaj.</p>
+          <p class="text-xs text-gray-500 italic mt-1">Aliza counted to 5 today! Practiced with balls and spoons. She's very happy.</p>
+          <div class="wa-time">6:45 PM <span class="wa-blue-check">&#10003;&#10003;</span></div>
+        </div>
+
+        <!-- Auto acknowledgment -->
+        <div class="wa-bubble incoming">
+          <p class="text-sm">&#10004;&#65039; Dhanyavaad Mansur ji! Video mil gaya.</p>
+          <p class="text-sm mt-1">Gulshan ma'am jald hi review karengi aur feedback dengi.</p>
+          <p class="text-xs text-gray-500 mt-2 italic">Thank you! Video received. Gulshan ma'am will review and send feedback soon.</p>
+          <p class="text-sm mt-2">&#11088; Aliza ka aaj ka activity complete! Streak: <strong>4 din</strong> &#127881;</p>
+          <div class="wa-time">6:45 PM <span class="wa-blue-check">&#10003;&#10003;</span></div>
+        </div>
+
+        <div class="flex-1"></div>
+        <!-- Input bar -->
+        <div class="bg-white rounded-full mx-1 mb-1 px-4 py-2.5 flex items-center gap-2 shadow-sm">
+          <span class="text-gray-400 text-lg">&#128578;</span>
+          <span class="text-gray-400 text-sm flex-1">Type a message</span>
+          <span class="text-gray-400 text-lg">&#128247;</span>
+          <div class="w-9 h-9 rounded-full bg-wa-teal flex items-center justify-center text-white ml-1">&#127908;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 9: SE NOTIFICATION INBOX                                -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 9</span>
+  <h2 class="text-2xl font-bold mb-3">Gulshan Reviews Submissions</h2>
+  <p>Back on the dashboard, Gulshan sees a notification badge. She opens the inbox to find caregiver submissions — videos, photos, and text messages. She expands Aliza's submission to watch the video, reads Mansur's note, selects an updated NIEPID assessment level, and writes encouraging feedback that gets sent back via WhatsApp.</p>
+</div>
+
+<div class="scene-wrapper-wide mb-16">
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/notifications</div>
+    </div>
+    <div class="browser-body bg-gray-50">
+      <!-- Nav -->
+      <nav class="bg-sahyog-charcoal text-white px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <span class="font-bold text-sahyog-gold text-lg">Sangharsh</span>
+          <a class="text-sm text-gray-300">Students</a>
+          <a class="text-sm text-gray-300">Plans</a>
+          <a class="text-sm font-medium border-b-2 border-sahyog-gold pb-0.5 notif-badge">Notifications</a>
+          <a class="text-sm text-gray-300">Reports</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-300">Gulshan Khan</span>
+          <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
+        </div>
+      </nav>
+      <div class="p-6 flex gap-6 flex-col lg:flex-row">
+        <!-- Notification List -->
+        <div class="lg:w-96 flex-shrink-0">
+          <h2 class="text-lg font-bold mb-4">Submissions (3 new)</h2>
+          <div class="space-y-2">
+            <!-- Aliza - active -->
+            <div class="bg-sahyog-cream border-2 border-sahyog-gold rounded-xl p-4 cursor-pointer">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold">A</div>
+                <div class="flex-1">
+                  <div class="font-semibold text-sm">Aliza Mansur Shaikh</div>
+                  <div class="text-xs text-gray-500">Maths: Count objects 1-5</div>
+                </div>
+                <span class="w-2.5 h-2.5 rounded-full bg-sahyog-gold"></span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-gray-500">
+                <span>&#127909; Video</span>
+                <span>&middot;</span>
+                <span>6:45 PM today</span>
+              </div>
+            </div>
+            <!-- Meera -->
+            <div class="bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold">M</div>
+                <div class="flex-1">
+                  <div class="font-semibold text-sm">Meera Joshi</div>
+                  <div class="text-xs text-gray-500">EVS: Name 5 animals</div>
+                </div>
+                <span class="w-2.5 h-2.5 rounded-full bg-sahyog-gold"></span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-gray-500">
+                <span>&#128248; Photo</span>
+                <span>&middot;</span>
+                <span>5:30 PM today</span>
+              </div>
+            </div>
+            <!-- Anvika -->
+            <div class="bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">A</div>
+                <div class="flex-1">
+                  <div class="font-semibold text-sm">Anvika Gupta</div>
+                  <div class="text-xs text-gray-500">ADL: Wash hands with soap</div>
+                </div>
+                <span class="w-2.5 h-2.5 rounded-full bg-sahyog-gold"></span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-gray-500">
+                <span>&#127909; Video</span>
+                <span>&middot;</span>
+                <span>4:15 PM today</span>
+              </div>
+            </div>
+            <!-- Reviewed ones -->
+            <div class="text-xs text-gray-400 font-medium mt-4 mb-2 uppercase tracking-wide">Previously Reviewed</div>
+            <div class="bg-white border border-gray-200 rounded-xl p-4 opacity-60">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">R</div>
+                <div class="flex-1">
+                  <div class="font-semibold text-sm">Ravi Patil</div>
+                  <div class="text-xs text-gray-500">Communication: Greet with namaste</div>
+                </div>
+                <span class="text-green-500 text-sm">&#10003;</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-gray-500">
+                <span>&#128172; Text</span>
+                <span>&middot;</span>
+                <span>Yesterday</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review Panel -->
+        <div class="flex-1">
+          <div class="bg-white rounded-xl border border-gray-200">
+            <div class="px-5 py-4 border-b border-gray-100">
+              <div class="flex items-center justify-between">
+                <h3 class="font-semibold">Review Submission — Aliza Mansur Shaikh</h3>
+                <span class="text-xs text-gray-400">Received 6:45 PM today</span>
+              </div>
+              <p class="text-sm text-gray-500 mt-1">Task: Maths — Count objects 1-5 &middot; Monday, Feb 10</p>
+            </div>
+
+            <!-- Video Player -->
+            <div class="p-5">
+              <div class="video-placeholder rounded-lg mb-4" style="max-height:240px;">
+                <div class="text-center">
+                  <div class="w-16 h-16 rounded-full bg-white bg-opacity-20 flex items-center justify-center mx-auto mb-2">
+                    <span class="text-4xl ml-1">&#9654;</span>
+                  </div>
+                  <span class="text-sm opacity-70">aliza_counting_feb10.mp4 &middot; 0:42</span>
+                </div>
+              </div>
+
+              <!-- Caregiver Note -->
+              <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                <div class="text-xs font-semibold text-gray-500 mb-1">Caregiver's Note</div>
+                <p class="text-sm">"Aliza ne aaj 5 tak count kiya! Ball aur spoon se practice ki. Bahut khush hai aaj."</p>
+                <p class="text-xs text-gray-400 italic mt-1">Aliza counted to 5 today! Practiced with balls and spoons. She's very happy.</p>
+              </div>
+
+              <!-- Assessment -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label class="block text-sm font-medium mb-1">NIEPID Assessment Update</label>
+                  <div class="border border-gray-300 rounded-lg px-3 py-2 bg-white text-sm flex items-center justify-between">
+                    <span>PI-Sometimes (36-70%)</span>
+                    <span class="text-gray-400">&#9660;</span>
+                  </div>
+                  <p class="text-xs text-gray-400 mt-1">Previous: PI-Rarely (&lt;35%)</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Task Completion</label>
+                  <div class="border border-gray-300 rounded-lg px-3 py-2 bg-white text-sm flex items-center justify-between">
+                    <span>&#10004; Completed Successfully</span>
+                    <span class="text-gray-400">&#9660;</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Feedback -->
+              <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Feedback to Caregiver</label>
+                <div class="border border-gray-300 rounded-lg p-3 bg-white text-sm min-h-[80px]">
+                  <p>Bahut accha! Aliza counting mein progress kar rahi hai &#128079; Kal shapes practice karein — circle, triangle, square flashcards use karein.</p>
+                  <p class="text-gray-400 italic mt-2">Great work! Aliza is making progress in counting. Tomorrow, practice shapes using circle, triangle, and square flashcards.</p>
+                </div>
+              </div>
+
+              <button class="w-full bg-sahyog-gold text-white font-semibold py-3 rounded-lg">
+                Send Feedback &amp; Update Progress
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCENE 10: PROGRESS DASHBOARD                                  -->
+<!-- ============================================================ -->
+<div class="narrative">
+  <span class="scene-label">Scene 10</span>
+  <h2 class="text-2xl font-bold mb-3">Tracking Progress Over Time</h2>
+  <p>Weeks of consistent effort add up. The progress dashboard shows Aliza's trajectory across all domains — from mostly <em>Dependent</em> and <em>PI-Rarely</em> at the start to <em>PI-Sometimes</em> and even <em>PI-Often</em> in some areas. The bar chart visualizes 6 weeks of gradual improvement, making the impact of the system visible.</p>
+</div>
+
+<div class="scene-wrapper-wide mb-16">
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/reports/aliza-mansur-shaikh</div>
+    </div>
+    <div class="browser-body bg-gray-50">
+      <!-- Nav -->
+      <nav class="bg-sahyog-charcoal text-white px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <span class="font-bold text-sahyog-gold text-lg">Sangharsh</span>
+          <a class="text-sm text-gray-300">Students</a>
+          <a class="text-sm text-gray-300">Plans</a>
+          <a class="text-sm text-gray-300">Notifications</a>
+          <a class="text-sm font-medium border-b-2 border-sahyog-gold pb-0.5">Reports</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-300">Gulshan Khan</span>
+          <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
+        </div>
+      </nav>
+
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h1 class="text-xl font-bold">Progress Report — Aliza Mansur Shaikh</h1>
+            <p class="text-sm text-gray-500">6-week overview &middot; Jan 6 – Feb 14, 2025</p>
+          </div>
+          <button class="border border-gray-300 rounded-lg px-4 py-1.5 text-sm bg-white">&#128438; Export PDF</button>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+            <div class="text-3xl font-bold text-sahyog-gold">18/25</div>
+            <div class="text-sm text-gray-500 mt-1">Tasks Completed</div>
+            <div class="text-xs text-gray-400">This week</div>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+            <div class="text-3xl font-bold text-wa-teal">4 days</div>
+            <div class="text-sm text-gray-500 mt-1">Current Streak</div>
+            <div class="text-xs text-gray-400">&#11088; Rising Star</div>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+            <div class="text-3xl font-bold text-purple-600">6</div>
+            <div class="text-sm text-gray-500 mt-1">Weeks Active</div>
+            <div class="text-xs text-gray-400">Since Jan 6</div>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+            <div class="text-3xl font-bold text-green-600">&#9650;</div>
+            <div class="text-sm text-gray-500 mt-1">Trajectory</div>
+            <div class="text-xs text-green-600 font-semibold">Improving</div>
+          </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="bg-white rounded-xl border border-gray-200 p-5 mb-8">
+          <h3 class="font-semibold mb-1">NIEPID Assessment Progress by Domain</h3>
+          <p class="text-xs text-gray-400 mb-4">Weekly assessment levels across 5 core domains over 6 weeks</p>
+
+          <!-- Y-axis labels + chart -->
+          <div class="flex gap-4">
+            <!-- Y-axis -->
+            <div class="flex flex-col justify-between text-xs text-gray-400 py-1" style="min-width:90px; height:200px;">
+              <span>Independent</span>
+              <span>PI-Often</span>
+              <span>PI-Sometimes</span>
+              <span>PI-Rarely</span>
+              <span>Dependent</span>
+            </div>
+            <!-- Chart area -->
+            <div class="flex-1" style="height:200px; position:relative;">
+              <!-- Grid lines -->
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;">
+                <div style="border-bottom:1px dashed #e5e7eb;width:100%;"></div>
+                <div style="border-bottom:1px dashed #e5e7eb;width:100%;"></div>
+                <div style="border-bottom:1px dashed #e5e7eb;width:100%;"></div>
+                <div style="border-bottom:1px dashed #e5e7eb;width:100%;"></div>
+                <div style="border-bottom:1px solid #d1d5db;width:100%;"></div>
+              </div>
+              <!-- Bars container -->
+              <div style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;padding:0 10px;">
+                <!-- Week 1 -->
+                <div class="flex flex-col items-center gap-0.5" style="width:14%;">
+                  <div class="flex items-end gap-1 w-full justify-center" style="height:195px;">
+                    <div style="width:14%;height:10%;background:#3B82F6;border-radius:2px 2px 0 0;" title="Maths: Dependent"></div>
+                    <div style="width:14%;height:20%;background:#8B5CF6;border-radius:2px 2px 0 0;" title="Language: PI-Rarely"></div>
+                    <div style="width:14%;height:20%;background:#22C55E;border-radius:2px 2px 0 0;" title="EVS: PI-Rarely"></div>
+                    <div style="width:14%;height:20%;background:#F97316;border-radius:2px 2px 0 0;" title="ADL: PI-Rarely"></div>
+                    <div style="width:14%;height:10%;background:#EC4899;border-radius:2px 2px 0 0;" title="Comm: Dependent"></div>
+                  </div>
+                  <div class="chart-label">Wk 1</div>
+                </div>
+                <!-- Week 2 -->
+                <div class="flex flex-col items-center gap-0.5" style="width:14%;">
+                  <div class="flex items-end gap-1 w-full justify-center" style="height:195px;">
+                    <div style="width:14%;height:20%;background:#3B82F6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:25%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:25%;background:#22C55E;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:25%;background:#F97316;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:20%;background:#EC4899;border-radius:2px 2px 0 0;"></div>
+                  </div>
+                  <div class="chart-label">Wk 2</div>
+                </div>
+                <!-- Week 3 -->
+                <div class="flex flex-col items-center gap-0.5" style="width:14%;">
+                  <div class="flex items-end gap-1 w-full justify-center" style="height:195px;">
+                    <div style="width:14%;height:35%;background:#3B82F6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:35%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:30%;background:#22C55E;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:35%;background:#F97316;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:30%;background:#EC4899;border-radius:2px 2px 0 0;"></div>
+                  </div>
+                  <div class="chart-label">Wk 3</div>
+                </div>
+                <!-- Week 4 -->
+                <div class="flex flex-col items-center gap-0.5" style="width:14%;">
+                  <div class="flex items-end gap-1 w-full justify-center" style="height:195px;">
+                    <div style="width:14%;height:45%;background:#3B82F6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:40%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:45%;background:#22C55E;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:40%;background:#F97316;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:35%;background:#EC4899;border-radius:2px 2px 0 0;"></div>
+                  </div>
+                  <div class="chart-label">Wk 4</div>
+                </div>
+                <!-- Week 5 -->
+                <div class="flex flex-col items-center gap-0.5" style="width:14%;">
+                  <div class="flex items-end gap-1 w-full justify-center" style="height:195px;">
+                    <div style="width:14%;height:50%;background:#3B82F6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:50%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:50%;background:#22C55E;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:50%;background:#F97316;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:45%;background:#EC4899;border-radius:2px 2px 0 0;"></div>
+                  </div>
+                  <div class="chart-label">Wk 5</div>
+                </div>
+                <!-- Week 6 -->
+                <div class="flex flex-col items-center gap-0.5" style="width:14%;">
+                  <div class="flex items-end gap-1 w-full justify-center" style="height:195px;">
+                    <div style="width:14%;height:55%;background:#3B82F6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:55%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:55%;background:#22C55E;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:60%;background:#F97316;border-radius:2px 2px 0 0;"></div>
+                    <div style="width:14%;height:50%;background:#EC4899;border-radius:2px 2px 0 0;"></div>
+                  </div>
+                  <div class="chart-label">Wk 6</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Legend -->
+          <div class="flex flex-wrap gap-4 mt-4 pt-3 border-t border-gray-100 text-xs">
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#3B82F6;"></span> Maths</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#8B5CF6;"></span> Language</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#22C55E;"></span> EVS</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#F97316;"></span> ADL</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#EC4899;"></span> Communication</div>
+          </div>
+        </div>
+
+        <!-- Domain Breakdown -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-3 h-3 rounded-full" style="background:#3B82F6;"></span>
+              <h4 class="font-semibold text-sm">Maths</h4>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="pill pill-red text-xs">Dependent</span>
+              <span class="text-gray-400">&rarr;</span>
+              <span class="pill pill-yellow text-xs">PI-Sometimes</span>
+            </div>
+            <ul class="text-xs text-gray-600 space-y-1">
+              <li>&#10003; Identifies more/less quantities</li>
+              <li>&#10003; Names basic shapes (circle, triangle)</li>
+              <li>&#10003; Rote counts 1-9</li>
+              <li>&#8226; Working on: Numerals 1-9 identification</li>
+            </ul>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-3 h-3 rounded-full" style="background:#8B5CF6;"></span>
+              <h4 class="font-semibold text-sm">Language</h4>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="pill pill-red text-xs">PI-Rarely</span>
+              <span class="text-gray-400">&rarr;</span>
+              <span class="pill pill-yellow text-xs">PI-Sometimes</span>
+            </div>
+            <ul class="text-xs text-gray-600 space-y-1">
+              <li>&#10003; Identifies letters A-D</li>
+              <li>&#10003; Reads own name (with help)</li>
+              <li>&#10003; Copies shapes, letters, numbers</li>
+              <li>&#8226; Working on: Writing own name independently</li>
+            </ul>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-3 h-3 rounded-full" style="background:#22C55E;"></span>
+              <h4 class="font-semibold text-sm">EVS</h4>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="pill pill-red text-xs">PI-Rarely</span>
+              <span class="text-gray-400">&rarr;</span>
+              <span class="pill pill-yellow text-xs">PI-Sometimes</span>
+            </div>
+            <ul class="text-xs text-gray-600 space-y-1">
+              <li>&#10003; Names 25+ common objects</li>
+              <li>&#10003; Names 10+ body parts</li>
+              <li>&#10003; Names primary colours</li>
+              <li>&#8226; Working on: Naming common festivals</li>
+            </ul>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-3 h-3 rounded-full" style="background:#F97316;"></span>
+              <h4 class="font-semibold text-sm">ADL (Activities of Daily Living)</h4>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="pill pill-red text-xs">PI-Rarely</span>
+              <span class="text-gray-400">&rarr;</span>
+              <span class="pill pill-green text-xs">PI-Often</span>
+            </div>
+            <ul class="text-xs text-gray-600 space-y-1">
+              <li>&#10003; Serves food to self</li>
+              <li>&#10003; Cleans self after defecation</li>
+              <li>&#10003; Identifies correct side of clothes</li>
+              <li>&#8226; Working on: Folding clothes independently</li>
+            </ul>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-3 h-3 rounded-full" style="background:#EC4899;"></span>
+              <h4 class="font-semibold text-sm">Communication</h4>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="pill pill-red text-xs">PI-Rarely</span>
+              <span class="text-gray-400">&rarr;</span>
+              <span class="pill pill-yellow text-xs">PI-Sometimes</span>
+            </div>
+            <ul class="text-xs text-gray-600 space-y-1">
+              <li>&#10003; Chooses between 2+ items</li>
+              <li>&#10003; Says 'thank you' and 'please'</li>
+              <li>&#10003; Follows complex instructions</li>
+              <li>&#8226; Working on: Speaking in full sentences</li>
+            </ul>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-3 h-3 rounded-full" style="background:#14B8A6;"></span>
+              <h4 class="font-semibold text-sm">Recreational Activities</h4>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="pill pill-yellow text-xs">PI-Sometimes</span>
+              <span class="text-gray-400">&rarr;</span>
+              <span class="pill pill-green text-xs">PI-Often</span>
+            </div>
+            <ul class="text-xs text-gray-600 space-y-1">
+              <li>&#10003; Participates in art activities</li>
+              <li>&#10003; Participates in dance/yoga</li>
+              <li>&#10003; Passes/catches ball</li>
+              <li>&#8226; Excelling in creative activities!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- CLOSING SECTION                                               -->
+<!-- ============================================================ -->
+<section class="py-24 px-4" style="background: linear-gradient(135deg, #32373c 0%, #1a1d20 100%);">
+  <div class="max-w-3xl mx-auto text-center">
+    <div class="w-16 h-16 rounded-full bg-sahyog-gold flex items-center justify-center mx-auto mb-6">
+      <span class="text-white text-2xl font-bold">S</span>
+    </div>
+    <h2 class="text-3xl font-bold text-white mb-6">A Vision for Scale</h2>
+    <div class="divider mb-8"></div>
+    <p class="text-gray-300 text-lg leading-relaxed mb-6">
+      What starts with Gulshan and Aliza can reach hundreds of families. WhatsApp is already the communication tool of choice in India's marginalized communities — the caregivers don't need to download a new app or learn a new interface. They just receive messages, watch videos, and send back evidence.
+    </p>
+    <p class="text-gray-300 text-lg leading-relaxed mb-6">
+      The dashboard gives Special Educators the structure they need: systematic planning using NIEPID Disha benchmarks, bilingual delivery, automated reminders, and progress tracking that makes invisible work visible. Every video submission is a data point. Every feedback message is a connection.
+    </p>
+    <p class="text-sahyog-gold text-xl font-semibold leading-relaxed mb-8">
+      From one community center in Mumbai to every marginalized family with a smartphone — education delivered through the tool they already trust.
+    </p>
+    <div class="flex flex-wrap justify-center gap-8 text-sm text-gray-400 pt-4 border-t border-gray-600">
+      <div>
+        <div class="text-sahyog-gold font-semibold mb-1">Sahyog Chehak</div>
+        Mumbai, India
+      </div>
+      <div>
+        <div class="text-sahyog-gold font-semibold mb-1">NIEPID Disha</div>
+        Assessment Framework
+      </div>
+      <div>
+        <div class="text-sahyog-gold font-semibold mb-1">WhatsApp Business API</div>
+        Communication Channel
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-sahyog-charcoal text-gray-500 text-center py-6 text-xs">
+  <p>Sahyog Sangharsh &middot; UI/UX Storyboard Wireframe &middot; 2025</p>
+  <p class="mt-1">Built for stakeholder review — Dr. Neha Madhiwalla, Dr. Azra Ismail, Sahyog Team</p>
+</footer>
+
+</body>
+</html>

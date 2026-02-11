@@ -122,6 +122,10 @@ tailwind.config = {
   .video-placeholder { background: #1a1a2e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 40px; }
   .yt-link { color: #FF0000; font-size: 12px; display: inline-flex; align-items: center; gap: 3px; }
   .connector-line { width: 2px; background: linear-gradient(to bottom, #D4A843, transparent); height: 60px; margin: 0 auto; }
+  html { scroll-behavior: smooth; }
+  .clickable { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .clickable:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(212,168,67,0.25); }
+  .clickable:active { transform: translateY(0); }
 </style>
 </head>
 <body class="bg-sahyog-light text-sahyog-charcoal">
@@ -129,7 +133,7 @@ tailwind.config = {
 <!-- ============================================================ -->
 <!-- COVER                                                         -->
 <!-- ============================================================ -->
-<section class="min-h-screen flex items-center justify-center px-4" style="background: linear-gradient(135deg, #32373c 0%, #1a1d20 100%);">
+<section id="cover" class="min-h-screen flex items-center justify-center px-4" style="background: linear-gradient(135deg, #32373c 0%, #1a1d20 100%);">
   <div class="text-center max-w-3xl mx-auto">
     <div class="w-20 h-20 rounded-full bg-sahyog-gold flex items-center justify-center mx-auto mb-6">
       <span class="text-white text-3xl font-bold">S</span>
@@ -156,7 +160,9 @@ tailwind.config = {
         Lakshya, Lauhitya, Sushmita, Yasmine
       </div>
     </div>
-    <div class="text-gray-500 text-xs">UI/UX Storyboard Wireframe &middot; Academic Year 2025-2026</div>
+    <div class="text-gray-500 text-xs mb-8">UI/UX Storyboard Wireframe &middot; Academic Year 2025-2026</div>
+    <button class="bg-sahyog-gold text-white font-semibold px-8 py-3 rounded-full text-lg clickable" onclick="document.getElementById('scene1').scrollIntoView({behavior:'smooth'})" style="animation: pulse 2s infinite;">Begin Walkthrough &#8595;</button>
+    <style>@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.8; } }</style>
   </div>
 </section>
 
@@ -164,7 +170,7 @@ tailwind.config = {
 <!-- ============================================================ -->
 <!-- SCENE 1: SE LOGIN                                             -->
 <!-- ============================================================ -->
-<div class="narrative">
+<div id="scene1" class="narrative">
   <span class="scene-label">Scene 1</span>
   <h2 class="text-2xl font-bold mb-2">SE Login</h2>
   <p>Gulshan Khan, Special Educator at Sahyog Sangharsh, logs into the dashboard.</p>
@@ -194,7 +200,7 @@ tailwind.config = {
             <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <div class="border border-gray-300 rounded-lg px-3 py-2.5 text-gray-400 bg-gray-50">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div>
           </div>
-          <button class="w-full bg-sahyog-gold text-white font-semibold py-3 rounded-lg">Sign In</button>
+          <button class="w-full bg-sahyog-gold text-white font-semibold py-3 rounded-lg clickable" onclick="document.getElementById('scene2').scrollIntoView({behavior:'smooth'})">Sign In</button>
           <p class="text-center text-xs text-gray-400 mt-4">Forgot password? Contact your administrator</p>
         </div>
       </div>
@@ -206,7 +212,7 @@ tailwind.config = {
 <!-- ============================================================ -->
 <!-- SCENE 2: STUDENT ROSTER                                       -->
 <!-- ============================================================ -->
-<div class="narrative">
+<div id="scene2" class="narrative">
   <span class="scene-label">Scene 2</span>
   <h2 class="text-2xl font-bold mb-2">Student Roster</h2>
   <p>The dashboard shows all students with status indicators: green (active), yellow (falling behind), red (no response 7+ days).</p>
@@ -246,7 +252,7 @@ tailwind.config = {
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Aliza -->
-          <div class="bg-white rounded-xl border-2 border-sahyog-gold p-4 shadow-sm cursor-pointer">
+          <div class="bg-white rounded-xl border-2 border-sahyog-gold p-4 shadow-sm clickable" onclick="document.getElementById('scene3').scrollIntoView({behavior:'smooth'})" title="View Aliza's profile">
             <div class="flex items-center justify-between mb-3">
               <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold">A</div>
               <span class="status-dot dot-green" title="Active"></span>
@@ -343,7 +349,7 @@ tailwind.config = {
 <!-- ============================================================ -->
 <!-- SCENE 3: SE PROFILE <-> CAREGIVER LEARNING PLAN (SIDE BY SIDE)-->
 <!-- ============================================================ -->
-<div class="narrative">
+<div id="scene3" class="narrative">
   <span class="scene-label">Scene 3</span>
   <h2 class="text-2xl font-bold mb-2">Student Profile &#8596; Caregiver's Learning Plan</h2>
   <p>Gulshan views Aliza's NIEPID Disha progress. Meanwhile, Aliza's father Mansur sees the same child's learning plan on his phone — domain cards showing remaining activities.</p>
@@ -390,7 +396,7 @@ tailwind.config = {
               </div>
               <div class="mt-3 flex gap-1">
                 <button class="flex-1 text-xs bg-sahyog-charcoal text-white py-1.5 rounded-lg font-medium">Learning Plan</button>
-                <button class="flex-1 text-xs border border-gray-300 py-1.5 rounded-lg">Assign</button>
+                <button class="flex-1 text-xs border border-gray-300 py-1.5 rounded-lg clickable" onclick="document.getElementById('scene4').scrollIntoView({behavior:'smooth'})">Assign</button>
                 <button class="flex-1 text-xs border border-gray-300 py-1.5 rounded-lg">Contact</button>
               </div>
             </div>
@@ -558,7 +564,7 @@ tailwind.config = {
 <!-- ============================================================ -->
 <!-- SCENE 4: SE PLANS WEEK <-> CG RECEIVES TASKS (SIDE BY SIDE)  -->
 <!-- ============================================================ -->
-<div class="narrative">
+<div id="scene4" class="narrative">
   <span class="scene-label">Scene 4</span>
   <h2 class="text-2xl font-bold mb-2">SE Plans &amp; Assigns &#8594; Caregiver Receives Tasks</h2>
   <p>Gulshan builds the weekly plan from recommended activities, sends via WhatsApp. Mansur receives the bilingual task message on his phone.</p>
@@ -665,7 +671,7 @@ tailwind.config = {
             <div class="text-xs">
               <span class="font-medium">10 tasks ready</span> &middot; Hindi + English &middot; 9:00 AM IST daily
             </div>
-            <button class="bg-wa-teal text-white text-xs px-4 py-2 rounded-lg font-medium flex items-center gap-1.5">
+            <button class="bg-wa-teal text-white text-xs px-4 py-2 rounded-lg font-medium flex items-center gap-1.5 clickable" onclick="document.getElementById('scene5').scrollIntoView({behavior:'smooth'})" style="transform:none;">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
               Send All Tasks
             </button>
@@ -739,7 +745,7 @@ tailwind.config = {
 <!-- ============================================================ -->
 <!-- SCENE 5: CG ACTIVITY DETAIL + SUBMISSION <-> SE NOTIFICATION  -->
 <!-- ============================================================ -->
-<div class="narrative">
+<div id="scene5" class="narrative">
   <span class="scene-label">Scene 5</span>
   <h2 class="text-2xl font-bold mb-2">Caregiver Completes Activity &#8594; SE Gets Notified</h2>
   <p>Mansur opens the activity, watches the tutorial video, records Aliza practicing, and submits. The SE dashboard instantly shows a new submission for review.</p>
@@ -790,7 +796,7 @@ tailwind.config = {
               <div class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-500">Father (Mansur)</div>
             </div>
             <!-- Complete button -->
-            <button class="w-full bg-sahyog-charcoal text-white font-semibold py-2.5 rounded-xl text-sm">Complete Task</button>
+            <button class="w-full bg-sahyog-charcoal text-white font-semibold py-2.5 rounded-xl text-sm clickable" onclick="document.getElementById('scene6').scrollIntoView({behavior:'smooth'})">Complete Task</button>
           </div>
         </div>
       </div>
@@ -881,7 +887,7 @@ tailwind.config = {
                   <label class="text-xs text-gray-500 block mb-0.5">Feedback</label>
                   <div class="border border-gray-300 rounded p-2 text-xs bg-white">Bahut accha! Kal shapes practice karein &#128079;</div>
                 </div>
-                <button class="w-full bg-sahyog-gold text-white text-xs py-2 rounded-lg font-medium">Send Feedback &amp; Update</button>
+                <button class="w-full bg-sahyog-gold text-white text-xs py-2 rounded-lg font-medium clickable" onclick="document.getElementById('scene6').scrollIntoView({behavior:'smooth'})">Send Feedback &amp; Update</button>
               </div>
             </div>
             <!-- Meera -->
@@ -919,7 +925,7 @@ tailwind.config = {
 <!-- ============================================================ -->
 <!-- SCENE 6: PROGRESS DASHBOARD (FULL WIDTH)                     -->
 <!-- ============================================================ -->
-<div class="narrative">
+<div id="scene6" class="narrative">
   <span class="scene-label">Scene 6</span>
   <h2 class="text-2xl font-bold mb-2">Progress Over Time</h2>
   <p>Six weeks of consistent effort, tracked systematically. The dashboard shows Aliza's trajectory across all NIEPID domains.</p>

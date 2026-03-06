@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sahyog Sangharsh — Storyboard Wireframe</title>
+<title>Sahyog Sangharsh — SE Dashboard</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
@@ -21,1062 +21,893 @@ tailwind.config = {
 }
 </script>
 <style>
-  /* ---- Browser Frame ---- */
-  .browser-frame { background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); overflow: hidden; border: 1px solid #e0e0e0; }
-  .browser-chrome { background: #f0f0f0; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #ddd; }
-  .browser-dots { display: flex; gap: 6px; }
-  .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
-  .browser-dots .red { background: #FF5F56; }
-  .browser-dots .yellow { background: #FFBD2E; }
-  .browser-dots .green { background: #27C93F; }
-  .browser-url { flex: 1; background: #fff; border-radius: 6px; padding: 5px 12px; font-size: 13px; color: #666; border: 1px solid #ddd; }
-  .browser-body { min-height: 400px; }
-
-  /* ---- Phone Frame ---- */
-  .phone-frame { width: 340px; flex-shrink: 0; background: #000; border-radius: 40px; padding: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
-  .phone-frame-centered { margin: 0 auto; }
-  .phone-notch { width: 120px; height: 24px; background: #000; border-radius: 0 0 16px 16px; margin: 0 auto; position: relative; z-index: 10; margin-top: -12px; }
-  .phone-screen { background: #f5f5f5; border-radius: 28px; overflow: hidden; }
-  .phone-status-bar { background: #fff; padding: 8px 20px 4px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; }
-
-  /* ---- WhatsApp Bubbles ---- */
-  .wa-header { background: #075E54; color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
-  .wa-avatar { width: 36px; height: 36px; border-radius: 50%; background: #128C7E; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; font-weight: 600; }
-  .wa-chat { padding: 12px 10px; display: flex; flex-direction: column; gap: 6px; background: #ECE5DD; min-height: 400px; }
-  .wa-date-chip { text-align: center; margin: 8px 0; }
-  .wa-date-chip span { background: #E1F2FB; color: #5a7a8a; font-size: 12px; padding: 4px 12px; border-radius: 8px; }
-  .wa-bubble { max-width: 85%; padding: 8px 10px; border-radius: 8px; font-size: 13px; line-height: 1.45; position: relative; word-wrap: break-word; }
-  .wa-bubble.incoming { background: #FFFFFF; align-self: flex-start; border-top-left-radius: 0; margin-left: 4px; }
-  .wa-bubble.incoming::before { content: ''; position: absolute; top: 0; left: -8px; border-width: 0 8px 8px 0; border-style: solid; border-color: transparent #FFFFFF transparent transparent; }
-  .wa-bubble.outgoing { background: #DCF8C6; align-self: flex-end; border-top-right-radius: 0; margin-right: 4px; }
-  .wa-bubble.outgoing::before { content: ''; position: absolute; top: 0; right: -8px; border-width: 0 0 8px 8px; border-style: solid; border-color: transparent transparent transparent #DCF8C6; }
-  .wa-time { font-size: 11px; color: #8a9a8a; text-align: right; margin-top: 2px; display: flex; align-items: center; justify-content: flex-end; gap: 3px; }
-  .wa-blue-check { color: #53BDEB; font-size: 13px; }
-  .wa-input-bar { background: #fff; border-radius: 24px; margin: 6px 8px 8px; padding: 8px 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-
-  /* ---- Caregiver App Styles ---- */
-  .cg-screen { background: #fff; min-height: 580px; }
-  .cg-header { padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
-  .domain-card { border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; }
-  .domain-card .domain-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 28px; opacity: 0.5; }
-
-  /* ---- Narrative Bridges ---- */
-  .narrative { max-width: 680px; margin: 0 auto; padding: 32px 24px; }
-  .narrative p { color: #555; font-size: 16px; line-height: 1.6; }
-  .narrative .scene-label { display: inline-block; background: #D4A843; color: #fff; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 20px; margin-bottom: 8px; letter-spacing: 0.5px; }
-
-  /* ---- Side by Side ---- */
-  .side-by-side { max-width: 1280px; margin: 0 auto; padding: 0 16px; display: flex; align-items: flex-start; gap: 24px; }
-  .side-by-side .browser-side { flex: 1; min-width: 0; }
-  .side-by-side .phone-side { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
-  .flow-arrow { display: flex; align-items: center; justify-content: center; flex-shrink: 0; align-self: center; }
-  .flow-arrow-right::after { content: ''; width: 40px; height: 2px; background: #D4A843; display: block; position: relative; }
-  .flow-arrow-right::before { content: ''; border: 6px solid transparent; border-left: 10px solid #D4A843; position: absolute; right: -2px; }
-  .flow-label { font-size: 11px; color: #D4A843; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; writing-mode: vertical-rl; text-orientation: mixed; }
-
-  /* ---- Status Pills ---- */
   .pill { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
   .pill-red { background: #FEE2E2; color: #DC2626; }
   .pill-yellow { background: #FEF3C7; color: #D97706; }
   .pill-green { background: #D1FAE5; color: #059669; }
   .pill-blue { background: #DBEAFE; color: #2563EB; }
-
-  /* ---- Status Dots ---- */
   .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
   .dot-green { background: #22C55E; }
   .dot-yellow { background: #F59E0B; }
   .dot-red { background: #EF4444; }
-
-  /* ---- Bar Charts ---- */
   .chart-label { font-size: 10px; color: #888; text-align: center; margin-top: 4px; }
-
-  /* ---- Notification Badge ---- */
-  .notif-badge { position: relative; }
-  .notif-badge::after { content: '3'; position: absolute; top: -6px; right: -6px; background: #EF4444; color: #fff; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-
-  /* ---- Print ---- */
-  @media print {
-    .browser-frame, .phone-frame, .narrative, section { break-inside: avoid; }
-    .phone-frame { box-shadow: none; border: 2px solid #ddd; }
-    .browser-frame { box-shadow: none; }
-  }
-
-  /* ---- Responsive ---- */
-  @media (max-width: 900px) {
-    .side-by-side { flex-direction: column; align-items: center; }
-    .side-by-side .browser-side { width: 100%; }
-    .flow-arrow { transform: rotate(90deg); margin: 16px 0; }
-    .flow-label { writing-mode: horizontal-tb; }
-    .phone-frame { width: 340px; }
-  }
-  @media (max-width: 640px) {
-    .phone-frame { width: 100%; border-radius: 24px; padding: 8px; }
-    .phone-screen { border-radius: 16px; }
-    .browser-body { font-size: 13px; }
-  }
-
-  /* ---- Misc ---- */
-  .divider { width: 80px; height: 3px; background: #D4A843; margin: 0 auto; border-radius: 2px; }
-  .scene-wrapper { max-width: 960px; margin: 0 auto; padding: 0 16px; }
-  .scene-wrapper-wide { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
-  .video-placeholder { background: #1a1a2e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 40px; }
-  .yt-link { color: #FF0000; font-size: 12px; display: inline-flex; align-items: center; gap: 3px; }
-  .connector-line { width: 2px; background: linear-gradient(to bottom, #D4A843, transparent); height: 60px; margin: 0 auto; }
-  html { scroll-behavior: smooth; }
   .clickable { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
   .clickable:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(212,168,67,0.25); }
   .clickable:active { transform: translateY(0); }
+  html { scroll-behavior: smooth; }
+  #app { transition: opacity 0.15s ease; }
+  .tab-active { background: white; border-color: #e5e7eb; border-bottom-color: white; font-weight: 600; color: #32373c; }
+  .tab-inactive { color: #6b7280; }
+  .tab-inactive:hover { color: #32373c; }
+  .toast { position: fixed; bottom: 24px; right: 24px; z-index: 100; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: background 0.15s; }
+  .sidebar-link:hover { background: rgba(255,255,255,0.08); }
+  .sidebar-link.active { background: rgba(212,168,67,0.15); color: #D4A843; }
+  .wa-check { color: #8a9a8a; font-size: 12px; }
+  .wa-check.read { color: #53BDEB; }
+  @media (max-width: 768px) {
+    .sidebar-desktop { display: none; }
+    .mobile-header { display: flex !important; }
+    .main-content { margin-left: 0 !important; padding-top: 3.5rem !important; }
+  }
+  @media (min-width: 769px) {
+    .mobile-header { display: none !important; }
+    .sidebar-mobile-overlay { display: none !important; }
+  }
 </style>
 </head>
 <body class="bg-sahyog-light text-sahyog-charcoal">
 
-<!-- ============================================================ -->
-<!-- COVER                                                         -->
-<!-- ============================================================ -->
-<section id="cover" class="min-h-screen flex items-center justify-center px-4" style="background: linear-gradient(135deg, #32373c 0%, #1a1d20 100%);">
-  <div class="text-center max-w-3xl mx-auto">
-    <div class="w-20 h-20 rounded-full bg-sahyog-gold flex items-center justify-center mx-auto mb-6">
-      <span class="text-white text-3xl font-bold">S</span>
-    </div>
-    <h1 class="text-5xl md:text-6xl font-bold text-white mb-2">Sahyog Sangharsh</h1>
-    <p class="text-sahyog-gold text-xl md:text-2xl mb-4 font-medium">WhatsApp-Based Special Education Platform</p>
-    <div class="divider mb-6"></div>
-    <p class="text-gray-300 text-base leading-relaxed mb-8 max-w-2xl mx-auto">
-      A dual-interface system connecting Special Educators and caregivers. SEs plan and assign activities through a dashboard; caregivers receive tasks, watch tutorials, and submit evidence through a mobile app — all orchestrated via WhatsApp and the NIEPID Disha curriculum.
-    </p>
-    <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-400 mb-8">
-      <div>
-        <div class="text-sahyog-gold font-semibold mb-1">Project Partner</div>
-        Dr. Neha Madhiwalla, Sahyog Mumbai
+<!-- Sidebar -->
+<aside id="sidebar" class="sidebar-desktop fixed top-0 left-0 h-full w-60 bg-sahyog-charcoal text-white flex flex-col z-50">
+  <div class="p-5 border-b border-gray-600">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-sahyog-gold flex items-center justify-center">
+        <span class="text-white text-lg font-bold">S</span>
       </div>
-      <div class="hidden md:block text-gray-600">|</div>
       <div>
-        <div class="text-sahyog-gold font-semibold mb-1">Faculty Mentor</div>
-        Dr. Azra Ismail, Emory University
-      </div>
-      <div class="hidden md:block text-gray-600">|</div>
-      <div>
-        <div class="text-sahyog-gold font-semibold mb-1">Design Team</div>
-        Lakshya, Lauhitya, Sushmita, Yasmine
-      </div>
-    </div>
-    <div class="text-gray-500 text-xs mb-8">UI/UX Storyboard Wireframe &middot; Academic Year 2025-2026</div>
-    <button class="bg-sahyog-gold text-white font-semibold px-8 py-3 rounded-full text-lg clickable" onclick="document.getElementById('scene1').scrollIntoView({behavior:'smooth'})" style="animation: pulse 2s infinite;">Begin Walkthrough &#8595;</button>
-    <style>@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.8; } }</style>
-  </div>
-</section>
-
-
-<!-- ============================================================ -->
-<!-- SCENE 1: SE LOGIN                                             -->
-<!-- ============================================================ -->
-<div id="scene1" class="narrative">
-  <span class="scene-label">Scene 1</span>
-  <h2 class="text-2xl font-bold mb-2">SE Login</h2>
-  <p>Gulshan Khan, Special Educator at Sahyog Sangharsh, logs into the dashboard.</p>
-</div>
-
-<div class="scene-wrapper mb-12">
-  <div class="browser-frame">
-    <div class="browser-chrome">
-      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
-      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/login</div>
-    </div>
-    <div class="browser-body bg-sahyog-cream flex items-center justify-center" style="min-height:460px;">
-      <div class="w-full max-w-md mx-auto p-8">
-        <div class="text-center mb-8">
-          <div class="w-16 h-16 rounded-full bg-sahyog-gold flex items-center justify-center mx-auto mb-4">
-            <span class="text-white text-2xl font-bold">S</span>
-          </div>
-          <h2 class="text-2xl font-bold text-sahyog-charcoal">Sahyog Sangharsh</h2>
-          <p class="text-gray-500 text-sm mt-1">Special Education Dashboard</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <div class="border border-gray-300 rounded-lg px-3 py-2.5 text-gray-800 bg-gray-50">gulshan.khan@sahyog.org</div>
-          </div>
-          <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <div class="border border-gray-300 rounded-lg px-3 py-2.5 text-gray-400 bg-gray-50">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div>
-          </div>
-          <button class="w-full bg-sahyog-gold text-white font-semibold py-3 rounded-lg clickable" onclick="document.getElementById('scene2').scrollIntoView({behavior:'smooth'})">Sign In</button>
-          <p class="text-center text-xs text-gray-400 mt-4">Forgot password? Contact your administrator</p>
-        </div>
+        <div class="font-bold text-sahyog-gold text-sm">Sahyog Sangharsh</div>
+        <div class="text-xs text-gray-400">SE Dashboard</div>
       </div>
     </div>
   </div>
-</div>
-
-
-<!-- ============================================================ -->
-<!-- SCENE 2: STUDENT ROSTER                                       -->
-<!-- ============================================================ -->
-<div id="scene2" class="narrative">
-  <span class="scene-label">Scene 2</span>
-  <h2 class="text-2xl font-bold mb-2">Student Roster</h2>
-  <p>The dashboard shows all students with status indicators: green (active), yellow (falling behind), red (no response 7+ days).</p>
-</div>
-
-<div class="scene-wrapper-wide mb-12">
-  <div class="browser-frame">
-    <div class="browser-chrome">
-      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
-      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/dashboard</div>
+  <nav class="flex-1 p-3 space-y-1" id="sidebar-nav">
+    <a class="sidebar-link" data-nav="roster" onclick="navigate('#/roster')">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+      Students
+    </a>
+    <a class="sidebar-link" data-nav="planning" onclick="navigate('#/planning/1')">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+      Planning
+    </a>
+    <a class="sidebar-link" data-nav="reports" onclick="navigate('#/reports/1')">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+      Reports
+    </a>
+  </nav>
+  <div class="p-3 border-t border-gray-600">
+    <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-900/30 mb-3">
+      <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+      <span class="text-xs text-green-400 font-medium">WhatsApp Connected</span>
     </div>
-    <div class="browser-body bg-gray-50">
-      <!-- Nav Bar -->
-      <nav class="bg-sahyog-charcoal text-white px-6 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-6">
-          <span class="font-bold text-sahyog-gold text-lg">Sangharsh</span>
-          <a class="text-sm font-medium border-b-2 border-sahyog-gold pb-0.5">Students</a>
-          <a class="text-sm text-gray-300">Plans</a>
-          <a class="text-sm text-gray-300">Notifications</a>
-          <a class="text-sm text-gray-300">Reports</a>
+    <div class="flex items-center gap-3 px-3">
+      <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
+      <div>
+        <div class="text-sm font-medium">Gulshan Khan</div>
+        <div class="text-xs text-gray-400">Special Educator</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile Header -->
+<header class="mobile-header fixed top-0 left-0 right-0 h-14 bg-sahyog-charcoal text-white items-center justify-between px-4 z-50">
+  <button id="hamburger" onclick="toggleMobileSidebar()" class="p-1">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+  </button>
+  <span class="font-bold text-sahyog-gold">Sahyog Sangharsh</span>
+  <div class="w-7 h-7 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-xs font-bold">G</div>
+</header>
+
+<!-- Mobile Sidebar Overlay -->
+<div id="mobile-overlay" class="sidebar-mobile-overlay fixed inset-0 bg-black/50 z-50 hidden" onclick="toggleMobileSidebar()">
+  <aside class="fixed top-0 left-0 h-full w-60 bg-sahyog-charcoal text-white flex flex-col" onclick="event.stopPropagation()">
+    <div class="p-5 border-b border-gray-600">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-sahyog-gold flex items-center justify-center">
+          <span class="text-white text-lg font-bold">S</span>
+        </div>
+        <div>
+          <div class="font-bold text-sahyog-gold text-sm">Sahyog Sangharsh</div>
+          <div class="text-xs text-gray-400">SE Dashboard</div>
+        </div>
+      </div>
+    </div>
+    <nav class="flex-1 p-3 space-y-1" id="sidebar-nav-mobile">
+      <a class="sidebar-link" data-nav="roster" onclick="navigate('#/roster'); toggleMobileSidebar();">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+        Students
+      </a>
+      <a class="sidebar-link" data-nav="planning" onclick="navigate('#/planning/1'); toggleMobileSidebar();">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+        Planning
+      </a>
+      <a class="sidebar-link" data-nav="reports" onclick="navigate('#/reports/1'); toggleMobileSidebar();">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+        Reports
+      </a>
+    </nav>
+    <div class="p-3 border-t border-gray-600">
+      <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-900/30 mb-3">
+        <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+        <span class="text-xs text-green-400 font-medium">WhatsApp Connected</span>
+      </div>
+      <div class="flex items-center gap-3 px-3">
+        <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
+        <div>
+          <div class="text-sm font-medium">Gulshan Khan</div>
+          <div class="text-xs text-gray-400">Special Educator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Main Content -->
+<main id="app" class="main-content ml-0 md:ml-60 min-h-screen pt-14 md:pt-0">
+  <!-- Content rendered by JS -->
+</main>
+
+<!-- Toast -->
+<div id="toast" class="toast bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm font-medium">
+  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+  <span id="toast-msg">Tasks sent via WhatsApp!</span>
+</div>
+
+<!-- WhatsApp Preview Modal -->
+<div id="wa-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+    <div class="bg-wa-header text-white px-5 py-4 rounded-t-2xl flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+        <span class="font-semibold">WhatsApp Message Preview</span>
+      </div>
+      <button onclick="closeModal()" class="text-white/80 hover:text-white text-2xl leading-none">&times;</button>
+    </div>
+    <div id="wa-modal-body" class="p-5">
+      <!-- Filled by JS -->
+    </div>
+    <div class="px-5 pb-5 flex gap-3">
+      <button onclick="closeModal()" class="flex-1 border border-gray-300 text-gray-600 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50">Cancel</button>
+      <button onclick="confirmSend()" class="flex-1 bg-wa-teal text-white py-2.5 rounded-xl text-sm font-medium hover:bg-wa-green flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        Send via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== APP DATA ==========
+const APP_DATA = {
+  students: [
+    { id: 1, name: 'Aliza Mansur Shaikh', age: 8, gender: 'Female', diagnosis: 'Intellectual Disability', diagnosisDetail: 'Intellectual Disability, Hyperactivity', caregiver: 'Mansur Shaikh', caregiverRelation: 'Father', phone: '+91 98XXX XXXXX', avatarBg: 'bg-pink-100', avatarText: 'text-pink-600', initial: 'A', status: 'green', level: 'PI-Sometimes', levelClass: 'pill-yellow', waLastMsg: '2h ago', niepidLevel: 'Nursery (3-6y)', term: '1st Term' },
+    { id: 2, name: 'Anvika Gupta', age: 6, gender: 'Female', diagnosis: 'Intellectual Disability', caregiver: 'Priya Gupta', caregiverRelation: 'Mother', phone: '+91 97XXX XXXXX', avatarBg: 'bg-purple-100', avatarText: 'text-purple-600', initial: 'A', status: 'green', level: 'PI-Rarely', levelClass: 'pill-red', waLastMsg: '5h ago' },
+    { id: 3, name: 'Ravi Patil', age: 10, gender: 'Male', diagnosis: 'Cerebral Palsy', caregiver: 'Sunita Patil', caregiverRelation: 'Mother', phone: '+91 96XXX XXXXX', avatarBg: 'bg-blue-100', avatarText: 'text-blue-600', initial: 'R', status: 'yellow', level: 'PI-Sometimes', levelClass: 'pill-yellow', waLastMsg: '1d ago' },
+    { id: 4, name: 'Meera Joshi', age: 7, gender: 'Female', diagnosis: 'Down Syndrome', caregiver: 'Kavita Joshi', caregiverRelation: 'Mother', phone: '+91 95XXX XXXXX', avatarBg: 'bg-green-100', avatarText: 'text-green-600', initial: 'M', status: 'green', level: 'PI-Often', levelClass: 'pill-green', waLastMsg: '30m ago' },
+    { id: 5, name: 'Aarav Sharma', age: 9, gender: 'Male', diagnosis: 'Autism', caregiver: 'Deepak Sharma', caregiverRelation: 'Father', phone: '+91 94XXX XXXXX', avatarBg: 'bg-orange-100', avatarText: 'text-orange-600', initial: 'A', status: 'red', level: 'Dependent', levelClass: 'pill-red', waLastMsg: null, waNoResponse: '8 days' },
+    { id: 6, name: 'Fatima Ansari', age: 5, gender: 'Female', diagnosis: 'Hearing Impairment', caregiver: 'Nazia Ansari', caregiverRelation: 'Mother', phone: '+91 93XXX XXXXX', avatarBg: 'bg-teal-100', avatarText: 'text-teal-600', initial: 'F', status: 'green', level: 'PI-Sometimes', levelClass: 'pill-yellow', waLastMsg: '4h ago' },
+    { id: 7, name: 'Rohan Desai', age: 11, gender: 'Male', diagnosis: 'Learning Disability', caregiver: 'Anita Desai', caregiverRelation: 'Mother', phone: '+91 92XXX XXXXX', avatarBg: 'bg-indigo-100', avatarText: 'text-indigo-600', initial: 'R', status: 'yellow', level: 'PI-Sometimes', levelClass: 'pill-yellow', waLastMsg: '3d ago' },
+    { id: 8, name: 'Saima Patel', age: 8, gender: 'Female', diagnosis: 'ADHD', caregiver: 'Rehana Patel', caregiverRelation: 'Mother', phone: '+91 91XXX XXXXX', avatarBg: 'bg-rose-100', avatarText: 'text-rose-600', initial: 'S', status: 'green', level: 'PI-Often', levelClass: 'pill-green', waLastMsg: '1h ago' }
+  ],
+  domains: [
+    { name: 'Maths', color: '#3B82F6', dotClass: 'bg-blue-500', bgClass: 'bg-blue-50', borderClass: 'border-blue-200', textClass: 'text-blue-600' },
+    { name: 'Language', color: '#8B5CF6', dotClass: 'bg-purple-500', bgClass: 'bg-purple-50', borderClass: 'border-purple-200', textClass: 'text-purple-600' },
+    { name: 'EVS', color: '#22C55E', dotClass: 'bg-green-500', bgClass: 'bg-green-50', borderClass: 'border-green-200', textClass: 'text-green-600' },
+    { name: 'ADL', color: '#F97316', dotClass: 'bg-orange-500', bgClass: 'bg-orange-50', borderClass: 'border-orange-200', textClass: 'text-orange-600' },
+    { name: 'Communication', color: '#EC4899', dotClass: 'bg-pink-500', bgClass: 'bg-pink-50', borderClass: 'border-pink-200', textClass: 'text-pink-600' },
+    { name: 'Life Skills', color: '#14B8A6', dotClass: 'bg-teal-500', bgClass: 'bg-teal-50', borderClass: 'border-teal-200', textClass: 'text-teal-600' },
+    { name: 'NIOS', color: '#6B7280', dotClass: 'bg-gray-500', bgClass: 'bg-gray-50', borderClass: 'border-gray-200', textClass: 'text-gray-600' }
+  ],
+  niepid: [
+    { domain: 'Maths', level: 'Nursery (3-6y)', baseline: 'Dependent', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
+    { domain: 'Language', level: 'L1 (6-14y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
+    { domain: 'EVS', level: 'L1 (6-14y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
+    { domain: 'ADL', level: 'L1 (6-18y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
+    { domain: 'Communication', level: 'L1 (6-14y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
+    { domain: 'Life Skills', level: 'L1 (6-14y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
+    { domain: 'NIOS', level: 'Level A', baseline: 'Dependent', baselineClass: 'pill-red', current: 'PI-Rarely', currentClass: 'pill-red' }
+  ],
+  weeklyPlan: {
+    week: 'Feb 10-14, 2025',
+    days: [
+      { day: 'MON', activities: [
+        { domain: 'Maths', title: 'Count objects 1-5', duration: '10m', hasVideo: true },
+        { domain: 'ADL', title: 'Button shirt', duration: '10m', hasVideo: true }
+      ]},
+      { day: 'TUE', activities: [
+        { domain: 'Language', title: 'Identify letters A-D', duration: '10m', hasVideo: true },
+        { domain: 'EVS', title: 'Name 5 body parts', duration: '10m', hasVideo: true }
+      ]},
+      { day: 'WED', activities: [
+        { domain: 'Communication', title: 'Full sentences', duration: '15m', hasVideo: true },
+        { domain: 'Maths', title: 'Name shapes', duration: '10m', hasVideo: true }
+      ]},
+      { day: 'THU', activities: [
+        { domain: 'Life Skills', title: 'Fold clothes', duration: '10m', hasVideo: true },
+        { domain: 'EVS', title: 'Primary colours', duration: '10m', hasVideo: true }
+      ]},
+      { day: 'FRI', activities: [
+        { domain: 'ADL', title: 'Serve food to self', duration: '10m', hasVideo: true },
+        { domain: 'Language', title: 'Write own name', duration: '10m', hasVideo: true }
+      ]}
+    ]
+  },
+  progress: {
+    tasksCompleted: '18/25',
+    currentStreak: '4 days',
+    weeksActive: 6,
+    trend: 'Improving',
+    chartData: [
+      [10,20,20,20,10],
+      [20,25,25,25,20],
+      [35,35,30,35,30],
+      [45,40,45,40,35],
+      [50,50,50,50,45],
+      [55,55,55,60,50]
+    ],
+    domainBreakdown: [
+      { domain: 'Maths', color: '#3B82F6', baseline: 'Dependent', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow', skills: ['Identifies more/less quantities', 'Names basic shapes', 'Rote counts 1-9'], workingOn: 'Numerals 1-9' },
+      { domain: 'Language', color: '#8B5CF6', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow', skills: ['Identifies letters A-D', 'Reads own name (with help)', 'Copies shapes & letters'], workingOn: 'Writing name' },
+      { domain: 'EVS', color: '#22C55E', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow', skills: ['Names 25+ common objects', 'Names 10+ body parts', 'Names primary colours'], workingOn: 'Festivals' },
+      { domain: 'ADL', color: '#F97316', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Often', currentClass: 'pill-green', skills: ['Serves food to self', 'Cleans self independently', 'Identifies correct side of clothes'], workingOn: 'Folding clothes' },
+      { domain: 'Communication', color: '#EC4899', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow', skills: ['Chooses between 2+ items', 'Says thank you / please', 'Follows complex instructions'], workingOn: 'Full sentences' },
+      { domain: 'Recreational', color: '#14B8A6', baseline: 'PI-Sometimes', baselineClass: 'pill-yellow', current: 'PI-Often', currentClass: 'pill-green', skills: ['Art activities & colouring', 'Dance / yoga participation', 'Ball catching & throwing'], workingOn: 'Excelling in creative work!' }
+    ]
+  },
+  waHistory: [
+    { type: 'sent', time: '9:00 AM', date: 'Today', text: 'Namaste Mansur ji! Aaj ka activity Aliza ke liye:\n\nMaths: 1 se 5 tak cheezein gino\nGhar mein ball, spoon, ya toy use karein.', check: 'read' },
+    { type: 'received', time: '11:30 AM', date: 'Today', text: 'Ji haan, Aliza ne practice kiya. Video bhej raha hoon.' },
+    { type: 'received', time: '11:32 AM', date: 'Today', text: '[Video: 0:42] Aliza counting with spoons' },
+    { type: 'sent', time: '12:15 PM', date: 'Today', text: 'Bahut accha Mansur ji! Aliza ki counting improve ho rahi hai. Kal shapes practice karein.', check: 'read' },
+    { type: 'sent', time: '9:00 AM', date: 'Yesterday', text: 'Namaste! Aaj ka task:\n\nADL: Button lagana sikhayein\nVideo dekhein aur practice karein.', check: 'read' },
+    { type: 'received', time: '6:30 PM', date: 'Yesterday', text: 'Button wala kiya, thoda mushkil laga but practice kar rahi hai.' },
+    { type: 'sent', time: '7:00 PM', date: 'Yesterday', text: 'Practice se aayega! Keep going. Bahut acche se kar rahi hai Aliza.', check: 'delivered' }
+  ]
+};
+
+// ========== HELPER FUNCTIONS ==========
+function getDomain(name) {
+  return APP_DATA.domains.find(d => d.name === name) || APP_DATA.domains[0];
+}
+
+function getStudent(id) {
+  return APP_DATA.students.find(s => s.id === parseInt(id));
+}
+
+function statusLabel(status) {
+  if (status === 'green') return 'Active';
+  if (status === 'yellow') return 'Needs Attention';
+  return 'Inactive';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function openModal(studentId) {
+  const s = getStudent(studentId);
+  const modal = document.getElementById('wa-modal');
+  document.getElementById('wa-modal-body').innerHTML = `
+    <div class="bg-wa-bg rounded-xl p-4 space-y-3">
+      <div class="text-center"><span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">Today</span></div>
+      <div class="bg-wa-outgoing rounded-lg p-3 ml-8 relative text-sm" style="border-top-right-radius:0;">
+        <p class="font-semibold mb-1">Namaste ${s.caregiver.split(' ')[0]} ji!</p>
+        <p class="mb-2">Aaj ka activity ${s.name.split(' ')[0]} ke liye:</p>
+        ${APP_DATA.weeklyPlan.days[0].activities.map(a => `
+          <p class="font-medium">${a.domain}: ${a.title}</p>
+          <p class="text-gray-600 text-xs">Samay: ${a.duration}</p>
+        `).join('<hr class="my-1.5 border-gray-200">')}
+        <hr class="my-2 border-gray-200">
+        <p class="text-xs text-gray-500 italic">Tasks for Monday - ${APP_DATA.weeklyPlan.week}</p>
+      </div>
+    </div>
+    <p class="text-xs text-gray-500 mt-3 text-center">This message will be sent to <strong>${s.phone}</strong></p>
+  `;
+  modal.classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('wa-modal').classList.add('hidden');
+}
+
+function confirmSend() {
+  closeModal();
+  showToast('Tasks sent via WhatsApp!');
+}
+
+function toggleMobileSidebar() {
+  const overlay = document.getElementById('mobile-overlay');
+  overlay.classList.toggle('hidden');
+}
+
+// ========== ROUTER ==========
+function navigate(hash) {
+  window.location.hash = hash;
+}
+
+function updateSidebarActive(section) {
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.classList.toggle('active', link.dataset.nav === section);
+  });
+}
+
+function router() {
+  const hash = window.location.hash || '#/roster';
+  const app = document.getElementById('app');
+
+  if (hash === '#/roster' || hash === '#/' || hash === '') {
+    updateSidebarActive('roster');
+    renderRoster();
+  } else if (hash.startsWith('#/student/')) {
+    updateSidebarActive('roster');
+    const id = hash.split('/')[2];
+    renderStudentProfile(id);
+  } else if (hash.startsWith('#/planning/')) {
+    updateSidebarActive('planning');
+    const id = hash.split('/')[2];
+    renderPlanning(id);
+  } else if (hash.startsWith('#/reports/')) {
+    updateSidebarActive('reports');
+    const id = hash.split('/')[2];
+    renderReports(id);
+  } else {
+    updateSidebarActive('roster');
+    renderRoster();
+  }
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener('hashchange', router);
+window.addEventListener('load', router);
+
+// ========== ROSTER SCREEN ==========
+function renderRoster() {
+  const app = document.getElementById('app');
+  const students = APP_DATA.students;
+  const active = students.filter(s => s.status === 'green').length;
+  const attention = students.filter(s => s.status === 'yellow').length;
+  const inactive = students.filter(s => s.status === 'red').length;
+
+  app.innerHTML = `
+    <div class="p-6 md:p-8">
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-xl border border-gray-200 p-4">
+          <div class="text-2xl font-bold text-sahyog-charcoal">${students.length}</div>
+          <div class="text-sm text-gray-500">Total Students</div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 p-4">
+          <div class="text-2xl font-bold text-green-600">${active}</div>
+          <div class="text-sm text-gray-500">Active</div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 p-4">
+          <div class="text-2xl font-bold text-amber-500">${attention}</div>
+          <div class="text-sm text-gray-500">Needs Attention</div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 p-4">
+          <div class="text-2xl font-bold text-red-500">${inactive}</div>
+          <div class="text-sm text-gray-500">Inactive</div>
+        </div>
+      </div>
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+        <div>
+          <h1 class="text-xl font-bold">My Students</h1>
+          <p class="text-sm text-gray-500">${students.length} students &middot; Academic Year 2025-2026</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <input id="roster-search" type="text" placeholder="Search students..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white w-48 focus:outline-none focus:ring-2 focus:ring-sahyog-gold/30 focus:border-sahyog-gold" oninput="filterRoster()">
+          <select id="roster-filter" class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-sahyog-gold/30" onchange="filterRoster()">
+            <option value="all">All Status</option>
+            <option value="green">Active</option>
+            <option value="yellow">Needs Attention</option>
+            <option value="red">Inactive</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div id="roster-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        ${students.map(s => studentCard(s)).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function studentCard(s) {
+  const waStatus = s.waLastMsg
+    ? `<div class="flex items-center gap-1.5 text-xs text-gray-400 mt-1">
+         <svg class="w-3.5 h-3.5 text-wa-teal" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+         Last msg: ${s.waLastMsg}
+       </div>`
+    : `<div class="flex items-center gap-1.5 text-xs text-red-400 mt-1">
+         <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+         No response: ${s.waNoResponse}
+       </div>`;
+
+  return `
+    <div class="bg-white rounded-xl border border-gray-200 p-4 clickable hover:border-sahyog-gold transition-colors" onclick="navigate('#/student/${s.id}')">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-full ${s.avatarBg} flex items-center justify-center ${s.avatarText} font-bold">${s.initial}</div>
+        <span class="status-dot dot-${s.status}" title="${statusLabel(s.status)}"></span>
+      </div>
+      <h3 class="font-semibold text-sm">${s.name}</h3>
+      <p class="text-xs text-gray-500">Age ${s.age} &middot; ${s.diagnosis}</p>
+      <p class="text-xs text-gray-400 mt-1">Caregiver: ${s.caregiver}</p>
+      <div class="mt-2 flex items-center justify-between">
+        <span class="pill ${s.levelClass}">${s.level}</span>
+      </div>
+      ${waStatus}
+    </div>
+  `;
+}
+
+function filterRoster() {
+  const search = document.getElementById('roster-search').value.toLowerCase();
+  const filter = document.getElementById('roster-filter').value;
+  const grid = document.getElementById('roster-grid');
+
+  const filtered = APP_DATA.students.filter(s => {
+    const matchSearch = s.name.toLowerCase().includes(search) || s.diagnosis.toLowerCase().includes(search) || s.caregiver.toLowerCase().includes(search);
+    const matchFilter = filter === 'all' || s.status === filter;
+    return matchSearch && matchFilter;
+  });
+
+  grid.innerHTML = filtered.length > 0
+    ? filtered.map(s => studentCard(s)).join('')
+    : '<div class="col-span-full text-center py-12 text-gray-400">No students match your search.</div>';
+}
+
+// ========== STUDENT PROFILE SCREEN ==========
+function renderStudentProfile(id) {
+  const s = getStudent(id);
+  if (!s) { renderRoster(); return; }
+  const app = document.getElementById('app');
+
+  app.innerHTML = `
+    <div class="p-6 md:p-8">
+      <!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+        <a class="hover:text-sahyog-gold cursor-pointer" onclick="navigate('#/roster')">Students</a>
+        <span>/</span>
+        <span class="text-sahyog-charcoal font-medium">${s.name}</span>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Left Panel -->
+        <div class="lg:w-72 flex-shrink-0">
+          <div class="bg-white rounded-xl border border-gray-200 p-5">
+            <div class="w-14 h-14 rounded-full ${s.avatarBg} flex items-center justify-center ${s.avatarText} text-xl font-bold mx-auto mb-3">${s.initial}</div>
+            <h2 class="text-center font-bold">${s.name}</h2>
+            <p class="text-center text-sm text-gray-500 mb-4">Age ${s.age} &middot; ${s.gender}</p>
+
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between"><span class="text-gray-500">Diagnosis</span><span class="font-medium text-right">${s.diagnosisDetail || s.diagnosis}</span></div>
+              <div class="border-t border-gray-100"></div>
+              <div class="flex justify-between"><span class="text-gray-500">Caregiver</span><span class="font-medium">${s.caregiver}</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">Relation</span><span class="font-medium">${s.caregiverRelation}</span></div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500">WhatsApp</span>
+                <span class="font-medium text-wa-teal text-xs">${s.phone}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500">Delivery</span>
+                <span class="flex items-center gap-1 text-xs ${s.status === 'red' ? 'text-red-500' : 'text-green-600'}">
+                  ${s.status === 'red' ? '<span>&#10003;</span> Sent' : '<span class="wa-check read">&#10003;&#10003;</span> Read'}
+                </span>
+              </div>
+              <div class="border-t border-gray-100"></div>
+              <div class="flex justify-between"><span class="text-gray-500">SE</span><span class="font-medium">Gulshan Khan</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">Term</span><span class="font-medium">${s.term || '1st Term'}</span></div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-3 gap-2">
+              <button class="text-xs bg-sahyog-charcoal text-white py-2 rounded-lg font-medium clickable" onclick="navigate('#/planning/${s.id}')">Weekly Plan</button>
+              <button class="text-xs border border-gray-300 py-2 rounded-lg clickable" onclick="navigate('#/reports/${s.id}')">Reports</button>
+              <button class="text-xs border border-gray-300 py-2 rounded-lg clickable" onclick="document.getElementById('profile-tab-wa').click()">Message</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="flex-1 min-w-0">
+          <!-- Tabs -->
+          <div class="flex gap-1 border-b border-gray-200 mb-4">
+            <button id="profile-tab-niepid" class="px-4 py-2 text-sm border border-gray-200 border-b-white rounded-t-lg -mb-px tab-active" onclick="switchProfileTab('niepid')">NIEPID Disha Progress</button>
+            <button id="profile-tab-plans" class="px-4 py-2 text-sm rounded-t-lg -mb-px tab-inactive" onclick="switchProfileTab('plans')">Assigned Plans</button>
+            <button id="profile-tab-wa" class="px-4 py-2 text-sm rounded-t-lg -mb-px tab-inactive" onclick="switchProfileTab('wa')">WhatsApp History</button>
+          </div>
+
+          <!-- Tab Content -->
+          <div id="profile-tab-content">
+            ${renderNIEPIDTab()}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function switchProfileTab(tab) {
+  ['niepid', 'plans', 'wa'].forEach(t => {
+    const btn = document.getElementById('profile-tab-' + t);
+    btn.className = t === tab
+      ? 'px-4 py-2 text-sm border border-gray-200 border-b-white rounded-t-lg -mb-px tab-active'
+      : 'px-4 py-2 text-sm rounded-t-lg -mb-px tab-inactive';
+  });
+
+  const content = document.getElementById('profile-tab-content');
+  if (tab === 'niepid') content.innerHTML = renderNIEPIDTab();
+  else if (tab === 'plans') content.innerHTML = renderPlansTab();
+  else content.innerHTML = renderWATab();
+}
+
+function renderNIEPIDTab() {
+  const rows = APP_DATA.niepid.map((n, i) => {
+    const d = getDomain(n.domain);
+    return `<tr class="${i % 2 === 0 ? '' : 'bg-gray-50/50'}">
+      <td class="px-4 py-3 font-medium text-sm"><span class="inline-block w-2.5 h-2.5 rounded-full ${d.dotClass} mr-2"></span>${n.domain}</td>
+      <td class="px-4 py-3 text-sm text-gray-500">${n.level}</td>
+      <td class="px-4 py-3"><span class="pill ${n.baselineClass}" style="font-size:11px">${n.baseline}</span></td>
+      <td class="px-4 py-3"><span class="pill ${n.currentClass}" style="font-size:11px">${n.current}</span></td>
+      <td class="px-4 py-3 text-green-600 font-semibold">&#9650;</td>
+    </tr>`;
+  }).join('');
+
+  return `
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Domain</th>
+              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Level</th>
+              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Baseline</th>
+              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">1st Term</th>
+              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">${rows}</tbody>
+        </table>
+      </div>
+      <div class="px-4 py-3 bg-sahyog-cream border-t border-gray-200 text-sm">
+        <span class="font-medium">35 goals assessed</span> &middot; <span class="text-green-600 font-semibold">All progressed in 1st Term</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderPlansTab() {
+  const plan = APP_DATA.weeklyPlan;
+  return `
+    <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="font-bold text-sm">Weekly Plan</h3>
+          <p class="text-xs text-gray-500">${plan.week}</p>
+        </div>
+        <div class="flex gap-1">
+          <button class="border border-gray-300 rounded px-3 py-1 text-sm bg-white hover:bg-gray-50">&larr;</button>
+          <button class="border border-gray-300 rounded px-3 py-1 text-sm bg-white hover:bg-gray-50">&rarr;</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-5 gap-3">
+        ${plan.days.map(day => `
+          <div class="bg-gray-50 rounded-lg border border-gray-200 p-3">
+            <div class="text-xs font-bold text-gray-500 mb-2">${day.day}</div>
+            ${day.activities.map(a => {
+              const d = getDomain(a.domain);
+              return `<div class="${d.bgClass} border ${d.borderClass} rounded-lg p-2 mb-2">
+                <div class="flex items-center gap-1 mb-1">
+                  <span class="w-2 h-2 rounded-full ${d.dotClass}"></span>
+                  <span class="text-xs ${d.textClass} font-medium">${a.domain}</span>
+                </div>
+                <p class="text-xs">${a.title}</p>
+                <div class="flex items-center justify-between mt-1.5">
+                  ${a.hasVideo ? '<span class="text-red-500 text-xs">&#9654;</span>' : ''}
+                  <span class="text-xs text-gray-400">${a.duration}</span>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderWATab() {
+  const messages = APP_DATA.waHistory;
+  let currentDate = '';
+  let html = '<div class="bg-wa-bg rounded-xl p-4 space-y-2" style="min-height:400px;">';
+
+  messages.forEach(m => {
+    if (m.date !== currentDate) {
+      currentDate = m.date;
+      html += `<div class="text-center my-2"><span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">${m.date}</span></div>`;
+    }
+    if (m.type === 'sent') {
+      const checkIcon = m.check === 'read'
+        ? '<span class="wa-check read">&#10003;&#10003;</span>'
+        : m.check === 'delivered'
+        ? '<span class="wa-check">&#10003;&#10003;</span>'
+        : '<span class="wa-check">&#10003;</span>';
+      html += `
+        <div class="bg-wa-outgoing rounded-lg p-3 ml-12 relative text-sm" style="border-top-right-radius:0;">
+          <p class="whitespace-pre-line">${m.text}</p>
+          <div class="flex items-center justify-end gap-1 mt-1 text-xs text-gray-500">${m.time} ${checkIcon}</div>
+        </div>`;
+    } else {
+      html += `
+        <div class="bg-white rounded-lg p-3 mr-12 relative text-sm" style="border-top-left-radius:0;">
+          <p class="whitespace-pre-line">${m.text}</p>
+          <div class="text-xs text-gray-400 mt-1 text-right">${m.time}</div>
+        </div>`;
+    }
+  });
+
+  html += '</div>';
+  html += `
+    <div class="mt-4 bg-white rounded-xl border border-gray-200 p-4">
+      <h4 class="font-semibold text-sm mb-2">Send Message</h4>
+      <div class="flex gap-2">
+        <input type="text" placeholder="Type a message to caregiver..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-wa-teal/30">
+        <button class="bg-wa-teal text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-wa-green" onclick="showToast('Message sent!')">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          Send
+        </button>
+      </div>
+    </div>
+  `;
+  return html;
+}
+
+// ========== PLANNING SCREEN ==========
+function renderPlanning(id) {
+  const s = getStudent(id) || APP_DATA.students[0];
+  const plan = APP_DATA.weeklyPlan;
+  const app = document.getElementById('app');
+
+  app.innerHTML = `
+    <div class="p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+        <div>
+          <h1 class="text-xl font-bold">Weekly Planning</h1>
+          <p class="text-sm text-gray-500">${plan.week}</p>
         </div>
         <div class="flex items-center gap-3">
-          <span class="text-sm text-gray-300">Gulshan Khan</span>
-          <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
-        </div>
-      </nav>
-      <div class="p-6">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h1 class="text-xl font-bold text-sahyog-charcoal">My Students</h1>
-            <p class="text-sm text-gray-500">8 students &middot; Academic Year 2025-2026</p>
-          </div>
-          <div class="flex gap-2">
-            <div class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm text-gray-500 bg-white">&#128269; Search...</div>
-            <button class="bg-sahyog-gold text-white text-sm px-4 py-1.5 rounded-lg font-medium">+ Add Student</button>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Aliza -->
-          <div class="bg-white rounded-xl border-2 border-sahyog-gold p-4 shadow-sm clickable" onclick="document.getElementById('scene3').scrollIntoView({behavior:'smooth'})" title="View Aliza's profile">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold">A</div>
-              <span class="status-dot dot-green" title="Active"></span>
-            </div>
-            <h3 class="font-semibold text-sm">Aliza Mansur Shaikh</h3>
-            <p class="text-xs text-gray-500">Age 8 &middot; Intellectual Disability</p>
-            <p class="text-xs text-gray-400 mt-1">Caregiver: Mansur Shaikh</p>
-            <div class="mt-3"><span class="pill pill-yellow">PI-Sometimes</span></div>
-          </div>
-          <!-- Anvika -->
-          <div class="bg-white rounded-xl border border-gray-200 p-4 cursor-pointer">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">A</div>
-              <span class="status-dot dot-green" title="Active"></span>
-            </div>
-            <h3 class="font-semibold text-sm">Anvika Gupta</h3>
-            <p class="text-xs text-gray-500">Age 6 &middot; Intellectual Disability</p>
-            <p class="text-xs text-gray-400 mt-1">Caregiver: Priya Gupta</p>
-            <div class="mt-3"><span class="pill pill-red">PI-Rarely</span></div>
-          </div>
-          <!-- Ravi -->
-          <div class="bg-white rounded-xl border border-gray-200 p-4 cursor-pointer">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">R</div>
-              <span class="status-dot dot-yellow" title="Pending"></span>
-            </div>
-            <h3 class="font-semibold text-sm">Ravi Patil</h3>
-            <p class="text-xs text-gray-500">Age 10 &middot; Cerebral Palsy</p>
-            <p class="text-xs text-gray-400 mt-1">Caregiver: Sunita Patil</p>
-            <div class="mt-3"><span class="pill pill-yellow">PI-Sometimes</span></div>
-          </div>
-          <!-- Meera -->
-          <div class="bg-white rounded-xl border border-gray-200 p-4 cursor-pointer">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold">M</div>
-              <span class="status-dot dot-green" title="Active"></span>
-            </div>
-            <h3 class="font-semibold text-sm">Meera Joshi</h3>
-            <p class="text-xs text-gray-500">Age 7 &middot; Down Syndrome</p>
-            <p class="text-xs text-gray-400 mt-1">Caregiver: Kavita Joshi</p>
-            <div class="mt-3"><span class="pill pill-green">PI-Often</span></div>
-          </div>
-          <!-- Aarav -->
-          <div class="bg-white rounded-xl border border-gray-200 p-4 cursor-pointer">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold">A</div>
-              <span class="status-dot dot-red" title="Inactive"></span>
-            </div>
-            <h3 class="font-semibold text-sm">Aarav Sharma</h3>
-            <p class="text-xs text-gray-500">Age 9 &middot; Autism</p>
-            <p class="text-xs text-gray-400 mt-1">Caregiver: Deepak Sharma</p>
-            <div class="mt-3"><span class="pill pill-red">Dependent</span></div>
-          </div>
-          <!-- Fatima -->
-          <div class="bg-white rounded-xl border border-gray-200 p-4 cursor-pointer">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold">F</div>
-              <span class="status-dot dot-green" title="Active"></span>
-            </div>
-            <h3 class="font-semibold text-sm">Fatima Ansari</h3>
-            <p class="text-xs text-gray-500">Age 5 &middot; Hearing Impairment</p>
-            <p class="text-xs text-gray-400 mt-1">Caregiver: Nazia Ansari</p>
-            <div class="mt-3"><span class="pill pill-yellow">PI-Sometimes</span></div>
-          </div>
-          <!-- Rohan -->
-          <div class="bg-white rounded-xl border border-gray-200 p-4 cursor-pointer">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">R</div>
-              <span class="status-dot dot-yellow" title="Pending"></span>
-            </div>
-            <h3 class="font-semibold text-sm">Rohan Desai</h3>
-            <p class="text-xs text-gray-500">Age 11 &middot; Learning Disability</p>
-            <p class="text-xs text-gray-400 mt-1">Caregiver: Anita Desai</p>
-            <div class="mt-3"><span class="pill pill-yellow">PI-Sometimes</span></div>
-          </div>
-          <!-- Saima -->
-          <div class="bg-white rounded-xl border border-gray-200 p-4 cursor-pointer">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 font-bold">S</div>
-              <span class="status-dot dot-green" title="Active"></span>
-            </div>
-            <h3 class="font-semibold text-sm">Saima Patel</h3>
-            <p class="text-xs text-gray-500">Age 8 &middot; ADHD</p>
-            <p class="text-xs text-gray-400 mt-1">Caregiver: Rehana Patel</p>
-            <div class="mt-3"><span class="pill pill-green">PI-Often</span></div>
+          <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white" onchange="navigate('#/planning/' + this.value)">
+            ${APP_DATA.students.map(st => `<option value="${st.id}" ${st.id === s.id ? 'selected' : ''}>${st.name}</option>`).join('')}
+          </select>
+          <div class="flex gap-1">
+            <button class="border border-gray-300 rounded px-3 py-2 text-sm bg-white hover:bg-gray-50">&larr; Prev</button>
+            <button class="border border-gray-300 rounded px-3 py-2 text-sm bg-white hover:bg-gray-50">Next &rarr;</button>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-
-<!-- ============================================================ -->
-<!-- SCENE 3: SE PROFILE <-> CAREGIVER LEARNING PLAN (SIDE BY SIDE)-->
-<!-- ============================================================ -->
-<div id="scene3" class="narrative">
-  <span class="scene-label">Scene 3</span>
-  <h2 class="text-2xl font-bold mb-2">Student Profile &#8596; Caregiver's Learning Plan</h2>
-  <p>Gulshan views Aliza's NIEPID Disha progress. Meanwhile, Aliza's father Mansur sees the same child's learning plan on his phone — domain cards showing remaining activities.</p>
-</div>
-
-<div class="side-by-side mb-12">
-  <!-- SE Dashboard -->
-  <div class="browser-side">
-    <div class="text-center mb-2"><span class="text-xs font-bold text-sahyog-gold uppercase tracking-wider">Special Educator Dashboard</span></div>
-    <div class="browser-frame">
-      <div class="browser-chrome">
-        <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
-        <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/students/aliza-mansur-shaikh</div>
-      </div>
-      <div class="browser-body bg-gray-50">
-        <nav class="bg-sahyog-charcoal text-white px-4 py-2 flex items-center justify-between">
-          <div class="flex items-center gap-4">
-            <span class="font-bold text-sahyog-gold">Sangharsh</span>
-            <a class="text-xs font-medium border-b-2 border-sahyog-gold pb-0.5">Students</a>
-            <a class="text-xs text-gray-300">Plans</a>
-            <a class="text-xs text-gray-300">Notifications</a>
-            <a class="text-xs text-gray-300">Reports</a>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-gray-300">Gulshan Khan</span>
-            <div class="w-6 h-6 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-xs font-bold">G</div>
-          </div>
-        </nav>
-        <div class="p-4 flex gap-4">
-          <!-- Sidebar -->
-          <div class="w-56 flex-shrink-0">
-            <div class="bg-white rounded-xl border border-gray-200 p-4">
-              <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-lg font-bold mx-auto mb-2">A</div>
-              <h2 class="text-center font-bold text-sm">Aliza Mansur Shaikh</h2>
-              <p class="text-center text-xs text-gray-500 mb-3">Age 8 &middot; Female</p>
-              <div class="space-y-2 text-xs">
-                <div class="flex justify-between"><span class="text-gray-500">Diagnosis</span><span class="font-medium text-right">Intellectual Disability,<br>Hyperactivity</span></div>
-                <div class="border-t border-gray-100"></div>
-                <div class="flex justify-between"><span class="text-gray-500">Caregiver</span><span class="font-medium">Mansur Shaikh</span></div>
-                <div class="flex justify-between"><span class="text-gray-500">WhatsApp</span><span class="font-medium text-wa-teal">+91 98XXX XXXXX</span></div>
-                <div class="border-t border-gray-100"></div>
-                <div class="flex justify-between"><span class="text-gray-500">SE</span><span class="font-medium">Gulshan Khan</span></div>
-                <div class="flex justify-between"><span class="text-gray-500">Term</span><span class="font-medium">1st Term</span></div>
-              </div>
-              <div class="mt-3 flex gap-1">
-                <button class="flex-1 text-xs bg-sahyog-charcoal text-white py-1.5 rounded-lg font-medium">Learning Plan</button>
-                <button class="flex-1 text-xs border border-gray-300 py-1.5 rounded-lg clickable" onclick="document.getElementById('scene4').scrollIntoView({behavior:'smooth'})">Assign</button>
-                <button class="flex-1 text-xs border border-gray-300 py-1.5 rounded-lg">Contact</button>
-              </div>
-            </div>
-          </div>
-          <!-- NIEPID Table -->
-          <div class="flex-1 min-w-0">
-            <div class="flex gap-1 mb-3 border-b border-gray-200">
-              <button class="px-3 py-1.5 text-xs font-medium bg-white border border-gray-200 border-b-white rounded-t-lg -mb-px">NIEPID Disha Progress</button>
-              <button class="px-3 py-1.5 text-xs text-gray-500">Health Records</button>
-              <button class="px-3 py-1.5 text-xs text-gray-500">Chat</button>
-            </div>
-            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-              <div class="overflow-x-auto">
-                <table class="w-full text-xs">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th class="text-left px-3 py-2 font-semibold text-gray-600">Domain</th>
-                      <th class="text-left px-3 py-2 font-semibold text-gray-600">Level</th>
-                      <th class="text-left px-3 py-2 font-semibold text-gray-600">Baseline</th>
-                      <th class="text-left px-3 py-2 font-semibold text-gray-600">1st Term</th>
-                      <th class="text-left px-3 py-2 font-semibold text-gray-600"></th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-gray-100">
-                    <tr>
-                      <td class="px-3 py-2 font-medium"><span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span>Maths</td>
-                      <td class="px-3 py-2 text-gray-500">Nursery (3-6y)</td>
-                      <td class="px-3 py-2"><span class="pill pill-red" style="font-size:10px">Dependent</span></td>
-                      <td class="px-3 py-2"><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></td>
-                      <td class="px-3 py-2 text-green-600 font-semibold">&#9650;</td>
-                    </tr>
-                    <tr>
-                      <td class="px-3 py-2 font-medium"><span class="inline-block w-2 h-2 rounded-full bg-purple-500 mr-1"></span>Language</td>
-                      <td class="px-3 py-2 text-gray-500">L1 (6-14y)</td>
-                      <td class="px-3 py-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span></td>
-                      <td class="px-3 py-2"><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></td>
-                      <td class="px-3 py-2 text-green-600 font-semibold">&#9650;</td>
-                    </tr>
-                    <tr>
-                      <td class="px-3 py-2 font-medium"><span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>EVS</td>
-                      <td class="px-3 py-2 text-gray-500">L1 (6-14y)</td>
-                      <td class="px-3 py-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span></td>
-                      <td class="px-3 py-2"><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></td>
-                      <td class="px-3 py-2 text-green-600 font-semibold">&#9650;</td>
-                    </tr>
-                    <tr>
-                      <td class="px-3 py-2 font-medium"><span class="inline-block w-2 h-2 rounded-full bg-orange-500 mr-1"></span>ADL</td>
-                      <td class="px-3 py-2 text-gray-500">L1 (6-18y)</td>
-                      <td class="px-3 py-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span></td>
-                      <td class="px-3 py-2"><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></td>
-                      <td class="px-3 py-2 text-green-600 font-semibold">&#9650;</td>
-                    </tr>
-                    <tr>
-                      <td class="px-3 py-2 font-medium"><span class="inline-block w-2 h-2 rounded-full bg-pink-500 mr-1"></span>Communication</td>
-                      <td class="px-3 py-2 text-gray-500">L1 (6-14y)</td>
-                      <td class="px-3 py-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span></td>
-                      <td class="px-3 py-2"><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></td>
-                      <td class="px-3 py-2 text-green-600 font-semibold">&#9650;</td>
-                    </tr>
-                    <tr>
-                      <td class="px-3 py-2 font-medium"><span class="inline-block w-2 h-2 rounded-full bg-teal-500 mr-1"></span>Life Skills</td>
-                      <td class="px-3 py-2 text-gray-500">L1 (6-14y)</td>
-                      <td class="px-3 py-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span></td>
-                      <td class="px-3 py-2"><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></td>
-                      <td class="px-3 py-2 text-green-600 font-semibold">&#9650;</td>
-                    </tr>
-                    <tr>
-                      <td class="px-3 py-2 font-medium"><span class="inline-block w-2 h-2 rounded-full bg-gray-500 mr-1"></span>NIOS</td>
-                      <td class="px-3 py-2 text-gray-500">Level A</td>
-                      <td class="px-3 py-2"><span class="pill pill-red" style="font-size:10px">Dependent</span></td>
-                      <td class="px-3 py-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span></td>
-                      <td class="px-3 py-2 text-green-600 font-semibold">&#9650;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="px-4 py-2 bg-sahyog-cream border-t border-gray-200 text-xs">
-                <span class="font-medium">35 goals assessed</span> &middot; <span class="text-green-600 font-semibold">All progressed in 1st Term</span>
-              </div>
-            </div>
-          </div>
+      <!-- Student Info -->
+      <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6 flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full ${s.avatarBg} flex items-center justify-center ${s.avatarText} font-bold">${s.initial}</div>
+        <div class="flex-1">
+          <h3 class="font-semibold text-sm">${s.name}</h3>
+          <p class="text-xs text-gray-500">Age ${s.age} &middot; ${s.diagnosis} &middot; Caregiver: ${s.caregiver}</p>
         </div>
+        <span class="pill ${s.levelClass}">${s.level}</span>
       </div>
-    </div>
-  </div>
 
-  <!-- Flow Arrow -->
-  <div class="flex flex-col items-center gap-2 self-center flex-shrink-0 px-2">
-    <span class="flow-label">SYNCED</span>
-    <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-lg">&#8596;</div>
-  </div>
-
-  <!-- Caregiver Phone -->
-  <div class="phone-side">
-    <div class="text-center mb-2"><span class="text-xs font-bold text-wa-teal uppercase tracking-wider">Caregiver's Phone</span></div>
-    <div class="phone-frame">
-      <div class="phone-notch"></div>
-      <div class="phone-screen">
-        <div class="phone-status-bar"><span>9:30</span><span>&#128267; &#128246;</span></div>
-        <div class="cg-screen px-4 pb-4">
-          <!-- Header -->
-          <div class="flex items-center gap-2 py-2 mb-1">
-            <span class="text-gray-500">&larr;</span>
-            <h2 class="text-lg font-bold flex-1">Aliza's Learning Plan</h2>
-          </div>
-          <!-- SE Info -->
-          <div class="flex items-center gap-3 mb-4 bg-gray-50 rounded-xl p-3">
-            <div class="w-10 h-10 rounded-full bg-sahyog-gold flex items-center justify-center text-white font-bold">G</div>
-            <div class="flex-1">
-              <div class="text-sm font-semibold">Gulshan Khan</div>
-              <div class="text-xs text-gray-500">Your Child's Special Educator</div>
-            </div>
-            <div class="w-8 h-8 bg-sahyog-charcoal rounded-lg flex items-center justify-center text-white text-sm">&#128172;</div>
-          </div>
-          <!-- Domain Cards -->
-          <div class="space-y-3">
-            <div class="domain-card" style="background:#dcfce7;">
-              <div>
-                <div class="font-bold text-sm">Daily Living</div>
-                <div class="text-xs text-green-800 font-medium">SKILL: Hygiene</div>
-                <div class="text-xs text-red-700 mt-0.5">3 activities remaining</div>
-              </div>
-              <div class="domain-icon text-green-800">&#9749;</div>
-            </div>
-            <div class="domain-card" style="background:#fce7f3;">
-              <div>
-                <div class="font-bold text-sm">Communication</div>
-                <div class="text-xs text-pink-800 font-medium">SKILL: Greeting</div>
-                <div class="text-xs text-red-700 mt-0.5">1 activity remaining</div>
-              </div>
-              <div class="domain-icon text-pink-800">&#128578;</div>
-            </div>
-            <div class="domain-card" style="background:#e9d5ff;">
-              <div>
-                <div class="font-bold text-sm">Reading</div>
-                <div class="text-xs text-purple-800 font-medium">SKILL: Identify Letters</div>
-                <div class="text-xs text-red-700 mt-0.5">4 activities remaining</div>
-              </div>
-              <div class="domain-icon text-purple-800">&#128214;</div>
-            </div>
-            <div class="domain-card" style="background:#fef3c7;">
-              <div>
-                <div class="font-bold text-sm">Writing</div>
-                <div class="text-xs text-amber-800 font-medium">SKILL: Trace Letters</div>
-                <div class="text-xs text-red-700 mt-0.5">2 activities remaining</div>
-              </div>
-              <div class="domain-icon text-amber-800">&#9998;</div>
-            </div>
-            <div class="domain-card" style="background:#cffafe;">
-              <div>
-                <div class="font-bold text-sm">Maths</div>
-                <div class="text-xs text-teal-800 font-medium">SKILL: Identify Shapes</div>
-                <div class="text-xs text-red-700 mt-0.5">4 activities remaining</div>
-              </div>
-              <div class="domain-icon text-teal-800">&#9651;</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ============================================================ -->
-<!-- SCENE 4: SE PLANS WEEK <-> CG RECEIVES TASKS (SIDE BY SIDE)  -->
-<!-- ============================================================ -->
-<div id="scene4" class="narrative">
-  <span class="scene-label">Scene 4</span>
-  <h2 class="text-2xl font-bold mb-2">SE Plans &amp; Assigns &#8594; Caregiver Receives Tasks</h2>
-  <p>Gulshan builds the weekly plan from recommended activities, sends via WhatsApp. Mansur receives the bilingual task message on his phone.</p>
-</div>
-
-<div class="side-by-side mb-12">
-  <!-- SE Dashboard: Weekly Planning -->
-  <div class="browser-side">
-    <div class="text-center mb-2"><span class="text-xs font-bold text-sahyog-gold uppercase tracking-wider">SE Assigns Tasks</span></div>
-    <div class="browser-frame">
-      <div class="browser-chrome">
-        <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
-        <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/plans/aliza/week/2025-02-10</div>
-      </div>
-      <div class="browser-body bg-gray-50">
-        <nav class="bg-sahyog-charcoal text-white px-4 py-2 flex items-center gap-4">
-          <span class="font-bold text-sahyog-gold">Sangharsh</span>
-          <a class="text-xs text-gray-300">Students</a>
-          <a class="text-xs font-medium border-b-2 border-sahyog-gold pb-0.5">Plans</a>
-          <a class="text-xs text-gray-300">Notifications</a>
-          <a class="text-xs text-gray-300">Reports</a>
-        </nav>
-        <div class="p-4">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <h1 class="text-sm font-bold">Weekly Plan — Aliza Mansur Shaikh</h1>
-              <p class="text-xs text-gray-500">Feb 10–14, 2025</p>
-            </div>
-            <div class="flex gap-1">
-              <button class="border border-gray-300 rounded px-2 py-1 text-xs bg-white">&larr;</button>
-              <button class="border border-gray-300 rounded px-2 py-1 text-xs bg-white">&rarr;</button>
-            </div>
-          </div>
-          <!-- Calendar -->
-          <div class="grid grid-cols-5 gap-2 mb-4">
-            <div class="bg-white rounded-lg border border-gray-200 p-2">
-              <div class="text-xs font-semibold text-gray-500 mb-1.5">MON</div>
-              <div class="bg-blue-50 border border-blue-200 rounded p-1.5 mb-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span><span class="text-xs text-blue-600 font-medium">Maths</span></div>
-                <p class="text-xs mt-0.5">Count objects 1-5</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-              <div class="bg-orange-50 border border-orange-200 rounded p-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span><span class="text-xs text-orange-600 font-medium">ADL</span></div>
-                <p class="text-xs mt-0.5">Button shirt</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-            </div>
-            <div class="bg-white rounded-lg border border-gray-200 p-2">
-              <div class="text-xs font-semibold text-gray-500 mb-1.5">TUE</div>
-              <div class="bg-purple-50 border border-purple-200 rounded p-1.5 mb-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span><span class="text-xs text-purple-600 font-medium">Language</span></div>
-                <p class="text-xs mt-0.5">Identify letters A-D</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-              <div class="bg-green-50 border border-green-200 rounded p-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span><span class="text-xs text-green-600 font-medium">EVS</span></div>
-                <p class="text-xs mt-0.5">Name 5 body parts</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-            </div>
-            <div class="bg-white rounded-lg border border-gray-200 p-2">
-              <div class="text-xs font-semibold text-gray-500 mb-1.5">WED</div>
-              <div class="bg-pink-50 border border-pink-200 rounded p-1.5 mb-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-pink-500"></span><span class="text-xs text-pink-600 font-medium">Comm.</span></div>
-                <p class="text-xs mt-0.5">Full sentences</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">15m</span></div>
-              </div>
-              <div class="bg-blue-50 border border-blue-200 rounded p-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span><span class="text-xs text-blue-600 font-medium">Maths</span></div>
-                <p class="text-xs mt-0.5">Name shapes</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-            </div>
-            <div class="bg-white rounded-lg border border-gray-200 p-2">
-              <div class="text-xs font-semibold text-gray-500 mb-1.5">THU</div>
-              <div class="bg-teal-50 border border-teal-200 rounded p-1.5 mb-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span><span class="text-xs text-teal-600 font-medium">Life Skills</span></div>
-                <p class="text-xs mt-0.5">Fold clothes</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-              <div class="bg-green-50 border border-green-200 rounded p-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span><span class="text-xs text-green-600 font-medium">EVS</span></div>
-                <p class="text-xs mt-0.5">Primary colours</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-            </div>
-            <div class="bg-white rounded-lg border border-gray-200 p-2">
-              <div class="text-xs font-semibold text-gray-500 mb-1.5">FRI</div>
-              <div class="bg-orange-50 border border-orange-200 rounded p-1.5 mb-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span><span class="text-xs text-orange-600 font-medium">ADL</span></div>
-                <p class="text-xs mt-0.5">Serve food to self</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-              <div class="bg-purple-50 border border-purple-200 rounded p-1.5">
-                <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span><span class="text-xs text-purple-600 font-medium">Language</span></div>
-                <p class="text-xs mt-0.5">Write own name</p>
-                <div class="flex items-center justify-between mt-1"><span class="yt-link text-xs">&#9654;</span><span class="text-xs text-gray-400">10m</span></div>
-              </div>
-            </div>
-          </div>
-          <!-- Send button -->
-          <div class="flex items-center justify-between bg-white rounded-xl border border-gray-200 p-3">
-            <div class="text-xs">
-              <span class="font-medium">10 tasks ready</span> &middot; Hindi + English &middot; 9:00 AM IST daily
-            </div>
-            <button class="bg-wa-teal text-white text-xs px-4 py-2 rounded-lg font-medium flex items-center gap-1.5 clickable" onclick="document.getElementById('scene5').scrollIntoView({behavior:'smooth'})" style="transform:none;">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
-              Send All Tasks
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Flow Arrow -->
-  <div class="flex flex-col items-center gap-2 self-center flex-shrink-0 px-2">
-    <span class="flow-label">SENDS</span>
-    <div class="w-8 h-8 rounded-full bg-wa-teal flex items-center justify-center text-white text-lg">&#8594;</div>
-  </div>
-
-  <!-- Caregiver Phone: WhatsApp message received -->
-  <div class="phone-side">
-    <div class="text-center mb-2"><span class="text-xs font-bold text-wa-teal uppercase tracking-wider">Caregiver Receives</span></div>
-    <div class="phone-frame">
-      <div class="phone-notch"></div>
-      <div class="phone-screen" style="background:#ECE5DD;">
-        <div class="wa-header">
-          <span class="text-white text-sm">&larr;</span>
-          <div class="wa-avatar" style="width:32px;height:32px;font-size:13px;">S</div>
-          <div>
-            <div class="font-semibold text-xs">Sahyog Sangharsh</div>
-            <div class="text-xs text-green-200" style="font-size:10px;">online</div>
-          </div>
-          <div class="ml-auto flex gap-3 text-white text-sm">
-            <span>&#128249;</span><span>&#8942;</span>
-          </div>
-        </div>
-        <div class="wa-chat" style="min-height:auto; padding: 10px 8px;">
-          <div class="wa-date-chip"><span style="font-size:10px;">Today</span></div>
-
-          <div class="wa-bubble incoming" style="font-size:12px;">
-            <p class="font-semibold mb-1">Namaste Mansur ji! &#128591;</p>
-            <p class="mb-1.5">Aaj ka activity Aliza ke liye:</p>
-            <p class="font-semibold">&#128218; Maths: 1 se 5 tak cheezein gino</p>
-            <p class="text-gray-600 mt-1" style="font-size:11px;">Ghar mein ball, spoon, ya toy use karein. Aliza se puchein "kitne hain?"</p>
-            <p class="mt-1.5" style="font-size:11px;">&#127909; Video: <span class="text-blue-600 underline">youtu.be/count-1-5</span></p>
-            <p class="mt-0.5" style="font-size:11px;">&#9200; Samay: 10 minute</p>
-            <hr class="my-1.5 border-gray-200">
-            <p class="text-gray-500 italic" style="font-size:10px;">Count objects 1-5 using balls, spoons, or toys. Ask "How many?"</p>
-            <div class="wa-time">9:00 AM <span class="wa-blue-check">&#10003;&#10003;</span></div>
-          </div>
-
-          <div class="wa-bubble incoming" style="font-size:12px;">
-            <p class="font-semibold mb-1">&#11088;&#11088;&#11088; Streak Update!</p>
-            <p class="mb-1">Aliza ka 3-din ka streak chal raha hai! &#127881;</p>
-            <p>Level: <strong>&#127775; Rising Star</strong></p>
-            <div class="mt-2 bg-gray-50 rounded p-2">
-              <span>&#11088;&#11088;&#11088;</span><span class="text-gray-300">&#9734;&#9734;</span>
-              <p style="font-size:10px;" class="text-gray-600 mt-0.5">3/5 stars! 2 aur activities se <strong>Super Star</strong>!</p>
-            </div>
-            <div class="wa-time">9:00 AM <span class="wa-blue-check">&#10003;&#10003;</span></div>
-          </div>
-        </div>
-        <div class="wa-input-bar">
-          <span class="text-gray-400">&#128578;</span>
-          <span class="text-gray-400 text-xs flex-1">Type a message</span>
-          <span class="text-gray-400">&#128247;</span>
-          <div class="w-7 h-7 rounded-full bg-wa-teal flex items-center justify-center text-white text-xs">&#127908;</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ============================================================ -->
-<!-- SCENE 5: CG ACTIVITY DETAIL + SUBMISSION <-> SE NOTIFICATION  -->
-<!-- ============================================================ -->
-<div id="scene5" class="narrative">
-  <span class="scene-label">Scene 5</span>
-  <h2 class="text-2xl font-bold mb-2">Caregiver Completes Activity &#8594; SE Gets Notified</h2>
-  <p>Mansur opens the activity, watches the tutorial video, records Aliza practicing, and submits. The SE dashboard instantly shows a new submission for review.</p>
-</div>
-
-<div class="side-by-side mb-12">
-  <!-- Caregiver Phones: Activity Detail + Completion -->
-  <div class="phone-side" style="flex-direction:row; gap:16px; flex-shrink:1;">
-    <div class="text-center mb-2" style="position:absolute; top:-24px; left:0; right:0;"><span class="text-xs font-bold text-wa-teal uppercase tracking-wider">Caregiver Completes Task</span></div>
-    <div style="position:relative; padding-top:28px; display:flex; gap:16px;">
-      <!-- Activity Detail Phone -->
-      <div class="phone-frame" style="width:290px;">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <div class="phone-status-bar"><span>9:30</span><span>&#128267; &#128246;</span></div>
-          <div class="cg-screen px-4 pb-4">
-            <div class="flex items-center gap-2 py-2">
-              <span class="text-gray-500">&larr;</span>
-              <div>
-                <h2 class="text-base font-bold">Coloring Shapes</h2>
-                <p class="text-xs text-gray-500">Maths - 30 minutes</p>
-              </div>
-            </div>
-            <!-- Video -->
-            <div class="mb-3">
-              <p class="text-xs font-semibold mb-1.5">Watch Video:</p>
-              <div class="bg-gray-100 rounded-xl overflow-hidden relative" style="height:130px;">
-                <div class="absolute inset-0 flex items-center justify-center bg-gray-200">
-                  <div class="w-12 h-12 rounded-full bg-white bg-opacity-90 flex items-center justify-center shadow-md">
-                    <span class="text-purple-600 text-xl ml-0.5">&#9654;</span>
+      <!-- Calendar Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+        ${plan.days.map(day => `
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <div class="text-sm font-bold text-gray-600 mb-3 pb-2 border-b border-gray-100">${day.day}</div>
+            ${day.activities.map((a, ai) => {
+              const d = getDomain(a.domain);
+              const cardId = 'act-' + day.day + '-' + ai;
+              return `
+                <div class="${d.bgClass} border ${d.borderClass} rounded-lg p-3 mb-3 cursor-pointer transition-all" onclick="toggleActivity('${cardId}')">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2.5 h-2.5 rounded-full ${d.dotClass}"></span>
+                    <span class="text-sm ${d.textClass} font-semibold">${a.domain}</span>
                   </div>
-                </div>
-              </div>
-            </div>
-            <!-- Ask SE -->
-            <div class="flex items-center gap-2 mb-4 text-xs">
-              <span class="underline">Questions? Ask a special educator!</span>
-              <span class="w-6 h-6 bg-sahyog-charcoal rounded flex items-center justify-center text-white text-xs">&#128172;</span>
-            </div>
-            <!-- Upload -->
-            <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center mb-3">
-              <div class="text-2xl text-gray-400 mb-1">&#8679;</div>
-              <p class="text-sm font-medium">Add video</p>
-            </div>
-            <!-- Who completed -->
-            <div class="mb-3">
-              <label class="text-xs text-gray-600 block mb-1">Who completed this activity with the child?</label>
-              <div class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-500">Father (Mansur)</div>
-            </div>
-            <!-- Complete button -->
-            <button class="w-full bg-sahyog-charcoal text-white font-semibold py-2.5 rounded-xl text-sm clickable" onclick="document.getElementById('scene6').scrollIntoView({behavior:'smooth'})">Complete Task</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Completion Phone -->
-      <div class="phone-frame" style="width:290px;">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <div class="phone-status-bar"><span>9:30</span><span>&#128267; &#128246;</span></div>
-          <div class="cg-screen flex flex-col items-center justify-center px-4" style="min-height:520px;">
-            <h2 class="text-2xl font-bold text-green-800 mb-6">COMPLETED</h2>
-            <div class="w-40 h-40 rounded-full flex items-center justify-center mb-8" style="background:#dcfce7;">
-              <svg class="w-20 h-20 text-green-700" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-              </svg>
-            </div>
-            <button class="bg-sahyog-charcoal text-white px-8 py-3 rounded-xl flex items-center gap-2 font-medium text-sm">
-              <span>&#127968;</span> Go Home
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Flow Arrow -->
-  <div class="flex flex-col items-center gap-2 self-center flex-shrink-0 px-2">
-    <span class="flow-label">UPDATES</span>
-    <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-lg">&#8594;</div>
-  </div>
-
-  <!-- SE Dashboard: Notification -->
-  <div class="browser-side" style="max-width:480px;">
-    <div class="text-center mb-2"><span class="text-xs font-bold text-sahyog-gold uppercase tracking-wider">SE Gets Notified</span></div>
-    <div class="browser-frame">
-      <div class="browser-chrome">
-        <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
-        <div class="browser-url" style="font-size:11px;">&#128274; sangharsh.../notifications</div>
-      </div>
-      <div class="browser-body bg-gray-50">
-        <nav class="bg-sahyog-charcoal text-white px-4 py-2 flex items-center gap-4">
-          <span class="font-bold text-sahyog-gold text-sm">Sangharsh</span>
-          <a class="text-xs text-gray-300">Students</a>
-          <a class="text-xs text-gray-300">Plans</a>
-          <a class="text-xs font-medium border-b-2 border-sahyog-gold pb-0.5 notif-badge">Notifications</a>
-          <a class="text-xs text-gray-300">Reports</a>
-        </nav>
-        <div class="p-3">
-          <h2 class="text-sm font-bold mb-3">New Submissions (3)</h2>
-          <div class="space-y-2">
-            <!-- Aliza - highlighted -->
-            <div class="bg-sahyog-cream border-2 border-sahyog-gold rounded-xl p-3">
-              <div class="flex items-center gap-2 mb-1.5">
-                <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold text-xs">A</div>
-                <div class="flex-1">
-                  <div class="font-semibold text-xs">Aliza Mansur Shaikh</div>
-                  <div class="text-xs text-gray-500">Maths: Count objects 1-5</div>
-                </div>
-                <span class="w-2 h-2 rounded-full bg-sahyog-gold"></span>
-              </div>
-              <div class="flex items-center gap-2 text-xs text-gray-500">
-                <span>&#127909; Video &middot; 0:42</span>
-                <span>&middot; Just now</span>
-              </div>
-              <!-- Expanded review -->
-              <div class="mt-3 pt-3 border-t border-yellow-200">
-                <div class="bg-gray-800 rounded-lg mb-2 flex items-center justify-center" style="height:80px;">
-                  <span class="text-white text-xl">&#9654;</span>
-                </div>
-                <div class="bg-gray-50 rounded p-2 mb-2 text-xs">
-                  <span class="text-gray-500 font-medium">Note:</span> "Aliza ne 5 tak count kiya! Ball aur spoon se practice ki."
-                </div>
-                <div class="grid grid-cols-2 gap-2 mb-2">
-                  <div>
-                    <label class="text-xs text-gray-500 block mb-0.5">Assessment</label>
-                    <div class="border border-gray-300 rounded px-2 py-1.5 text-xs bg-white flex justify-between">
-                      <span>PI-Sometimes</span><span class="text-gray-400">&#9660;</span>
+                  <p class="text-sm font-medium">${a.title}</p>
+                  <div class="flex items-center justify-between mt-2">
+                    ${a.hasVideo ? '<span class="text-red-500 text-sm flex items-center gap-1"><span>&#9654;</span><span class="text-xs text-gray-500">Video</span></span>' : ''}
+                    <span class="text-xs text-gray-500">${a.duration}</span>
+                  </div>
+                  <div id="${cardId}" class="hidden mt-3 pt-3 border-t ${d.borderClass}">
+                    <p class="text-xs text-gray-600 mb-2">Practice this activity with ${s.name.split(' ')[0]} using household items. Encourage participation and provide verbal prompts as needed.</p>
+                    <div class="flex gap-2">
+                      <span class="text-xs pill pill-blue">NIEPID Disha</span>
+                      <span class="text-xs pill pill-green">Home Activity</span>
                     </div>
                   </div>
-                  <div>
-                    <label class="text-xs text-gray-500 block mb-0.5">Status</label>
-                    <div class="border border-gray-300 rounded px-2 py-1.5 text-xs bg-white flex justify-between">
-                      <span>&#10004; Completed</span><span class="text-gray-400">&#9660;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-2">
-                  <label class="text-xs text-gray-500 block mb-0.5">Feedback</label>
-                  <div class="border border-gray-300 rounded p-2 text-xs bg-white">Bahut accha! Kal shapes practice karein &#128079;</div>
-                </div>
-                <button class="w-full bg-sahyog-gold text-white text-xs py-2 rounded-lg font-medium clickable" onclick="document.getElementById('scene6').scrollIntoView({behavior:'smooth'})">Send Feedback &amp; Update</button>
-              </div>
+                </div>`;
+            }).join('')}
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Send Button -->
+      <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-sm">
+          <span class="font-medium">10 tasks ready</span> &middot; Hindi + English &middot; 9:00 AM IST daily
+        </div>
+        <button class="bg-wa-teal text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 clickable hover:bg-wa-green" onclick="openModal(${s.id})">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+          Send All Tasks
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function toggleActivity(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('hidden');
+}
+
+// ========== REPORTS SCREEN ==========
+function renderReports(id) {
+  const s = getStudent(id) || APP_DATA.students[0];
+  const p = APP_DATA.progress;
+  const app = document.getElementById('app');
+
+  const chartBars = p.chartData.map((week, wi) => {
+    const bars = week.map((val, di) => {
+      const d = APP_DATA.domains[di];
+      return `<div style="width:16%;height:${val}%;background:${d.color};border-radius:2px 2px 0 0;" title="${d.name}: ${val}%"></div>`;
+    }).join('');
+    return `<div class="flex flex-col items-center" style="width:15%;">
+      <div class="flex items-end gap-0.5 w-full justify-center" style="height:180px;">${bars}</div>
+      <div class="chart-label">Wk ${wi + 1}</div>
+    </div>`;
+  }).join('');
+
+  const domainCards = p.domainBreakdown.map(d => `
+    <div class="bg-white rounded-xl border border-gray-200 p-4">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="w-3 h-3 rounded-full" style="background:${d.color};"></span>
+        <h4 class="font-semibold text-sm">${d.domain}</h4>
+      </div>
+      <div class="flex items-center gap-2 mb-3">
+        <span class="pill ${d.baselineClass}" style="font-size:11px">${d.baseline}</span>
+        <span class="text-gray-400">&rarr;</span>
+        <span class="pill ${d.currentClass}" style="font-size:11px">${d.current}</span>
+      </div>
+      <ul class="text-sm text-gray-600 space-y-1">
+        ${d.skills.map(sk => `<li>&#10003; ${sk}</li>`).join('')}
+        <li class="text-gray-500">&#8226; Working on: ${d.workingOn}</li>
+      </ul>
+    </div>
+  `).join('');
+
+  app.innerHTML = `
+    <div class="p-6 md:p-8">
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+        <div>
+          <h1 class="text-xl font-bold">Progress Reports</h1>
+          <p class="text-sm text-gray-500">6-week overview &middot; Jan 6 - Feb 14, 2025</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white" onchange="navigate('#/reports/' + this.value)">
+            ${APP_DATA.students.map(st => `<option value="${st.id}" ${st.id === s.id ? 'selected' : ''}>${st.name}</option>`).join('')}
+          </select>
+          <button class="border border-gray-300 rounded-lg px-4 py-2 text-sm bg-white hover:bg-gray-50">&#128438; Export PDF</button>
+        </div>
+      </div>
+
+      <!-- Student Info -->
+      <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6 flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full ${s.avatarBg} flex items-center justify-center ${s.avatarText} font-bold">${s.initial}</div>
+        <div class="flex-1">
+          <h3 class="font-semibold text-sm">${s.name}</h3>
+          <p class="text-xs text-gray-500">Age ${s.age} &middot; ${s.diagnosis}</p>
+        </div>
+        <span class="pill ${s.levelClass}">${s.level}</span>
+      </div>
+
+      <!-- Summary Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div class="text-2xl font-bold text-sahyog-gold">${p.tasksCompleted}</div>
+          <div class="text-sm text-gray-500">Tasks Completed</div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div class="text-2xl font-bold text-wa-teal">${p.currentStreak}</div>
+          <div class="text-sm text-gray-500">Current Streak</div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div class="text-2xl font-bold text-purple-600">${p.weeksActive}</div>
+          <div class="text-sm text-gray-500">Weeks Active</div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div class="text-2xl font-bold text-green-600">&#9650;</div>
+          <div class="text-sm text-gray-500">${p.trend}</div>
+        </div>
+      </div>
+
+      <!-- Bar Chart -->
+      <div class="bg-white rounded-xl border border-gray-200 p-5 mb-6">
+        <h3 class="font-semibold mb-1">NIEPID Assessment Progress</h3>
+        <p class="text-sm text-gray-400 mb-4">Weekly levels across 5 domains over 6 weeks</p>
+        <div class="flex gap-4">
+          <div class="flex flex-col justify-between text-xs text-gray-400 py-1" style="min-width:90px; height:180px;">
+            <span>Independent</span>
+            <span>PI-Often</span>
+            <span>PI-Sometimes</span>
+            <span>PI-Rarely</span>
+            <span>Dependent</span>
+          </div>
+          <div class="flex-1" style="height:180px; position:relative;">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;">
+              <div style="border-bottom:1px dashed #e5e7eb;"></div>
+              <div style="border-bottom:1px dashed #e5e7eb;"></div>
+              <div style="border-bottom:1px dashed #e5e7eb;"></div>
+              <div style="border-bottom:1px dashed #e5e7eb;"></div>
+              <div style="border-bottom:1px solid #d1d5db;"></div>
             </div>
-            <!-- Meera -->
-            <div class="bg-white border border-gray-200 rounded-xl p-3">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-xs">M</div>
-                <div class="flex-1">
-                  <div class="font-semibold text-xs">Meera Joshi</div>
-                  <div class="text-xs text-gray-500">EVS: Name 5 animals</div>
-                </div>
-                <span class="w-2 h-2 rounded-full bg-sahyog-gold"></span>
-              </div>
-              <div class="text-xs text-gray-400 mt-1">&#128248; Photo &middot; 5:30 PM</div>
+            <div style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;padding:0 10px;">
+              ${chartBars}
             </div>
-            <!-- Anvika -->
-            <div class="bg-white border border-gray-200 rounded-xl p-3">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">A</div>
-                <div class="flex-1">
-                  <div class="font-semibold text-xs">Anvika Gupta</div>
-                  <div class="text-xs text-gray-500">ADL: Wash hands</div>
-                </div>
-                <span class="w-2 h-2 rounded-full bg-sahyog-gold"></span>
-              </div>
-              <div class="text-xs text-gray-400 mt-1">&#127909; Video &middot; 4:15 PM</div>
-            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-4 mt-4 pt-3 border-t border-gray-100 text-sm">
+          ${APP_DATA.domains.slice(0, 5).map(d => `<div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:${d.color};"></span> ${d.name}</div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Domain Breakdown -->
+      <h3 class="font-semibold mb-3">Domain Breakdown</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        ${domainCards}
+      </div>
+
+      <!-- WhatsApp Engagement -->
+      <div class="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 class="font-semibold mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5 text-wa-teal" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+          WhatsApp Engagement
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center p-3 bg-green-50 rounded-xl">
+            <div class="text-xl font-bold text-green-700">42</div>
+            <div class="text-xs text-gray-500">Messages Sent</div>
+          </div>
+          <div class="text-center p-3 bg-blue-50 rounded-xl">
+            <div class="text-xl font-bold text-blue-700">28</div>
+            <div class="text-xs text-gray-500">Messages Received</div>
+          </div>
+          <div class="text-center p-3 bg-amber-50 rounded-xl">
+            <div class="text-xl font-bold text-amber-700">67%</div>
+            <div class="text-xs text-gray-500">Response Rate</div>
+          </div>
+          <div class="text-center p-3 bg-purple-50 rounded-xl">
+            <div class="text-xl font-bold text-purple-700">2.5h</div>
+            <div class="text-xs text-gray-500">Avg Response Time</div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-
-<!-- ============================================================ -->
-<!-- SCENE 6: PROGRESS DASHBOARD (FULL WIDTH)                     -->
-<!-- ============================================================ -->
-<div id="scene6" class="narrative">
-  <span class="scene-label">Scene 6</span>
-  <h2 class="text-2xl font-bold mb-2">Progress Over Time</h2>
-  <p>Six weeks of consistent effort, tracked systematically. The dashboard shows Aliza's trajectory across all NIEPID domains.</p>
-</div>
-
-<div class="scene-wrapper-wide mb-12">
-  <div class="browser-frame">
-    <div class="browser-chrome">
-      <div class="browser-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
-      <div class="browser-url">&#128274; sangharsh.sahyogchehak.org/reports/aliza-mansur-shaikh</div>
-    </div>
-    <div class="browser-body bg-gray-50">
-      <nav class="bg-sahyog-charcoal text-white px-4 py-2 flex items-center gap-4">
-        <span class="font-bold text-sahyog-gold">Sangharsh</span>
-        <a class="text-xs text-gray-300">Students</a>
-        <a class="text-xs text-gray-300">Plans</a>
-        <a class="text-xs text-gray-300">Notifications</a>
-        <a class="text-xs font-medium border-b-2 border-sahyog-gold pb-0.5">Reports</a>
-      </nav>
-      <div class="p-5">
-        <div class="flex items-center justify-between mb-5">
-          <div>
-            <h1 class="text-lg font-bold">Progress — Aliza Mansur Shaikh</h1>
-            <p class="text-xs text-gray-500">6-week overview &middot; Jan 6 – Feb 14, 2025</p>
-          </div>
-          <button class="border border-gray-300 rounded-lg px-3 py-1.5 text-xs bg-white">&#128438; Export PDF</button>
-        </div>
-
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <div class="text-2xl font-bold text-sahyog-gold">18/25</div>
-            <div class="text-xs text-gray-500 mt-1">Tasks Completed</div>
-          </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <div class="text-2xl font-bold text-wa-teal">4 days</div>
-            <div class="text-xs text-gray-500 mt-1">Current Streak</div>
-          </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <div class="text-2xl font-bold text-purple-600">6</div>
-            <div class="text-xs text-gray-500 mt-1">Weeks Active</div>
-          </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <div class="text-2xl font-bold text-green-600">&#9650;</div>
-            <div class="text-xs text-gray-500 mt-1">Improving</div>
-          </div>
-        </div>
-
-        <!-- Bar Chart -->
-        <div class="bg-white rounded-xl border border-gray-200 p-5 mb-6">
-          <h3 class="font-semibold text-sm mb-1">NIEPID Assessment Progress</h3>
-          <p class="text-xs text-gray-400 mb-4">Weekly levels across 5 domains over 6 weeks</p>
-          <div class="flex gap-4">
-            <div class="flex flex-col justify-between text-xs text-gray-400 py-1" style="min-width:80px; height:180px;">
-              <span>Independent</span>
-              <span>PI-Often</span>
-              <span>PI-Sometimes</span>
-              <span>PI-Rarely</span>
-              <span>Dependent</span>
-            </div>
-            <div class="flex-1" style="height:180px; position:relative;">
-              <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;">
-                <div style="border-bottom:1px dashed #e5e7eb;"></div>
-                <div style="border-bottom:1px dashed #e5e7eb;"></div>
-                <div style="border-bottom:1px dashed #e5e7eb;"></div>
-                <div style="border-bottom:1px dashed #e5e7eb;"></div>
-                <div style="border-bottom:1px solid #d1d5db;"></div>
-              </div>
-              <div style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;padding:0 10px;">
-                <div class="flex flex-col items-center" style="width:14%;"><div class="flex items-end gap-1 w-full justify-center" style="height:175px;"><div style="width:14%;height:10%;background:#3B82F6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:20%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:20%;background:#22C55E;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:20%;background:#F97316;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:10%;background:#EC4899;border-radius:2px 2px 0 0;"></div></div><div class="chart-label">Wk 1</div></div>
-                <div class="flex flex-col items-center" style="width:14%;"><div class="flex items-end gap-1 w-full justify-center" style="height:175px;"><div style="width:14%;height:20%;background:#3B82F6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:25%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:25%;background:#22C55E;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:25%;background:#F97316;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:20%;background:#EC4899;border-radius:2px 2px 0 0;"></div></div><div class="chart-label">Wk 2</div></div>
-                <div class="flex flex-col items-center" style="width:14%;"><div class="flex items-end gap-1 w-full justify-center" style="height:175px;"><div style="width:14%;height:35%;background:#3B82F6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:35%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:30%;background:#22C55E;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:35%;background:#F97316;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:30%;background:#EC4899;border-radius:2px 2px 0 0;"></div></div><div class="chart-label">Wk 3</div></div>
-                <div class="flex flex-col items-center" style="width:14%;"><div class="flex items-end gap-1 w-full justify-center" style="height:175px;"><div style="width:14%;height:45%;background:#3B82F6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:40%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:45%;background:#22C55E;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:40%;background:#F97316;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:35%;background:#EC4899;border-radius:2px 2px 0 0;"></div></div><div class="chart-label">Wk 4</div></div>
-                <div class="flex flex-col items-center" style="width:14%;"><div class="flex items-end gap-1 w-full justify-center" style="height:175px;"><div style="width:14%;height:50%;background:#3B82F6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:50%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:50%;background:#22C55E;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:50%;background:#F97316;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:45%;background:#EC4899;border-radius:2px 2px 0 0;"></div></div><div class="chart-label">Wk 5</div></div>
-                <div class="flex flex-col items-center" style="width:14%;"><div class="flex items-end gap-1 w-full justify-center" style="height:175px;"><div style="width:14%;height:55%;background:#3B82F6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:55%;background:#8B5CF6;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:55%;background:#22C55E;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:60%;background:#F97316;border-radius:2px 2px 0 0;"></div><div style="width:14%;height:50%;background:#EC4899;border-radius:2px 2px 0 0;"></div></div><div class="chart-label">Wk 6</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-4 mt-4 pt-3 border-t border-gray-100 text-xs">
-            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#3B82F6;"></span> Maths</div>
-            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#8B5CF6;"></span> Language</div>
-            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#22C55E;"></span> EVS</div>
-            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#F97316;"></span> ADL</div>
-            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:#EC4899;"></span> Communication</div>
-          </div>
-        </div>
-
-        <!-- Domain Breakdown -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="bg-white rounded-xl border border-gray-200 p-3">
-            <div class="flex items-center gap-2 mb-2"><span class="w-3 h-3 rounded-full" style="background:#3B82F6;"></span><h4 class="font-semibold text-xs">Maths</h4></div>
-            <div class="flex items-center gap-1.5 mb-2"><span class="pill pill-red" style="font-size:10px">Dependent</span><span class="text-gray-400 text-xs">&rarr;</span><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></div>
-            <ul class="text-xs text-gray-600 space-y-0.5"><li>&#10003; Identifies more/less quantities</li><li>&#10003; Names basic shapes</li><li>&#10003; Rote counts 1-9</li><li>&#8226; Working on: Numerals 1-9</li></ul>
-          </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-3">
-            <div class="flex items-center gap-2 mb-2"><span class="w-3 h-3 rounded-full" style="background:#8B5CF6;"></span><h4 class="font-semibold text-xs">Language</h4></div>
-            <div class="flex items-center gap-1.5 mb-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span><span class="text-gray-400 text-xs">&rarr;</span><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></div>
-            <ul class="text-xs text-gray-600 space-y-0.5"><li>&#10003; Identifies letters A-D</li><li>&#10003; Reads own name (with help)</li><li>&#10003; Copies shapes &amp; letters</li><li>&#8226; Working on: Writing name</li></ul>
-          </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-3">
-            <div class="flex items-center gap-2 mb-2"><span class="w-3 h-3 rounded-full" style="background:#22C55E;"></span><h4 class="font-semibold text-xs">EVS</h4></div>
-            <div class="flex items-center gap-1.5 mb-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span><span class="text-gray-400 text-xs">&rarr;</span><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></div>
-            <ul class="text-xs text-gray-600 space-y-0.5"><li>&#10003; Names 25+ common objects</li><li>&#10003; Names 10+ body parts</li><li>&#10003; Names primary colours</li><li>&#8226; Working on: Festivals</li></ul>
-          </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-3">
-            <div class="flex items-center gap-2 mb-2"><span class="w-3 h-3 rounded-full" style="background:#F97316;"></span><h4 class="font-semibold text-xs">ADL</h4></div>
-            <div class="flex items-center gap-1.5 mb-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span><span class="text-gray-400 text-xs">&rarr;</span><span class="pill pill-green" style="font-size:10px">PI-Often</span></div>
-            <ul class="text-xs text-gray-600 space-y-0.5"><li>&#10003; Serves food to self</li><li>&#10003; Cleans self independently</li><li>&#10003; Identifies correct side of clothes</li><li>&#8226; Working on: Folding clothes</li></ul>
-          </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-3">
-            <div class="flex items-center gap-2 mb-2"><span class="w-3 h-3 rounded-full" style="background:#EC4899;"></span><h4 class="font-semibold text-xs">Communication</h4></div>
-            <div class="flex items-center gap-1.5 mb-2"><span class="pill pill-red" style="font-size:10px">PI-Rarely</span><span class="text-gray-400 text-xs">&rarr;</span><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span></div>
-            <ul class="text-xs text-gray-600 space-y-0.5"><li>&#10003; Chooses between 2+ items</li><li>&#10003; Says 'thank you' / 'please'</li><li>&#10003; Follows complex instructions</li><li>&#8226; Working on: Full sentences</li></ul>
-          </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-3">
-            <div class="flex items-center gap-2 mb-2"><span class="w-3 h-3 rounded-full" style="background:#14B8A6;"></span><h4 class="font-semibold text-xs">Recreational</h4></div>
-            <div class="flex items-center gap-1.5 mb-2"><span class="pill pill-yellow" style="font-size:10px">PI-Sometimes</span><span class="text-gray-400 text-xs">&rarr;</span><span class="pill pill-green" style="font-size:10px">PI-Often</span></div>
-            <ul class="text-xs text-gray-600 space-y-0.5"><li>&#10003; Art activities &amp; colouring</li><li>&#10003; Dance / yoga participation</li><li>&#10003; Ball catching &amp; throwing</li><li>&#8226; Excelling in creative work!</li></ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ============================================================ -->
-<!-- CLOSING                                                       -->
-<!-- ============================================================ -->
-<section class="py-20 px-4" style="background: linear-gradient(135deg, #32373c 0%, #1a1d20 100%);">
-  <div class="max-w-2xl mx-auto text-center">
-    <div class="w-14 h-14 rounded-full bg-sahyog-gold flex items-center justify-center mx-auto mb-5">
-      <span class="text-white text-xl font-bold">S</span>
-    </div>
-    <h2 class="text-2xl font-bold text-white mb-4">A Vision for Scale</h2>
-    <div class="divider mb-6"></div>
-    <p class="text-sahyog-gold text-lg font-semibold leading-relaxed mb-6">
-      From one community center in Mumbai to every marginalized family with a smartphone — education delivered through the tools they already trust.
-    </p>
-    <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-400 pt-4 border-t border-gray-600">
-      <div><div class="text-sahyog-gold font-semibold mb-1">Sahyog Chehak</div>Mumbai, India</div>
-      <div><div class="text-sahyog-gold font-semibold mb-1">NIEPID Disha</div>Assessment Framework</div>
-      <div><div class="text-sahyog-gold font-semibold mb-1">WhatsApp Business API</div>Communication Channel</div>
-    </div>
-  </div>
-</section>
-
-<footer class="bg-sahyog-charcoal text-gray-500 text-center py-4 text-xs">
-  <p>Sahyog Sangharsh &middot; UI/UX Storyboard Wireframe &middot; 2025</p>
-  <p class="mt-1">Built for stakeholder review — Dr. Neha Madhiwalla, Dr. Azra Ismail, Sahyog Team</p>
-</footer>
-
+  `;
+}
+</script>
 </body>
 </html>

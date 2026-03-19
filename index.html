@@ -46,6 +46,9 @@ tailwind.config = {
   .sidebar-link.active { background: rgba(212,168,67,0.15); color: #D4A843; }
   .wa-check { color: #8a9a8a; font-size: 12px; }
   .wa-check.read { color: #53BDEB; }
+  .loading { display: flex; align-items: center; justify-content: center; min-height: 200px; color: #999; }
+  .loading::after { content: ''; width: 24px; height: 24px; border: 3px solid #e5e7eb; border-top-color: #D4A843; border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   @media (max-width: 768px) {
     .sidebar-desktop { display: none; }
     .mobile-header { display: flex !important; }
@@ -55,6 +58,15 @@ tailwind.config = {
     .mobile-header { display: none !important; }
     .sidebar-mobile-overlay { display: none !important; }
   }
+  .search-wrap { position: relative; }
+  .search-results { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 30; max-height: 240px; overflow-y: auto; display: none; }
+  .search-results.open { display: block; }
+  .search-result { padding: 8px 12px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .search-result:hover, .search-result.active { background: #f8f5ef; }
+  .domain-filter { cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.15s; border: 2px solid transparent; }
+  .domain-filter:hover { opacity: 0.8; }
+  .domain-filter.selected { border-color: currentColor; background: rgba(0,0,0,0.05); }
+  .domain-filter.dimmed { opacity: 0.3; }
 </style>
 </head>
 <body class="bg-sahyog-light text-sahyog-charcoal">
@@ -77,11 +89,11 @@ tailwind.config = {
       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
       Students
     </a>
-    <a class="sidebar-link" data-nav="planning" onclick="navigate('#/planning/1')">
+    <a class="sidebar-link" data-nav="planning" onclick="navigateToFirstChild('planning')">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
       Planning
     </a>
-    <a class="sidebar-link" data-nav="reports" onclick="navigate('#/reports/1')">
+    <a class="sidebar-link" data-nav="reports" onclick="navigateToFirstChild('reports')">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
       Reports
     </a>
@@ -103,7 +115,7 @@ tailwind.config = {
 
 <!-- Mobile Header -->
 <header class="mobile-header fixed top-0 left-0 right-0 h-14 bg-sahyog-charcoal text-white items-center justify-between px-4 z-50">
-  <button id="hamburger" onclick="toggleMobileSidebar()" class="p-1">
+  <button onclick="toggleMobileSidebar()" class="p-1">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
   </button>
   <span class="font-bold text-sahyog-gold">Sahyog Sangharsh</span>
@@ -115,28 +127,20 @@ tailwind.config = {
   <aside class="fixed top-0 left-0 h-full w-60 bg-sahyog-charcoal text-white flex flex-col" onclick="event.stopPropagation()">
     <div class="p-5 border-b border-gray-600">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full bg-sahyog-gold flex items-center justify-center">
-          <span class="text-white text-lg font-bold">S</span>
-        </div>
-        <div>
-          <div class="font-bold text-sahyog-gold text-sm">Sahyog Sangharsh</div>
-          <div class="text-xs text-gray-400">SE Dashboard</div>
-        </div>
+        <div class="w-9 h-9 rounded-full bg-sahyog-gold flex items-center justify-center"><span class="text-white text-lg font-bold">S</span></div>
+        <div><div class="font-bold text-sahyog-gold text-sm">Sahyog Sangharsh</div><div class="text-xs text-gray-400">SE Dashboard</div></div>
       </div>
     </div>
     <nav class="flex-1 p-3 space-y-1" id="sidebar-nav-mobile">
       <a class="sidebar-link" data-nav="roster" onclick="navigate('#/roster'); toggleMobileSidebar();">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
-        Students
-      </a>
-      <a class="sidebar-link" data-nav="planning" onclick="navigate('#/planning/1'); toggleMobileSidebar();">
+        Students</a>
+      <a class="sidebar-link" data-nav="planning" onclick="navigateToFirstChild('planning'); toggleMobileSidebar();">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
-        Planning
-      </a>
-      <a class="sidebar-link" data-nav="reports" onclick="navigate('#/reports/1'); toggleMobileSidebar();">
+        Planning</a>
+      <a class="sidebar-link" data-nav="reports" onclick="navigateToFirstChild('reports'); toggleMobileSidebar();">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
-        Reports
-      </a>
+        Reports</a>
     </nav>
     <div class="p-3 border-t border-gray-600">
       <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-900/30 mb-3">
@@ -145,19 +149,14 @@ tailwind.config = {
       </div>
       <div class="flex items-center gap-3 px-3">
         <div class="w-8 h-8 rounded-full bg-sahyog-gold flex items-center justify-center text-white text-sm font-bold">G</div>
-        <div>
-          <div class="text-sm font-medium">Gulshan Khan</div>
-          <div class="text-xs text-gray-400">Special Educator</div>
-        </div>
+        <div><div class="text-sm font-medium">Gulshan Khan</div><div class="text-xs text-gray-400">Special Educator</div></div>
       </div>
     </div>
   </aside>
 </div>
 
 <!-- Main Content -->
-<main id="app" class="main-content ml-0 md:ml-60 min-h-screen pt-14 md:pt-0">
-  <!-- Content rendered by JS -->
-</main>
+<main id="app" class="main-content ml-0 md:ml-60 min-h-screen pt-14 md:pt-0"></main>
 
 <!-- Toast -->
 <div id="toast" class="toast bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm font-medium">
@@ -175,12 +174,10 @@ tailwind.config = {
       </div>
       <button onclick="closeModal()" class="text-white/80 hover:text-white text-2xl leading-none">&times;</button>
     </div>
-    <div id="wa-modal-body" class="p-5">
-      <!-- Filled by JS -->
-    </div>
+    <div id="wa-modal-body" class="p-5"></div>
     <div class="px-5 pb-5 flex gap-3">
       <button onclick="closeModal()" class="flex-1 border border-gray-300 text-gray-600 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50">Cancel</button>
-      <button onclick="confirmSend()" class="flex-1 bg-wa-teal text-white py-2.5 rounded-xl text-sm font-medium hover:bg-wa-green flex items-center justify-center gap-2">
+      <button id="modal-send-btn" class="flex-1 bg-wa-teal text-white py-2.5 rounded-xl text-sm font-medium hover:bg-wa-green flex items-center justify-center gap-2">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         Send via WhatsApp
       </button>
@@ -189,101 +186,220 @@ tailwind.config = {
 </div>
 
 <script>
-// ========== APP DATA ==========
+// ========== STATIC APP DATA ==========
 const APP_DATA = {
   students: [
-    { id: 1, name: 'Aliza Mansur Shaikh', age: 8, gender: 'Female', diagnosis: 'Intellectual Disability', diagnosisDetail: 'Intellectual Disability, Hyperactivity', caregiver: 'Mansur Shaikh', caregiverRelation: 'Father', phone: '+91 98XXX XXXXX', avatarBg: 'bg-pink-100', avatarText: 'text-pink-600', initial: 'A', status: 'green', level: 'PI-Sometimes', levelClass: 'pill-yellow', waLastMsg: '2h ago', niepidLevel: 'Nursery (3-6y)', term: '1st Term' },
-    { id: 2, name: 'Anvika Gupta', age: 6, gender: 'Female', diagnosis: 'Intellectual Disability', caregiver: 'Priya Gupta', caregiverRelation: 'Mother', phone: '+91 97XXX XXXXX', avatarBg: 'bg-purple-100', avatarText: 'text-purple-600', initial: 'A', status: 'green', level: 'PI-Rarely', levelClass: 'pill-red', waLastMsg: '5h ago' },
-    { id: 3, name: 'Ravi Patil', age: 10, gender: 'Male', diagnosis: 'Cerebral Palsy', caregiver: 'Sunita Patil', caregiverRelation: 'Mother', phone: '+91 96XXX XXXXX', avatarBg: 'bg-blue-100', avatarText: 'text-blue-600', initial: 'R', status: 'yellow', level: 'PI-Sometimes', levelClass: 'pill-yellow', waLastMsg: '1d ago' },
-    { id: 4, name: 'Meera Joshi', age: 7, gender: 'Female', diagnosis: 'Down Syndrome', caregiver: 'Kavita Joshi', caregiverRelation: 'Mother', phone: '+91 95XXX XXXXX', avatarBg: 'bg-green-100', avatarText: 'text-green-600', initial: 'M', status: 'green', level: 'PI-Often', levelClass: 'pill-green', waLastMsg: '30m ago' },
-    { id: 5, name: 'Aarav Sharma', age: 9, gender: 'Male', diagnosis: 'Autism', caregiver: 'Deepak Sharma', caregiverRelation: 'Father', phone: '+91 94XXX XXXXX', avatarBg: 'bg-orange-100', avatarText: 'text-orange-600', initial: 'A', status: 'red', level: 'Dependent', levelClass: 'pill-red', waLastMsg: null, waNoResponse: '8 days' },
-    { id: 6, name: 'Fatima Ansari', age: 5, gender: 'Female', diagnosis: 'Hearing Impairment', caregiver: 'Nazia Ansari', caregiverRelation: 'Mother', phone: '+91 93XXX XXXXX', avatarBg: 'bg-teal-100', avatarText: 'text-teal-600', initial: 'F', status: 'green', level: 'PI-Sometimes', levelClass: 'pill-yellow', waLastMsg: '4h ago' },
-    { id: 7, name: 'Rohan Desai', age: 11, gender: 'Male', diagnosis: 'Learning Disability', caregiver: 'Anita Desai', caregiverRelation: 'Mother', phone: '+91 92XXX XXXXX', avatarBg: 'bg-indigo-100', avatarText: 'text-indigo-600', initial: 'R', status: 'yellow', level: 'PI-Sometimes', levelClass: 'pill-yellow', waLastMsg: '3d ago' },
-    { id: 8, name: 'Saima Patel', age: 8, gender: 'Female', diagnosis: 'ADHD', caregiver: 'Rehana Patel', caregiverRelation: 'Mother', phone: '+91 91XXX XXXXX', avatarBg: 'bg-rose-100', avatarText: 'text-rose-600', initial: 'S', status: 'green', level: 'PI-Often', levelClass: 'pill-green', waLastMsg: '1h ago' }
+    { id: 1, name: "Aliza Mansur Shaikh", age: 8, gender: "Female", diagnosis: "Intellectual Disability", diagnosis_detail: "Intellectual Disability (Hyperactivity)", caregiver_name: "Mansur Shaikh", caregiver_relation: "Father", caregiver_phone: "919800000001", niepid_level: "PI-Sometimes", status: "green", created_at: "2025-01-06", last_msg_at: "2025-02-14 12:15:00", last_received_at: "2025-02-14 11:32:00" },
+    { id: 2, name: "Anvika Gupta", age: 6, gender: "Female", diagnosis: "Intellectual Disability", diagnosis_detail: "Intellectual Disability", caregiver_name: "Priya Gupta", caregiver_relation: "Mother", caregiver_phone: "919700000002", niepid_level: "PI-Rarely", status: "green", created_at: "2025-01-10", last_msg_at: null, last_received_at: null },
+    { id: 3, name: "Ravi Patil", age: 10, gender: "Male", diagnosis: "Cerebral Palsy", diagnosis_detail: "Cerebral Palsy", caregiver_name: "Sunita Patil", caregiver_relation: "Mother", caregiver_phone: "919600000003", niepid_level: "PI-Sometimes", status: "yellow", created_at: "2025-01-08", last_msg_at: null, last_received_at: null },
+    { id: 4, name: "Meera Joshi", age: 7, gender: "Female", diagnosis: "Down Syndrome", diagnosis_detail: "Down Syndrome", caregiver_name: "Kavita Joshi", caregiver_relation: "Mother", caregiver_phone: "919500000004", niepid_level: "PI-Often", status: "green", created_at: "2025-01-12", last_msg_at: null, last_received_at: null },
+    { id: 5, name: "Aarav Sharma", age: 9, gender: "Male", diagnosis: "Autism", diagnosis_detail: "Autism", caregiver_name: "Deepak Sharma", caregiver_relation: "Father", caregiver_phone: "919400000005", niepid_level: "Dependent", status: "red", created_at: "2025-01-15", last_msg_at: null, last_received_at: null },
+    { id: 6, name: "Fatima Ansari", age: 5, gender: "Female", diagnosis: "Hearing Impairment", diagnosis_detail: "Hearing Impairment", caregiver_name: "Nazia Ansari", caregiver_relation: "Mother", caregiver_phone: "919300000006", niepid_level: "PI-Sometimes", status: "green", created_at: "2025-01-20", last_msg_at: null, last_received_at: null },
+    { id: 7, name: "Rohan Desai", age: 11, gender: "Male", diagnosis: "Learning Disability", diagnosis_detail: "Learning Disability", caregiver_name: "Anita Desai", caregiver_relation: "Mother", caregiver_phone: "919200000007", niepid_level: "PI-Sometimes", status: "yellow", created_at: "2025-01-05", last_msg_at: null, last_received_at: null },
+    { id: 8, name: "Saima Patel", age: 8, gender: "Female", diagnosis: "ADHD", diagnosis_detail: "ADHD", caregiver_name: "Rehana Patel", caregiver_relation: "Mother", caregiver_phone: "919100000008", niepid_level: "PI-Often", status: "green", created_at: "2025-01-18", last_msg_at: null, last_received_at: null }
   ],
-  domains: [
-    { name: 'Maths', color: '#3B82F6', dotClass: 'bg-blue-500', bgClass: 'bg-blue-50', borderClass: 'border-blue-200', textClass: 'text-blue-600' },
-    { name: 'Language', color: '#8B5CF6', dotClass: 'bg-purple-500', bgClass: 'bg-purple-50', borderClass: 'border-purple-200', textClass: 'text-purple-600' },
-    { name: 'EVS', color: '#22C55E', dotClass: 'bg-green-500', bgClass: 'bg-green-50', borderClass: 'border-green-200', textClass: 'text-green-600' },
-    { name: 'ADL', color: '#F97316', dotClass: 'bg-orange-500', bgClass: 'bg-orange-50', borderClass: 'border-orange-200', textClass: 'text-orange-600' },
-    { name: 'Communication', color: '#EC4899', dotClass: 'bg-pink-500', bgClass: 'bg-pink-50', borderClass: 'border-pink-200', textClass: 'text-pink-600' },
-    { name: 'Life Skills', color: '#14B8A6', dotClass: 'bg-teal-500', bgClass: 'bg-teal-50', borderClass: 'border-teal-200', textClass: 'text-teal-600' },
-    { name: 'NIOS', color: '#6B7280', dotClass: 'bg-gray-500', bgClass: 'bg-gray-50', borderClass: 'border-gray-200', textClass: 'text-gray-600' }
-  ],
-  niepid: [
-    { domain: 'Maths', level: 'Nursery (3-6y)', baseline: 'Dependent', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
-    { domain: 'Language', level: 'L1 (6-14y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
-    { domain: 'EVS', level: 'L1 (6-14y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
-    { domain: 'ADL', level: 'L1 (6-18y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
-    { domain: 'Communication', level: 'L1 (6-14y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
-    { domain: 'Life Skills', level: 'L1 (6-14y)', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow' },
-    { domain: 'NIOS', level: 'Level A', baseline: 'Dependent', baselineClass: 'pill-red', current: 'PI-Rarely', currentClass: 'pill-red' }
-  ],
-  weeklyPlan: {
-    week: 'Feb 10-14, 2025',
-    days: [
-      { day: 'MON', activities: [
-        { domain: 'Maths', title: 'Count objects 1-5', duration: '10m', hasVideo: true },
-        { domain: 'ADL', title: 'Button shirt', duration: '10m', hasVideo: true }
-      ]},
-      { day: 'TUE', activities: [
-        { domain: 'Language', title: 'Identify letters A-D', duration: '10m', hasVideo: true },
-        { domain: 'EVS', title: 'Name 5 body parts', duration: '10m', hasVideo: true }
-      ]},
-      { day: 'WED', activities: [
-        { domain: 'Communication', title: 'Full sentences', duration: '15m', hasVideo: true },
-        { domain: 'Maths', title: 'Name shapes', duration: '10m', hasVideo: true }
-      ]},
-      { day: 'THU', activities: [
-        { domain: 'Life Skills', title: 'Fold clothes', duration: '10m', hasVideo: true },
-        { domain: 'EVS', title: 'Primary colours', duration: '10m', hasVideo: true }
-      ]},
-      { day: 'FRI', activities: [
-        { domain: 'ADL', title: 'Serve food to self', duration: '10m', hasVideo: true },
-        { domain: 'Language', title: 'Write own name', duration: '10m', hasVideo: true }
-      ]}
-    ]
+
+  details: {
+    1: {
+      assessments: [
+        { domain: "Maths", level: "Nursery 3-6y", baseline: "Dependent", current_level: "PI-Sometimes", skills_json: '["Counts objects 1-10","Identifies basic shapes","Sorts by colour"]', working_on: "Number recognition 11-20" },
+        { domain: "Language", level: "L1 6-14y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: '["Follows 2-step instructions","Names common objects","Uses 3-word sentences"]', working_on: "Reading simple Hindi words" },
+        { domain: "EVS", level: "L1 6-14y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: '["Identifies body parts","Knows family members","Recognises animals"]', working_on: "Identifying seasons" },
+        { domain: "ADL", level: "L1 6-18y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: '["Eats independently","Washes hands","Brushes teeth with help"]', working_on: "Buttoning clothes" },
+        { domain: "Communication", level: "L1 6-14y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: '["Makes eye contact","Responds to name","Expresses basic needs"]', working_on: "Initiating conversation" },
+        { domain: "Life Skills", level: "L1 6-14y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: '["Follows classroom routine","Waits for turn","Greets others"]', working_on: "Using money for purchases" },
+        { domain: "NIOS", level: "Level A", baseline: "Dependent", current_level: "PI-Rarely", skills_json: '["Recognises own name in print"]', working_on: "Writing own name" }
+      ],
+      latestPlan: {
+        title: "Weekly Plan - Aliza",
+        start_date: "2025-02-10",
+        tasks: [
+          { day_number: 1, domain: "Maths", title: "Count objects 1-10", description: "Use household items like spoons or buttons. Ask child to count aloud while touching each item.", duration: "15m", has_video: true, sent: true, completed: true },
+          { day_number: 1, domain: "Language", title: "Name 5 fruits", description: "Show pictures or real fruits. Say name in Hindi, ask child to repeat.", duration: "10m", has_video: false, sent: true, completed: false },
+          { day_number: 2, domain: "EVS", title: "Identify body parts", description: "Play 'Simon Says' touching head, nose, ears, hands, feet. Repeat 5 times.", duration: "10m", has_video: true, sent: true, completed: true },
+          { day_number: 2, domain: "ADL", title: "Hand washing practice", description: "Guide child through 6 steps of handwashing. Use soap and running water.", duration: "10m", has_video: false, sent: true, completed: false },
+          { day_number: 3, domain: "Communication", title: "Greeting practice", description: "Practice saying Namaste, Good morning, Thank you with family members.", duration: "10m", has_video: false, sent: false, completed: false },
+          { day_number: 3, domain: "Life Skills", title: "Setting the table", description: "Ask child to place plates and spoons for family meal. Guide positioning.", duration: "15m", has_video: false, sent: false, completed: false },
+          { day_number: 4, domain: "Maths", title: "Shape identification", description: "Find circle, square, triangle shapes in the house. Draw them on paper.", duration: "15m", has_video: true, sent: false, completed: false },
+          { day_number: 4, domain: "Language", title: "Story time - Hindi", description: "Read a short picture story in Hindi. Ask child to point to characters.", duration: "15m", has_video: false, sent: false, completed: false },
+          { day_number: 5, domain: "EVS", title: "Identify animals", description: "Show pictures of 5 animals. Ask child to name them and make their sounds.", duration: "10m", has_video: true, sent: false, completed: false },
+          { day_number: 5, domain: "ADL", title: "Brushing teeth", description: "Demonstrate brushing technique. Let child practice with guidance. Praise effort.", duration: "10m", has_video: false, sent: false, completed: false }
+        ]
+      },
+      messages: [
+        { direction: "sent", body: "Namaste Mansur ji! Aliza ke liye aaj ki activity:\n\nMaths: Count objects 1-10\nGhar mein spoons ya buttons use karein. Bachchi ko har cheez chhoote hue ginti bolne ko kahein.", status: "read", created_at: "2025-02-10 09:00:00" },
+        { direction: "received", body: "Namaste madam. Haan Aliza ne spoons se ginti ki. 7 tak sahi gini, uske baad thoda confuse hui.", status: null, created_at: "2025-02-10 18:30:00" },
+        { direction: "sent", body: "Bahut achha! 7 tak sahi ginti bahut acchi progress hai. Kal phir practice karein, dheere dheere 10 tak aa jayegi.", status: "read", created_at: "2025-02-10 19:15:00" },
+        { direction: "sent", body: "Aaj ki activity:\nEVS: Body parts identify karein\n'Simon Says' khel khelein - sir, naak, kaan, haath, pair chhoona.", status: "delivered", created_at: "2025-02-12 09:00:00" },
+        { direction: "received", body: "Madam Aliza ko ye game bahut pasand aaya! Wo haste haste sab body parts chho rahi thi. Video bhej rahi hoon.", status: null, created_at: "2025-02-12 17:45:00" },
+        { direction: "sent", body: "Kitna achha! Video dekh liya, Aliza bahut achha kar rahi hai. Aise hi practice jaari rakhein.", status: "read", created_at: "2025-02-14 12:15:00" },
+        { direction: "received", body: "Ji madam, daily practice kar rahe hain. Aliza ab khud se haath dhona bhi seekh rahi hai.", status: null, created_at: "2025-02-14 11:32:00" }
+      ],
+      progress: { tasksCompleted: "18/25", currentStreak: "4 days", weeksActive: 6, trend: "Improving" },
+      waStats: { msgsSent: 42, msgsReceived: 28, responseRate: 67, avgResponseTime: "2.5h" }
+    },
+    2: {
+      assessments: [
+        { domain: "Maths", level: "Nursery 3-6y", baseline: "PI-Rarely", current_level: "PI-Rarely", skills_json: "[]", working_on: null },
+        { domain: "Language", level: "L1 3-6y", baseline: "PI-Rarely", current_level: "PI-Rarely", skills_json: "[]", working_on: null },
+        { domain: "ADL", level: "L1 3-6y", baseline: "PI-Rarely", current_level: "PI-Rarely", skills_json: "[]", working_on: null }
+      ],
+      latestPlan: null, messages: [],
+      progress: { tasksCompleted: "0/0", currentStreak: "-", weeksActive: 0, trend: "N/A" },
+      waStats: { msgsSent: 0, msgsReceived: 0, responseRate: 0, avgResponseTime: "-" }
+    },
+    3: {
+      assessments: [
+        { domain: "Maths", level: "Nursery 3-6y", baseline: "PI-Sometimes", current_level: "PI-Sometimes", skills_json: "[]", working_on: null },
+        { domain: "ADL", level: "L1 6-18y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: "[]", working_on: null },
+        { domain: "Communication", level: "L1 6-14y", baseline: "PI-Rarely", current_level: "PI-Rarely", skills_json: "[]", working_on: null }
+      ],
+      latestPlan: null, messages: [],
+      progress: { tasksCompleted: "0/0", currentStreak: "-", weeksActive: 0, trend: "N/A" },
+      waStats: { msgsSent: 0, msgsReceived: 0, responseRate: 0, avgResponseTime: "-" }
+    },
+    4: {
+      assessments: [
+        { domain: "Language", level: "L1 3-6y", baseline: "PI-Sometimes", current_level: "PI-Often", skills_json: "[]", working_on: null },
+        { domain: "ADL", level: "L1 3-6y", baseline: "PI-Sometimes", current_level: "PI-Often", skills_json: "[]", working_on: null },
+        { domain: "Life Skills", level: "L1 3-6y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: "[]", working_on: null }
+      ],
+      latestPlan: null, messages: [],
+      progress: { tasksCompleted: "0/0", currentStreak: "-", weeksActive: 0, trend: "N/A" },
+      waStats: { msgsSent: 0, msgsReceived: 0, responseRate: 0, avgResponseTime: "-" }
+    },
+    5: {
+      assessments: [
+        { domain: "Communication", level: "L1 6-14y", baseline: "Dependent", current_level: "Dependent", skills_json: "[]", working_on: null },
+        { domain: "ADL", level: "L1 6-18y", baseline: "Dependent", current_level: "Dependent", skills_json: "[]", working_on: null },
+        { domain: "Life Skills", level: "L1 6-14y", baseline: "Dependent", current_level: "Dependent", skills_json: "[]", working_on: null }
+      ],
+      latestPlan: null, messages: [],
+      progress: { tasksCompleted: "0/0", currentStreak: "-", weeksActive: 0, trend: "N/A" },
+      waStats: { msgsSent: 0, msgsReceived: 0, responseRate: 0, avgResponseTime: "-" }
+    },
+    6: {
+      assessments: [
+        { domain: "Communication", level: "L1 3-6y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: "[]", working_on: null },
+        { domain: "Language", level: "L1 3-6y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: "[]", working_on: null }
+      ],
+      latestPlan: null, messages: [],
+      progress: { tasksCompleted: "0/0", currentStreak: "-", weeksActive: 0, trend: "N/A" },
+      waStats: { msgsSent: 0, msgsReceived: 0, responseRate: 0, avgResponseTime: "-" }
+    },
+    7: {
+      assessments: [
+        { domain: "Maths", level: "L1 6-14y", baseline: "PI-Rarely", current_level: "PI-Sometimes", skills_json: "[]", working_on: null },
+        { domain: "Language", level: "L1 6-14y", baseline: "PI-Sometimes", current_level: "PI-Sometimes", skills_json: "[]", working_on: null },
+        { domain: "EVS", level: "L1 6-14y", baseline: "PI-Rarely", current_level: "PI-Rarely", skills_json: "[]", working_on: null }
+      ],
+      latestPlan: null, messages: [],
+      progress: { tasksCompleted: "0/0", currentStreak: "-", weeksActive: 0, trend: "N/A" },
+      waStats: { msgsSent: 0, msgsReceived: 0, responseRate: 0, avgResponseTime: "-" }
+    },
+    8: {
+      assessments: [
+        { domain: "ADL", level: "L1 6-18y", baseline: "PI-Sometimes", current_level: "PI-Often", skills_json: "[]", working_on: null },
+        { domain: "Life Skills", level: "L1 6-14y", baseline: "PI-Sometimes", current_level: "PI-Often", skills_json: "[]", working_on: null },
+        { domain: "Maths", level: "Nursery 3-6y", baseline: "PI-Sometimes", current_level: "PI-Often", skills_json: "[]", working_on: null }
+      ],
+      latestPlan: null, messages: [],
+      progress: { tasksCompleted: "0/0", currentStreak: "-", weeksActive: 0, trend: "N/A" },
+      waStats: { msgsSent: 0, msgsReceived: 0, responseRate: 0, avgResponseTime: "-" }
+    }
   },
-  progress: {
-    tasksCompleted: '18/25',
-    currentStreak: '4 days',
-    weeksActive: 6,
-    trend: 'Improving',
-    chartData: [
-      [10,20,20,20,10],
-      [20,25,25,25,20],
-      [35,35,30,35,30],
-      [45,40,45,40,35],
-      [50,50,50,50,45],
-      [55,55,55,60,50]
+
+  reports: {
+    domainStats: [
+      { domain: 'ADL', total_tasks: 2, sent: 1, completed: 1, students: 1 },
+      { domain: 'Communication', total_tasks: 1, sent: 1, completed: 0, students: 1 },
+      { domain: 'EVS', total_tasks: 2, sent: 2, completed: 1, students: 1 },
+      { domain: 'Language', total_tasks: 2, sent: 1, completed: 1, students: 1 },
+      { domain: 'Life Skills', total_tasks: 1, sent: 0, completed: 0, students: 1 },
+      { domain: 'Maths', total_tasks: 2, sent: 2, completed: 2, students: 1 },
     ],
-    domainBreakdown: [
-      { domain: 'Maths', color: '#3B82F6', baseline: 'Dependent', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow', skills: ['Identifies more/less quantities', 'Names basic shapes', 'Rote counts 1-9'], workingOn: 'Numerals 1-9' },
-      { domain: 'Language', color: '#8B5CF6', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow', skills: ['Identifies letters A-D', 'Reads own name (with help)', 'Copies shapes & letters'], workingOn: 'Writing name' },
-      { domain: 'EVS', color: '#22C55E', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow', skills: ['Names 25+ common objects', 'Names 10+ body parts', 'Names primary colours'], workingOn: 'Festivals' },
-      { domain: 'ADL', color: '#F97316', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Often', currentClass: 'pill-green', skills: ['Serves food to self', 'Cleans self independently', 'Identifies correct side of clothes'], workingOn: 'Folding clothes' },
-      { domain: 'Communication', color: '#EC4899', baseline: 'PI-Rarely', baselineClass: 'pill-red', current: 'PI-Sometimes', currentClass: 'pill-yellow', skills: ['Chooses between 2+ items', 'Says thank you / please', 'Follows complex instructions'], workingOn: 'Full sentences' },
-      { domain: 'Recreational', color: '#14B8A6', baseline: 'PI-Sometimes', baselineClass: 'pill-yellow', current: 'PI-Often', currentClass: 'pill-green', skills: ['Art activities & colouring', 'Dance / yoga participation', 'Ball catching & throwing'], workingOn: 'Excelling in creative work!' }
+    studentDomain: [
+      { student_name: 'Aliza Mansur Shaikh', student_id: 1, domain: 'ADL', total: 2, completed: 1 },
+      { student_name: 'Aliza Mansur Shaikh', student_id: 1, domain: 'Communication', total: 1, completed: 0 },
+      { student_name: 'Aliza Mansur Shaikh', student_id: 1, domain: 'EVS', total: 2, completed: 1 },
+      { student_name: 'Aliza Mansur Shaikh', student_id: 1, domain: 'Language', total: 2, completed: 1 },
+      { student_name: 'Aliza Mansur Shaikh', student_id: 1, domain: 'Life Skills', total: 1, completed: 0 },
+      { student_name: 'Aliza Mansur Shaikh', student_id: 1, domain: 'Maths', total: 2, completed: 2 },
     ]
-  },
-  waHistory: [
-    { type: 'sent', time: '9:00 AM', date: 'Today', text: 'Namaste Mansur ji! Aaj ka activity Aliza ke liye:\n\nMaths: 1 se 5 tak cheezein gino\nGhar mein ball, spoon, ya toy use karein.', check: 'read' },
-    { type: 'received', time: '11:30 AM', date: 'Today', text: 'Ji haan, Aliza ne practice kiya. Video bhej raha hoon.' },
-    { type: 'received', time: '11:32 AM', date: 'Today', text: '[Video: 0:42] Aliza counting with spoons' },
-    { type: 'sent', time: '12:15 PM', date: 'Today', text: 'Bahut accha Mansur ji! Aliza ki counting improve ho rahi hai. Kal shapes practice karein.', check: 'read' },
-    { type: 'sent', time: '9:00 AM', date: 'Yesterday', text: 'Namaste! Aaj ka task:\n\nADL: Button lagana sikhayein\nVideo dekhein aur practice karein.', check: 'read' },
-    { type: 'received', time: '6:30 PM', date: 'Yesterday', text: 'Button wala kiya, thoda mushkil laga but practice kar rahi hai.' },
-    { type: 'sent', time: '7:00 PM', date: 'Yesterday', text: 'Practice se aayega! Keep going. Bahut acche se kar rahi hai Aliza.', check: 'delivered' }
-  ]
+  }
 };
 
-// ========== HELPER FUNCTIONS ==========
-function getDomain(name) {
-  return APP_DATA.domains.find(d => d.name === name) || APP_DATA.domains[0];
+// ========== REFERENCE DATA ==========
+const DOMAINS = [
+  { name: 'Maths', color: '#3B82F6', dotClass: 'bg-blue-500', bgClass: 'bg-blue-50', borderClass: 'border-blue-200', textClass: 'text-blue-600' },
+  { name: 'Language', color: '#8B5CF6', dotClass: 'bg-purple-500', bgClass: 'bg-purple-50', borderClass: 'border-purple-200', textClass: 'text-purple-600' },
+  { name: 'EVS', color: '#22C55E', dotClass: 'bg-green-500', bgClass: 'bg-green-50', borderClass: 'border-green-200', textClass: 'text-green-600' },
+  { name: 'ADL', color: '#F97316', dotClass: 'bg-orange-500', bgClass: 'bg-orange-50', borderClass: 'border-orange-200', textClass: 'text-orange-600' },
+  { name: 'Communication', color: '#EC4899', dotClass: 'bg-pink-500', bgClass: 'bg-pink-50', borderClass: 'border-pink-200', textClass: 'text-pink-600' },
+  { name: 'Life Skills', color: '#14B8A6', dotClass: 'bg-teal-500', bgClass: 'bg-teal-50', borderClass: 'border-teal-200', textClass: 'text-teal-600' },
+  { name: 'NIOS', color: '#6B7280', dotClass: 'bg-gray-500', bgClass: 'bg-gray-50', borderClass: 'border-gray-200', textClass: 'text-gray-600' },
+  { name: 'Recreational', color: '#14B8A6', dotClass: 'bg-teal-500', bgClass: 'bg-teal-50', borderClass: 'border-teal-200', textClass: 'text-teal-600' },
+];
+
+// Cache
+let _studentsCache = null;
+let _studentDetailCache = {};
+
+// ========== STATIC API LAYER ==========
+async function api(path, opts) {
+  if (path === '/reports') {
+    return APP_DATA.reports;
+  }
+  return {};
 }
 
-function getStudent(id) {
-  return APP_DATA.students.find(s => s.id === parseInt(id));
+async function fetchStudents(force) {
+  if (_studentsCache && !force) return _studentsCache;
+  _studentsCache = APP_DATA.students.slice();
+  return _studentsCache;
+}
+
+async function fetchStudentDetail(id, force) {
+  id = Number(id);
+  if (_studentDetailCache[id] && !force) return _studentDetailCache[id];
+
+  const student = APP_DATA.students.find(s => s.id === id);
+  if (!student) throw new Error('Student not found');
+
+  const detail = APP_DATA.details[id] || { assessments: [], latestPlan: null, messages: [], progress: {}, waStats: {} };
+  _studentDetailCache[id] = {
+    ...student,
+    assessments: detail.assessments || [],
+    latestPlan: detail.latestPlan || null,
+    messages: detail.messages || [],
+    progress: detail.progress || {},
+    waStats: detail.waStats || {}
+  };
+  return _studentDetailCache[id];
+}
+
+// ========== HELPERS ==========
+function getDomain(name) {
+  return DOMAINS.find(d => d.name === name) || DOMAINS[0];
+}
+
+const AVATAR_STYLES = [
+  ['bg-pink-100', 'text-pink-600'], ['bg-purple-100', 'text-purple-600'],
+  ['bg-blue-100', 'text-blue-600'], ['bg-green-100', 'text-green-600'],
+  ['bg-orange-100', 'text-orange-600'], ['bg-teal-100', 'text-teal-600'],
+  ['bg-indigo-100', 'text-indigo-600'], ['bg-rose-100', 'text-rose-600'],
+];
+
+function avatarFor(s, idx) {
+  const style = AVATAR_STYLES[(idx || s.id - 1) % AVATAR_STYLES.length];
+  return { bg: style[0], text: style[1], initial: (s.name || 'X')[0] };
+}
+
+function pillClass(level) {
+  if (!level) return 'pill-red';
+  if (level.includes('Often') || level === 'Independent') return 'pill-green';
+  if (level.includes('Sometimes')) return 'pill-yellow';
+  return 'pill-red';
 }
 
 function statusLabel(status) {
@@ -292,52 +408,34 @@ function statusLabel(status) {
   return 'Inactive';
 }
 
-function showToast(msg) {
+function formatDate(dateStr) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr + (dateStr.includes('T') ? '' : 'Z'));
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function showToast(msg, isError) {
   const t = document.getElementById('toast');
+  t.className = 'toast ' + (isError ? 'bg-red-600' : 'bg-green-600') + ' text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm font-medium show';
   document.getElementById('toast-msg').textContent = msg;
-  t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-function openModal(studentId) {
-  const s = getStudent(studentId);
-  const modal = document.getElementById('wa-modal');
-  document.getElementById('wa-modal-body').innerHTML = `
-    <div class="bg-wa-bg rounded-xl p-4 space-y-3">
-      <div class="text-center"><span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">Today</span></div>
-      <div class="bg-wa-outgoing rounded-lg p-3 ml-8 relative text-sm" style="border-top-right-radius:0;">
-        <p class="font-semibold mb-1">Namaste ${s.caregiver.split(' ')[0]} ji!</p>
-        <p class="mb-2">Aaj ka activity ${s.name.split(' ')[0]} ke liye:</p>
-        ${APP_DATA.weeklyPlan.days[0].activities.map(a => `
-          <p class="font-medium">${a.domain}: ${a.title}</p>
-          <p class="text-gray-600 text-xs">Samay: ${a.duration}</p>
-        `).join('<hr class="my-1.5 border-gray-200">')}
-        <hr class="my-2 border-gray-200">
-        <p class="text-xs text-gray-500 italic">Tasks for Monday - ${APP_DATA.weeklyPlan.week}</p>
-      </div>
-    </div>
-    <p class="text-xs text-gray-500 mt-3 text-center">This message will be sent to <strong>${s.phone}</strong></p>
-  `;
-  modal.classList.remove('hidden');
+function toggleMobileSidebar() {
+  document.getElementById('mobile-overlay').classList.toggle('hidden');
 }
 
 function closeModal() {
   document.getElementById('wa-modal').classList.add('hidden');
 }
 
-function confirmSend() {
-  closeModal();
-  showToast('Tasks sent via WhatsApp!');
-}
-
-function toggleMobileSidebar() {
-  const overlay = document.getElementById('mobile-overlay');
-  overlay.classList.toggle('hidden');
-}
-
 // ========== ROUTER ==========
-function navigate(hash) {
-  window.location.hash = hash;
+function navigate(hash) { window.location.hash = hash; }
+
+async function navigateToFirstChild(section) {
+  const students = await fetchStudents();
+  if (students.length > 0) navigate('#/' + section + '/' + students[0].id);
+  else navigate('#/roster');
 }
 
 function updateSidebarActive(section) {
@@ -346,28 +444,25 @@ function updateSidebarActive(section) {
   });
 }
 
-function router() {
+async function router() {
   const hash = window.location.hash || '#/roster';
   const app = document.getElementById('app');
 
   if (hash === '#/roster' || hash === '#/' || hash === '') {
     updateSidebarActive('roster');
-    renderRoster();
+    await renderRoster();
   } else if (hash.startsWith('#/student/')) {
     updateSidebarActive('roster');
-    const id = hash.split('/')[2];
-    renderStudentProfile(id);
+    await renderStudentProfile(hash.split('/')[2]);
   } else if (hash.startsWith('#/planning/')) {
     updateSidebarActive('planning');
-    const id = hash.split('/')[2];
-    renderPlanning(id);
+    await renderPlanning(hash.split('/')[2]);
   } else if (hash.startsWith('#/reports/')) {
     updateSidebarActive('reports');
-    const id = hash.split('/')[2];
-    renderReports(id);
+    await renderReports(hash.split('/')[2]);
   } else {
     updateSidebarActive('roster');
-    renderRoster();
+    await renderRoster();
   }
   window.scrollTo(0, 0);
 }
@@ -375,17 +470,19 @@ function router() {
 window.addEventListener('hashchange', router);
 window.addEventListener('load', router);
 
-// ========== ROSTER SCREEN ==========
-function renderRoster() {
+// ========== ROSTER ==========
+async function renderRoster() {
   const app = document.getElementById('app');
-  const students = APP_DATA.students;
+  app.innerHTML = '<div class="loading">Loading students</div>';
+
+  const students = await fetchStudents(true);
+
   const active = students.filter(s => s.status === 'green').length;
   const attention = students.filter(s => s.status === 'yellow').length;
   const inactive = students.filter(s => s.status === 'red').length;
 
   app.innerHTML = `
     <div class="p-6 md:p-8">
-      <!-- Stats -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-white rounded-xl border border-gray-200 p-4">
           <div class="text-2xl font-bold text-sahyog-charcoal">${students.length}</div>
@@ -404,16 +501,14 @@ function renderRoster() {
           <div class="text-sm text-gray-500">Inactive</div>
         </div>
       </div>
-
-      <!-- Header -->
       <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
           <h1 class="text-xl font-bold">My Students</h1>
-          <p class="text-sm text-gray-500">${students.length} students &middot; Academic Year 2025-2026</p>
+          <p class="text-sm text-gray-500">${students.length} students</p>
         </div>
         <div class="flex gap-2 flex-wrap">
           <input id="roster-search" type="text" placeholder="Search students..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white w-48 focus:outline-none focus:ring-2 focus:ring-sahyog-gold/30 focus:border-sahyog-gold" oninput="filterRoster()">
-          <select id="roster-filter" class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-sahyog-gold/30" onchange="filterRoster()">
+          <select id="roster-filter" class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white" onchange="filterRoster()">
             <option value="all">All Status</option>
             <option value="green">Active</option>
             <option value="yellow">Needs Attention</option>
@@ -421,492 +516,644 @@ function renderRoster() {
           </select>
         </div>
       </div>
-
-      <!-- Grid -->
       <div id="roster-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        ${students.map(s => studentCard(s)).join('')}
+        ${students.map((s, i) => studentCard(s, i)).join('')}
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-function studentCard(s) {
-  const waStatus = s.waLastMsg
-    ? `<div class="flex items-center gap-1.5 text-xs text-gray-400 mt-1">
-         <svg class="w-3.5 h-3.5 text-wa-teal" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
-         Last msg: ${s.waLastMsg}
-       </div>`
-    : `<div class="flex items-center gap-1.5 text-xs text-red-400 mt-1">
-         <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
-         No response: ${s.waNoResponse}
-       </div>`;
+function studentCard(s, idx) {
+  const av = avatarFor(s, idx);
+  const level = s.niepid_level || 'Dependent';
+  const lastMsgDate = formatDate(s.last_msg_at);
+  const admissionDate = formatDate(s.created_at);
+  const noResponse = !s.last_received_at && s.status === 'red';
 
-  return `
-    <div class="bg-white rounded-xl border border-gray-200 p-4 clickable hover:border-sahyog-gold transition-colors" onclick="navigate('#/student/${s.id}')">
-      <div class="flex items-center justify-between mb-3">
-        <div class="w-10 h-10 rounded-full ${s.avatarBg} flex items-center justify-center ${s.avatarText} font-bold">${s.initial}</div>
-        <span class="status-dot dot-${s.status}" title="${statusLabel(s.status)}"></span>
-      </div>
-      <h3 class="font-semibold text-sm">${s.name}</h3>
-      <p class="text-xs text-gray-500">Age ${s.age} &middot; ${s.diagnosis}</p>
-      <p class="text-xs text-gray-400 mt-1">Caregiver: ${s.caregiver}</p>
-      <div class="mt-2 flex items-center justify-between">
-        <span class="pill ${s.levelClass}">${s.level}</span>
-      </div>
-      ${waStatus}
+  const waIcon = `<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>`;
+
+  const waStatus = noResponse
+    ? `<div class="flex items-center gap-1.5 text-xs text-red-400 mt-1">${waIcon} No response</div>`
+    : lastMsgDate
+    ? `<div class="flex items-center gap-1.5 text-xs text-gray-400 mt-1"><span class="text-wa-teal">${waIcon}</span> Last msg: ${lastMsgDate}</div>`
+    : '';
+
+  const admissionLine = admissionDate
+    ? `<p class="text-xs text-gray-400 mt-0.5">Admitted: ${admissionDate}</p>`
+    : '';
+
+  return `<div class="bg-white rounded-xl border border-gray-200 p-4 clickable hover:border-sahyog-gold transition-colors" onclick="navigate('#/student/${s.id}')">
+    <div class="flex items-center justify-between mb-3">
+      <div class="w-10 h-10 rounded-full ${av.bg} flex items-center justify-center ${av.text} font-bold">${av.initial}</div>
+      <span class="status-dot dot-${s.status || 'green'}" title="${statusLabel(s.status)}"></span>
     </div>
-  `;
+    <h3 class="font-semibold text-sm">${s.name}</h3>
+    <p class="text-xs text-gray-500">Age ${s.age || '?'} &middot; ${s.diagnosis || 'N/A'}</p>
+    <p class="text-xs text-gray-400 mt-1">Caregiver: ${s.caregiver_name || 'N/A'}</p>
+    ${admissionLine}
+    <div class="mt-2"><span class="pill ${pillClass(level)}">${level}</span></div>
+    ${waStatus}
+  </div>`;
 }
 
-function filterRoster() {
+async function filterRoster() {
   const search = document.getElementById('roster-search').value.toLowerCase();
   const filter = document.getElementById('roster-filter').value;
   const grid = document.getElementById('roster-grid');
-
-  const filtered = APP_DATA.students.filter(s => {
-    const matchSearch = s.name.toLowerCase().includes(search) || s.diagnosis.toLowerCase().includes(search) || s.caregiver.toLowerCase().includes(search);
+  const students = await fetchStudents();
+  const filtered = students.filter(s => {
+    const matchSearch = (s.name || '').toLowerCase().includes(search) || (s.diagnosis || '').toLowerCase().includes(search) || (s.caregiver_name || '').toLowerCase().includes(search);
     const matchFilter = filter === 'all' || s.status === filter;
     return matchSearch && matchFilter;
   });
-
   grid.innerHTML = filtered.length > 0
-    ? filtered.map(s => studentCard(s)).join('')
+    ? filtered.map((s, i) => studentCard(s, i)).join('')
     : '<div class="col-span-full text-center py-12 text-gray-400">No students match your search.</div>';
 }
 
-// ========== STUDENT PROFILE SCREEN ==========
-function renderStudentProfile(id) {
-  const s = getStudent(id);
-  if (!s) { renderRoster(); return; }
+// ========== STUDENT PROFILE ==========
+async function renderStudentProfile(id) {
   const app = document.getElementById('app');
+  app.innerHTML = '<div class="loading">Loading profile</div>';
+
+  let s;
+  try { s = await fetchStudentDetail(id, true); } catch (e) {
+    app.innerHTML = `<div class="p-8 text-red-500">Failed to load student: ${e.message}</div>`;
+    return;
+  }
+  const av = avatarFor(s);
 
   app.innerHTML = `
     <div class="p-6 md:p-8">
-      <!-- Breadcrumb -->
       <div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
         <a class="hover:text-sahyog-gold cursor-pointer" onclick="navigate('#/roster')">Students</a>
         <span>/</span>
         <span class="text-sahyog-charcoal font-medium">${s.name}</span>
       </div>
-
       <div class="flex flex-col lg:flex-row gap-6">
-        <!-- Left Panel -->
         <div class="lg:w-72 flex-shrink-0">
           <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <div class="w-14 h-14 rounded-full ${s.avatarBg} flex items-center justify-center ${s.avatarText} text-xl font-bold mx-auto mb-3">${s.initial}</div>
+            <div class="w-14 h-14 rounded-full ${av.bg} flex items-center justify-center ${av.text} text-xl font-bold mx-auto mb-3">${av.initial}</div>
             <h2 class="text-center font-bold">${s.name}</h2>
-            <p class="text-center text-sm text-gray-500 mb-4">Age ${s.age} &middot; ${s.gender}</p>
-
+            <p class="text-center text-sm text-gray-500 mb-4">Age ${s.age || '?'} &middot; ${s.gender || ''}</p>
             <div class="space-y-3 text-sm">
-              <div class="flex justify-between"><span class="text-gray-500">Diagnosis</span><span class="font-medium text-right">${s.diagnosisDetail || s.diagnosis}</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">Diagnosis</span><span class="font-medium text-right">${s.diagnosis_detail || s.diagnosis || 'N/A'}</span></div>
               <div class="border-t border-gray-100"></div>
-              <div class="flex justify-between"><span class="text-gray-500">Caregiver</span><span class="font-medium">${s.caregiver}</span></div>
-              <div class="flex justify-between"><span class="text-gray-500">Relation</span><span class="font-medium">${s.caregiverRelation}</span></div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-500">WhatsApp</span>
-                <span class="font-medium text-wa-teal text-xs">${s.phone}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-500">Delivery</span>
-                <span class="flex items-center gap-1 text-xs ${s.status === 'red' ? 'text-red-500' : 'text-green-600'}">
-                  ${s.status === 'red' ? '<span>&#10003;</span> Sent' : '<span class="wa-check read">&#10003;&#10003;</span> Read'}
-                </span>
-              </div>
+              <div class="flex justify-between"><span class="text-gray-500">Caregiver</span><span class="font-medium">${s.caregiver_name || 'N/A'}</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">Relation</span><span class="font-medium">${s.caregiver_relation || 'N/A'}</span></div>
+              <div class="flex justify-between items-center"><span class="text-gray-500">WhatsApp</span><span class="font-medium text-wa-teal text-xs">${s.caregiver_phone || 'N/A'}</span></div>
               <div class="border-t border-gray-100"></div>
               <div class="flex justify-between"><span class="text-gray-500">SE</span><span class="font-medium">Gulshan Khan</span></div>
               <div class="flex justify-between"><span class="text-gray-500">Term</span><span class="font-medium">${s.term || '1st Term'}</span></div>
             </div>
-
             <div class="mt-4 grid grid-cols-3 gap-2">
               <button class="text-xs bg-sahyog-charcoal text-white py-2 rounded-lg font-medium clickable" onclick="navigate('#/planning/${s.id}')">Weekly Plan</button>
               <button class="text-xs border border-gray-300 py-2 rounded-lg clickable" onclick="navigate('#/reports/${s.id}')">Reports</button>
-              <button class="text-xs border border-gray-300 py-2 rounded-lg clickable" onclick="document.getElementById('profile-tab-wa').click()">Message</button>
+              <button class="text-xs border border-gray-300 py-2 rounded-lg clickable" onclick="switchProfileTab('wa',${s.id})">Message</button>
             </div>
           </div>
         </div>
-
-        <!-- Right Panel -->
         <div class="flex-1 min-w-0">
-          <!-- Tabs -->
           <div class="flex gap-1 border-b border-gray-200 mb-4">
-            <button id="profile-tab-niepid" class="px-4 py-2 text-sm border border-gray-200 border-b-white rounded-t-lg -mb-px tab-active" onclick="switchProfileTab('niepid')">NIEPID Disha Progress</button>
-            <button id="profile-tab-plans" class="px-4 py-2 text-sm rounded-t-lg -mb-px tab-inactive" onclick="switchProfileTab('plans')">Assigned Plans</button>
-            <button id="profile-tab-wa" class="px-4 py-2 text-sm rounded-t-lg -mb-px tab-inactive" onclick="switchProfileTab('wa')">WhatsApp History</button>
+            <button id="profile-tab-niepid" class="px-4 py-2 text-sm border border-gray-200 border-b-white rounded-t-lg -mb-px tab-active" onclick="switchProfileTab('niepid',${s.id})">NIEPID Disha Progress</button>
+            <button id="profile-tab-plans" class="px-4 py-2 text-sm rounded-t-lg -mb-px tab-inactive" onclick="switchProfileTab('plans',${s.id})">Assigned Plans</button>
+            <button id="profile-tab-wa" class="px-4 py-2 text-sm rounded-t-lg -mb-px tab-inactive" onclick="switchProfileTab('wa',${s.id})">WhatsApp History</button>
           </div>
-
-          <!-- Tab Content -->
-          <div id="profile-tab-content">
-            ${renderNIEPIDTab()}
-          </div>
+          <div id="profile-tab-content">${renderNIEPIDTab(s)}</div>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-function switchProfileTab(tab) {
-  ['niepid', 'plans', 'wa'].forEach(t => {
+async function switchProfileTab(tab, childId) {
+  ['niepid','plans','wa'].forEach(t => {
     const btn = document.getElementById('profile-tab-' + t);
-    btn.className = t === tab
+    if (btn) btn.className = t === tab
       ? 'px-4 py-2 text-sm border border-gray-200 border-b-white rounded-t-lg -mb-px tab-active'
       : 'px-4 py-2 text-sm rounded-t-lg -mb-px tab-inactive';
   });
-
   const content = document.getElementById('profile-tab-content');
-  if (tab === 'niepid') content.innerHTML = renderNIEPIDTab();
-  else if (tab === 'plans') content.innerHTML = renderPlansTab();
-  else content.innerHTML = renderWATab();
+  const s = await fetchStudentDetail(childId);
+  if (tab === 'niepid') content.innerHTML = renderNIEPIDTab(s);
+  else if (tab === 'plans') content.innerHTML = renderPlansTab(s);
+  else content.innerHTML = renderWATab(s);
 }
 
-function renderNIEPIDTab() {
-  const rows = APP_DATA.niepid.map((n, i) => {
-    const d = getDomain(n.domain);
+function renderNIEPIDTab(s) {
+  const assessments = s.assessments || [];
+  if (assessments.length === 0) return '<div class="text-center py-12 text-gray-400">No assessments recorded yet.</div>';
+
+  const rows = assessments.map((a, i) => {
+    const d = getDomain(a.domain);
     return `<tr class="${i % 2 === 0 ? '' : 'bg-gray-50/50'}">
-      <td class="px-4 py-3 font-medium text-sm"><span class="inline-block w-2.5 h-2.5 rounded-full ${d.dotClass} mr-2"></span>${n.domain}</td>
-      <td class="px-4 py-3 text-sm text-gray-500">${n.level}</td>
-      <td class="px-4 py-3"><span class="pill ${n.baselineClass}" style="font-size:11px">${n.baseline}</span></td>
-      <td class="px-4 py-3"><span class="pill ${n.currentClass}" style="font-size:11px">${n.current}</span></td>
+      <td class="px-4 py-3 font-medium text-sm"><span class="inline-block w-2.5 h-2.5 rounded-full ${d.dotClass} mr-2"></span>${a.domain}</td>
+      <td class="px-4 py-3 text-sm text-gray-500">${a.level || '-'}</td>
+      <td class="px-4 py-3"><span class="pill ${pillClass(a.baseline)}" style="font-size:11px">${a.baseline || '-'}</span></td>
+      <td class="px-4 py-3"><span class="pill ${pillClass(a.current_level)}" style="font-size:11px">${a.current_level || '-'}</span></td>
       <td class="px-4 py-3 text-green-600 font-semibold">&#9650;</td>
     </tr>`;
   }).join('');
 
-  return `
-    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Domain</th>
-              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Level</th>
-              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Baseline</th>
-              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">1st Term</th>
-              <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600"></th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100">${rows}</tbody>
-        </table>
-      </div>
-      <div class="px-4 py-3 bg-sahyog-cream border-t border-gray-200 text-sm">
-        <span class="font-medium">35 goals assessed</span> &middot; <span class="text-green-600 font-semibold">All progressed in 1st Term</span>
-      </div>
+  return `<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="overflow-x-auto"><table class="w-full">
+      <thead class="bg-gray-50"><tr>
+        <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Domain</th>
+        <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Level</th>
+        <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Baseline</th>
+        <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600">Current</th>
+        <th class="text-left px-4 py-3 font-semibold text-sm text-gray-600"></th>
+      </tr></thead>
+      <tbody class="divide-y divide-gray-100">${rows}</tbody>
+    </table></div>
+    <div class="px-4 py-3 bg-sahyog-cream border-t border-gray-200 text-sm">
+      <span class="font-medium">${assessments.length} domains assessed</span>
     </div>
-  `;
+  </div>`;
 }
 
-function renderPlansTab() {
-  const plan = APP_DATA.weeklyPlan;
-  return `
-    <div class="bg-white rounded-xl border border-gray-200 p-5">
-      <div class="flex items-center justify-between mb-4">
-        <div>
-          <h3 class="font-bold text-sm">Weekly Plan</h3>
-          <p class="text-xs text-gray-500">${plan.week}</p>
-        </div>
-        <div class="flex gap-1">
-          <button class="border border-gray-300 rounded px-3 py-1 text-sm bg-white hover:bg-gray-50">&larr;</button>
-          <button class="border border-gray-300 rounded px-3 py-1 text-sm bg-white hover:bg-gray-50">&rarr;</button>
-        </div>
-      </div>
-      <div class="grid grid-cols-5 gap-3">
-        ${plan.days.map(day => `
-          <div class="bg-gray-50 rounded-lg border border-gray-200 p-3">
-            <div class="text-xs font-bold text-gray-500 mb-2">${day.day}</div>
-            ${day.activities.map(a => {
-              const d = getDomain(a.domain);
-              return `<div class="${d.bgClass} border ${d.borderClass} rounded-lg p-2 mb-2">
-                <div class="flex items-center gap-1 mb-1">
-                  <span class="w-2 h-2 rounded-full ${d.dotClass}"></span>
-                  <span class="text-xs ${d.textClass} font-medium">${a.domain}</span>
-                </div>
-                <p class="text-xs">${a.title}</p>
-                <div class="flex items-center justify-between mt-1.5">
-                  ${a.hasVideo ? '<span class="text-red-500 text-xs">&#9654;</span>' : ''}
-                  <span class="text-xs text-gray-400">${a.duration}</span>
-                </div>
-              </div>`;
-            }).join('')}
-          </div>
-        `).join('')}
-      </div>
+function renderPlansTab(s) {
+  const plan = s.latestPlan;
+  if (!plan || !plan.tasks || plan.tasks.length === 0) return '<div class="text-center py-12 text-gray-400">No plans assigned yet.</div>';
+
+  // Group tasks by day
+  const byDay = {};
+  const dayNames = ['','MON','TUE','WED','THU','FRI','SAT','SUN'];
+  for (const t of plan.tasks) {
+    const dn = t.day_number;
+    if (!byDay[dn]) byDay[dn] = { day: dayNames[dn] || 'Day '+dn, activities: [] };
+    byDay[dn].activities.push(t);
+  }
+  const days = Object.values(byDay);
+
+  return `<div class="bg-white rounded-xl border border-gray-200 p-5">
+    <div class="flex items-center justify-between mb-4">
+      <div><h3 class="font-bold text-sm">${plan.title}</h3><p class="text-xs text-gray-500">Starts ${plan.start_date}</p></div>
     </div>
-  `;
+    <div class="grid grid-cols-5 gap-3">
+      ${days.map(day => `<div class="bg-gray-50 rounded-lg border border-gray-200 p-3">
+        <div class="text-xs font-bold text-gray-500 mb-2">${day.day}</div>
+        ${day.activities.map(a => {
+          const d = getDomain(a.domain);
+          const statusBadge = a.completed ? '<span class="pill pill-green" style="font-size:9px">Done</span>' : a.sent ? '<span class="pill pill-yellow" style="font-size:9px">Sent</span>' : '';
+          return `<div class="${d.bgClass} border ${d.borderClass} rounded-lg p-2 mb-2">
+            <div class="flex items-center gap-1 mb-1"><span class="w-2 h-2 rounded-full ${d.dotClass}"></span><span class="text-xs ${d.textClass} font-medium">${a.domain || ''}</span></div>
+            <p class="text-xs">${a.title}</p>
+            <div class="flex items-center justify-between mt-1.5">${a.has_video ? '<span class="text-red-500 text-xs">&#9654;</span>' : ''}<span class="text-xs text-gray-400">${a.duration || '10m'}</span>${statusBadge}</div>
+          </div>`;
+        }).join('')}
+      </div>`).join('')}
+    </div>
+  </div>`;
 }
 
-function renderWATab() {
-  const messages = APP_DATA.waHistory;
-  let currentDate = '';
-  let html = '<div class="bg-wa-bg rounded-xl p-4 space-y-2" style="min-height:400px;">';
-
-  messages.forEach(m => {
-    if (m.date !== currentDate) {
-      currentDate = m.date;
-      html += `<div class="text-center my-2"><span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">${m.date}</span></div>`;
-    }
-    if (m.type === 'sent') {
-      const checkIcon = m.check === 'read'
-        ? '<span class="wa-check read">&#10003;&#10003;</span>'
-        : m.check === 'delivered'
-        ? '<span class="wa-check">&#10003;&#10003;</span>'
-        : '<span class="wa-check">&#10003;</span>';
-      html += `
-        <div class="bg-wa-outgoing rounded-lg p-3 ml-12 relative text-sm" style="border-top-right-radius:0;">
-          <p class="whitespace-pre-line">${m.text}</p>
-          <div class="flex items-center justify-end gap-1 mt-1 text-xs text-gray-500">${m.time} ${checkIcon}</div>
-        </div>`;
-    } else {
-      html += `
-        <div class="bg-white rounded-lg p-3 mr-12 relative text-sm" style="border-top-left-radius:0;">
-          <p class="whitespace-pre-line">${m.text}</p>
-          <div class="text-xs text-gray-400 mt-1 text-right">${m.time}</div>
-        </div>`;
-    }
-  });
-
-  html += '</div>';
-  html += `
+function renderWATab(s) {
+  const messages = (s.messages || []).slice().reverse();
+  if (messages.length === 0) return `<div class="text-center py-12 text-gray-400">No WhatsApp messages yet.</div>
     <div class="mt-4 bg-white rounded-xl border border-gray-200 p-4">
       <h4 class="font-semibold text-sm mb-2">Send Message</h4>
       <div class="flex gap-2">
-        <input type="text" placeholder="Type a message to caregiver..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-wa-teal/30">
-        <button class="bg-wa-teal text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-wa-green" onclick="showToast('Message sent!')">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-          Send
-        </button>
+        <input id="wa-msg-input" type="text" placeholder="Type a message..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-wa-teal/30">
+        <button class="bg-wa-teal text-white px-4 py-2 rounded-lg text-sm font-medium" onclick="sendSingleMessage(${s.id})">Send</button>
       </div>
+    </div>`;
+
+  let html = '<div class="bg-wa-bg rounded-xl p-4 space-y-2" style="min-height:400px;">';
+  let currentDate = '';
+  for (const m of messages) {
+    const date = (m.created_at || '').split(' ')[0] || 'Unknown';
+    if (date !== currentDate) {
+      currentDate = date;
+      html += `<div class="text-center my-2"><span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">${date}</span></div>`;
+    }
+    if (m.direction === 'sent') {
+      const check = m.status === 'read' ? '<span class="wa-check read">&#10003;&#10003;</span>' : m.status === 'delivered' ? '<span class="wa-check">&#10003;&#10003;</span>' : '<span class="wa-check">&#10003;</span>';
+      html += `<div class="bg-wa-outgoing rounded-lg p-3 ml-12 relative text-sm" style="border-top-right-radius:0;"><p class="whitespace-pre-line">${m.body}</p><div class="flex items-center justify-end gap-1 mt-1 text-xs text-gray-500">${(m.created_at||'').split(' ')[1]||''} ${check}</div></div>`;
+    } else {
+      html += `<div class="bg-white rounded-lg p-3 mr-12 relative text-sm" style="border-top-left-radius:0;"><p class="whitespace-pre-line">${m.body}</p><div class="text-xs text-gray-400 mt-1 text-right">${(m.created_at||'').split(' ')[1]||''}</div></div>`;
+    }
+  }
+  html += '</div>';
+  html += `<div class="mt-4 bg-white rounded-xl border border-gray-200 p-4">
+    <h4 class="font-semibold text-sm mb-2">Send Message</h4>
+    <div class="flex gap-2">
+      <input id="wa-msg-input" type="text" placeholder="Type a message to caregiver..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-wa-teal/30">
+      <button class="bg-wa-teal text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-wa-green" onclick="sendSingleMessage(${s.id})">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Send
+      </button>
     </div>
-  `;
+  </div>`;
   return html;
 }
 
-// ========== PLANNING SCREEN ==========
-function renderPlanning(id) {
-  const s = getStudent(id) || APP_DATA.students[0];
-  const plan = APP_DATA.weeklyPlan;
+async function sendSingleMessage(childId) {
+  const input = document.getElementById('wa-msg-input');
+  const msg = input ? input.value.trim() : '';
+  if (!msg) return;
+  showToast('Message sent via WhatsApp! (demo mode)');
+  input.value = '';
+}
+
+// ========== PLANNING ==========
+async function renderPlanning(id) {
   const app = document.getElementById('app');
+  app.innerHTML = '<div class="loading">Loading plan</div>';
+
+  let s, students;
+  try {
+    [s, students] = await Promise.all([fetchStudentDetail(id, true), fetchStudents()]);
+  } catch (e) {
+    app.innerHTML = `<div class="p-8 text-red-500">Failed to load: ${e.message}</div>`;
+    return;
+  }
+  const av = avatarFor(s);
+  const plan = s.latestPlan;
+
+  if (!plan || !plan.tasks || plan.tasks.length === 0) {
+    app.innerHTML = `<div class="p-6 md:p-8">
+      <h1 class="text-xl font-bold mb-4">Weekly Planning</h1>
+      <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6 flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full ${av.bg} flex items-center justify-center ${av.text} font-bold">${av.initial}</div>
+        <div><h3 class="font-semibold text-sm">${s.name}</h3><p class="text-xs text-gray-500">${s.diagnosis || ''}</p></div>
+      </div>
+      <div class="text-center py-12 text-gray-400">No plan assigned yet for ${s.name}.</div>
+    </div>`;
+    return;
+  }
+
+  const byDay = {};
+  const dayNames = ['','MON','TUE','WED','THU','FRI','SAT','SUN'];
+  for (const t of plan.tasks) {
+    const dn = t.day_number;
+    if (!byDay[dn]) byDay[dn] = { day: dayNames[dn] || 'Day '+dn, activities: [] };
+    byDay[dn].activities.push(t);
+  }
+  const days = Object.values(byDay);
+  const unsentCount = plan.tasks.filter(t => !t.sent).length;
 
   app.innerHTML = `
     <div class="p-6 md:p-8">
       <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-        <div>
-          <h1 class="text-xl font-bold">Weekly Planning</h1>
-          <p class="text-sm text-gray-500">${plan.week}</p>
-        </div>
+        <div><h1 class="text-xl font-bold">Weekly Planning</h1><p class="text-sm text-gray-500">${plan.title} &middot; Starts ${plan.start_date}</p></div>
         <div class="flex items-center gap-3">
-          <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white" onchange="navigate('#/planning/' + this.value)">
-            ${APP_DATA.students.map(st => `<option value="${st.id}" ${st.id === s.id ? 'selected' : ''}>${st.name}</option>`).join('')}
-          </select>
-          <div class="flex gap-1">
-            <button class="border border-gray-300 rounded px-3 py-2 text-sm bg-white hover:bg-gray-50">&larr; Prev</button>
-            <button class="border border-gray-300 rounded px-3 py-2 text-sm bg-white hover:bg-gray-50">Next &rarr;</button>
+          <div class="search-wrap" style="min-width:220px;">
+            <input type="text" placeholder="Search student..." value="${s.name}" class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white w-full focus:outline-none focus:ring-2 focus:ring-sahyog-gold/30" onfocus="openStudentSearch(this,'planning')" oninput="filterStudentSearch(this,'planning')">
+            <div id="search-results-planning" class="search-results"></div>
           </div>
         </div>
       </div>
-
-      <!-- Student Info -->
       <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6 flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full ${s.avatarBg} flex items-center justify-center ${s.avatarText} font-bold">${s.initial}</div>
-        <div class="flex-1">
-          <h3 class="font-semibold text-sm">${s.name}</h3>
-          <p class="text-xs text-gray-500">Age ${s.age} &middot; ${s.diagnosis} &middot; Caregiver: ${s.caregiver}</p>
-        </div>
-        <span class="pill ${s.levelClass}">${s.level}</span>
+        <div class="w-10 h-10 rounded-full ${av.bg} flex items-center justify-center ${av.text} font-bold">${av.initial}</div>
+        <div class="flex-1"><h3 class="font-semibold text-sm">${s.name}</h3><p class="text-xs text-gray-500">Age ${s.age||'?'} &middot; ${s.diagnosis||''} &middot; Caregiver: ${s.caregiver_name||''}</p></div>
+        <span class="pill ${pillClass(s.niepid_level)}">${s.niepid_level||'N/A'}</span>
       </div>
-
-      <!-- Calendar Grid -->
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-        ${plan.days.map(day => `
-          <div class="bg-white rounded-xl border border-gray-200 p-4">
-            <div class="text-sm font-bold text-gray-600 mb-3 pb-2 border-b border-gray-100">${day.day}</div>
-            ${day.activities.map((a, ai) => {
-              const d = getDomain(a.domain);
-              const cardId = 'act-' + day.day + '-' + ai;
-              return `
-                <div class="${d.bgClass} border ${d.borderClass} rounded-lg p-3 mb-3 cursor-pointer transition-all" onclick="toggleActivity('${cardId}')">
-                  <div class="flex items-center gap-2 mb-1">
-                    <span class="w-2.5 h-2.5 rounded-full ${d.dotClass}"></span>
-                    <span class="text-sm ${d.textClass} font-semibold">${a.domain}</span>
-                  </div>
-                  <p class="text-sm font-medium">${a.title}</p>
-                  <div class="flex items-center justify-between mt-2">
-                    ${a.hasVideo ? '<span class="text-red-500 text-sm flex items-center gap-1"><span>&#9654;</span><span class="text-xs text-gray-500">Video</span></span>' : ''}
-                    <span class="text-xs text-gray-500">${a.duration}</span>
-                  </div>
-                  <div id="${cardId}" class="hidden mt-3 pt-3 border-t ${d.borderClass}">
-                    <p class="text-xs text-gray-600 mb-2">Practice this activity with ${s.name.split(' ')[0]} using household items. Encourage participation and provide verbal prompts as needed.</p>
-                    <div class="flex gap-2">
-                      <span class="text-xs pill pill-blue">NIEPID Disha</span>
-                      <span class="text-xs pill pill-green">Home Activity</span>
-                    </div>
-                  </div>
-                </div>`;
-            }).join('')}
-          </div>
-        `).join('')}
+        ${days.map(day => `<div class="bg-white rounded-xl border border-gray-200 p-4">
+          <div class="text-sm font-bold text-gray-600 mb-3 pb-2 border-b border-gray-100">${day.day}</div>
+          ${day.activities.map((a, ai) => {
+            const d = getDomain(a.domain);
+            const cardId = 'act-' + day.day + '-' + ai;
+            const statusBadge = a.completed ? '<span class="pill pill-green" style="font-size:9px">Done</span>' : a.sent ? '<span class="pill pill-yellow" style="font-size:9px">Sent</span>' : '';
+            return `<div class="${d.bgClass} border ${d.borderClass} rounded-lg p-3 mb-3 cursor-pointer transition-all" onclick="toggleEl('${cardId}')">
+              <div class="flex items-center gap-2 mb-1"><span class="w-2.5 h-2.5 rounded-full ${d.dotClass}"></span><span class="text-sm ${d.textClass} font-semibold">${a.domain||''}</span>${statusBadge}</div>
+              <p class="text-sm font-medium">${a.title}</p>
+              <div class="flex items-center justify-between mt-2">${a.has_video ? '<span class="text-red-500 text-sm">&#9654; Video</span>' : ''}<span class="text-xs text-gray-500">${a.duration||'10m'}</span></div>
+              <div id="${cardId}" class="hidden mt-3 pt-3 border-t ${d.borderClass}">
+                <p class="text-xs text-gray-600 mb-2">${a.description || 'No additional details.'}</p>
+                <div class="flex gap-2"><span class="text-xs pill pill-blue">NIEPID Disha</span></div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>`).join('')}
       </div>
-
-      <!-- Send Button -->
       <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="text-sm">
-          <span class="font-medium">10 tasks ready</span> &middot; Hindi + English &middot; 9:00 AM IST daily
-        </div>
-        <button class="bg-wa-teal text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 clickable hover:bg-wa-green" onclick="openModal(${s.id})">
+        <div class="text-sm"><span class="font-medium">${unsentCount} unsent tasks</span> &middot; ${plan.tasks.length} total &middot; Hindi + English</div>
+        <button id="send-all-btn" class="bg-wa-teal text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 clickable hover:bg-wa-green ${unsentCount === 0 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="openSendModal(${s.id})" ${unsentCount === 0 ? 'disabled' : ''}>
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
           Send All Tasks
         </button>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-function toggleActivity(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle('hidden');
+function toggleEl(id) { document.getElementById(id).classList.toggle('hidden'); }
+
+// ========== STUDENT SEARCH BAR ==========
+async function openStudentSearch(input, section) {
+  input.select();
+  filterStudentSearch(input, section);
 }
 
-// ========== REPORTS SCREEN ==========
-function renderReports(id) {
-  const s = getStudent(id) || APP_DATA.students[0];
-  const p = APP_DATA.progress;
-  const app = document.getElementById('app');
-
-  const chartBars = p.chartData.map((week, wi) => {
-    const bars = week.map((val, di) => {
-      const d = APP_DATA.domains[di];
-      return `<div style="width:16%;height:${val}%;background:${d.color};border-radius:2px 2px 0 0;" title="${d.name}: ${val}%"></div>`;
+async function filterStudentSearch(input, section) {
+  const query = input.value.toLowerCase();
+  const students = await fetchStudents();
+  const results = document.getElementById('search-results-' + section);
+  const matches = students.filter(s => (s.name||'').toLowerCase().includes(query) || (s.diagnosis||'').toLowerCase().includes(query));
+  if (matches.length === 0) {
+    results.innerHTML = '<div class="search-result text-gray-400">No matches</div>';
+  } else {
+    results.innerHTML = matches.map(s => {
+      const av = avatarFor(s);
+      return `<div class="search-result" onmousedown="navigate('#/${section}/${s.id}')">
+        <div class="w-6 h-6 rounded-full ${av.bg} flex items-center justify-center ${av.text} text-xs font-bold">${av.initial}</div>
+        <div><div class="font-medium">${s.name}</div><div class="text-xs text-gray-400">${s.diagnosis||''}</div></div>
+      </div>`;
     }).join('');
-    return `<div class="flex flex-col items-center" style="width:15%;">
-      <div class="flex items-end gap-0.5 w-full justify-center" style="height:180px;">${bars}</div>
-      <div class="chart-label">Wk ${wi + 1}</div>
+  }
+  results.classList.add('open');
+  input.addEventListener('blur', () => setTimeout(() => results.classList.remove('open'), 150), { once: true });
+}
+
+// ========== DOMAIN FILTER ==========
+let _activeDomain = -1; // -1 = all
+function toggleDomainFilter(idx, childId) {
+  if (_activeDomain === idx) {
+    _activeDomain = -1; // toggle off = show all
+  } else {
+    _activeDomain = idx;
+  }
+  updateChartVisibility();
+  updateDomainFilterUI();
+}
+
+function updateDomainFilterUI() {
+  document.querySelectorAll('.domain-filter').forEach(el => {
+    const elIdx = parseInt(el.dataset.domainIdx);
+    if (_activeDomain === -1) {
+      el.classList.add('selected');
+      el.classList.remove('dimmed');
+    } else if (elIdx === _activeDomain) {
+      el.classList.add('selected');
+      el.classList.remove('dimmed');
+    } else if (elIdx === -1) {
+      el.classList.remove('selected');
+      el.classList.add('dimmed');
+    } else {
+      el.classList.remove('selected');
+      el.classList.add('dimmed');
+    }
+  });
+}
+
+function updateChartVisibility() {
+  const chartEl = document.getElementById('chart-bars');
+  if (!chartEl) return;
+  // Each week group contains bar divs for each domain
+  const weekGroups = chartEl.children;
+  for (const weekGroup of weekGroups) {
+    const barContainer = weekGroup.querySelector('div');
+    if (!barContainer) continue;
+    const bars = barContainer.children;
+    for (let i = 0; i < bars.length; i++) {
+      if (_activeDomain === -1) {
+        bars[i].style.opacity = '1';
+        bars[i].style.transition = 'opacity 0.2s';
+      } else if (i === _activeDomain) {
+        bars[i].style.opacity = '1';
+        bars[i].style.transition = 'opacity 0.2s';
+      } else {
+        bars[i].style.opacity = '0.08';
+        bars[i].style.transition = 'opacity 0.2s';
+      }
+    }
+  }
+}
+
+async function openSendModal(childId) {
+  const s = await fetchStudentDetail(childId);
+  const plan = s.latestPlan;
+  if (!plan) return;
+  const unsent = plan.tasks.filter(t => !t.sent);
+  const caregiverFirst = (s.caregiver_name || '').split(' ')[0];
+  const childFirst = (s.name || '').split(' ')[0];
+
+  document.getElementById('wa-modal-body').innerHTML = `
+    <div class="bg-wa-bg rounded-xl p-4 space-y-3">
+      <div class="text-center"><span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">Preview</span></div>
+      <div class="bg-wa-outgoing rounded-lg p-3 ml-8 relative text-sm" style="border-top-right-radius:0;">
+        <p class="font-semibold mb-1">Namaste ${caregiverFirst} ji!</p>
+        <p class="mb-2">${childFirst} ke liye activities:</p>
+        ${unsent.map(t => `<p class="font-medium">${t.domain||''}: ${t.title}</p><p class="text-gray-600 text-xs mb-1">${t.description||''}</p>`).join('<hr class="my-1.5 border-gray-200">')}
+      </div>
+    </div>
+    <p class="text-xs text-gray-500 mt-3 text-center">Sending to <strong>${s.caregiver_phone}</strong> &middot; ${unsent.length} tasks</p>`;
+
+  const sendBtn = document.getElementById('modal-send-btn');
+  sendBtn.onclick = () => confirmSendTasks(childId);
+  document.getElementById('wa-modal').classList.remove('hidden');
+}
+
+async function confirmSendTasks(childId) {
+  closeModal();
+  showToast('6 tasks sent via WhatsApp! (demo mode)');
+}
+
+// ========== REPORTS ==========
+async function renderReports(id) {
+  _activeDomain = -1; // reset domain filter
+  const app = document.getElementById('app');
+  app.innerHTML = '<div class="loading">Loading reports</div>';
+
+  let s, students, reports;
+  try {
+    [s, students, reports] = await Promise.all([fetchStudentDetail(id, true), fetchStudents(), api('/reports')]);
+  } catch (e) {
+    app.innerHTML = `<div class="p-8 text-red-500">Failed to load: ${e.message}</div>`;
+    return;
+  }
+
+  const av = avatarFor(s);
+  const p = s.progress || {};
+  const wa = s.waStats || {};
+  const assessments = s.assessments || [];
+  const domainStats = reports.domainStats || [];
+  const studentDomain = reports.studentDomain || [];
+
+  // Chart data with real dates from plan start_date
+  const chartColors = ['#3B82F6','#8B5CF6','#22C55E','#F97316','#EC4899'];
+  const chartData = [
+    [10,20,20,20,10],[20,25,25,25,20],[35,35,30,35,30],[45,40,45,40,35],[50,50,50,50,45],[55,55,55,60,50]
+  ];
+  // Compute week-start dates: go back 5 weeks from plan start (or created_at)
+  const planStart = s.latestPlan ? new Date(s.latestPlan.start_date) : new Date(s.created_at);
+  const weekLabels = chartData.map((_, wi) => {
+    const d = new Date(planStart);
+    d.setDate(d.getDate() - (chartData.length - 1 - wi) * 7);
+    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+  });
+  const chartBars = chartData.map((week, wi) => {
+    const bars = week.map((val, di) => `<div style="width:16%;height:${val}%;background:${chartColors[di]};border-radius:2px 2px 0 0;" title="${DOMAINS[di].name}: ${val}%"></div>`).join('');
+    return `<div class="flex flex-col items-center" style="width:15%;"><div class="flex items-end gap-0.5 w-full justify-center" style="height:180px;">${bars}</div><div class="chart-label">${weekLabels[wi]}</div></div>`;
+  }).join('');
+  const dateRangeLabel = weekLabels[0] + ' - ' + weekLabels[weekLabels.length - 1];
+
+  const domainCards = assessments.filter(a => a.domain !== 'NIOS').map(a => {
+    const d = getDomain(a.domain);
+    const skills = (() => { try { return JSON.parse(a.skills_json || '[]'); } catch { return []; } })();
+    return `<div class="bg-white rounded-xl border border-gray-200 p-4">
+      <div class="flex items-center gap-2 mb-3"><span class="w-3 h-3 rounded-full" style="background:${d.color};"></span><h4 class="font-semibold text-sm">${a.domain}</h4></div>
+      <div class="flex items-center gap-2 mb-3">
+        <span class="pill ${pillClass(a.baseline)}" style="font-size:11px">${a.baseline || '-'}</span>
+        <span class="text-gray-400">&rarr;</span>
+        <span class="pill ${pillClass(a.current_level)}" style="font-size:11px">${a.current_level || '-'}</span>
+      </div>
+      <ul class="text-sm text-gray-600 space-y-1">
+        ${skills.map(sk => `<li>&#10003; ${sk}</li>`).join('')}
+        ${a.working_on ? `<li class="text-gray-500">&#8226; Working on: ${a.working_on}</li>` : ''}
+      </ul>
     </div>`;
   }).join('');
 
-  const domainCards = p.domainBreakdown.map(d => `
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
-      <div class="flex items-center gap-2 mb-3">
-        <span class="w-3 h-3 rounded-full" style="background:${d.color};"></span>
-        <h4 class="font-semibold text-sm">${d.domain}</h4>
-      </div>
-      <div class="flex items-center gap-2 mb-3">
-        <span class="pill ${d.baselineClass}" style="font-size:11px">${d.baseline}</span>
-        <span class="text-gray-400">&rarr;</span>
-        <span class="pill ${d.currentClass}" style="font-size:11px">${d.current}</span>
-      </div>
-      <ul class="text-sm text-gray-600 space-y-1">
-        ${d.skills.map(sk => `<li>&#10003; ${sk}</li>`).join('')}
-        <li class="text-gray-500">&#8226; Working on: ${d.workingOn}</li>
-      </ul>
-    </div>
-  `).join('');
-
   app.innerHTML = `
     <div class="p-6 md:p-8">
-      <!-- Header -->
       <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-        <div>
-          <h1 class="text-xl font-bold">Progress Reports</h1>
-          <p class="text-sm text-gray-500">6-week overview &middot; Jan 6 - Feb 14, 2025</p>
-        </div>
+        <div><h1 class="text-xl font-bold">Progress Reports</h1><p class="text-sm text-gray-500">${s.name} &middot; ${dateRangeLabel}</p></div>
         <div class="flex items-center gap-3">
-          <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white" onchange="navigate('#/reports/' + this.value)">
-            ${APP_DATA.students.map(st => `<option value="${st.id}" ${st.id === s.id ? 'selected' : ''}>${st.name}</option>`).join('')}
-          </select>
-          <button class="border border-gray-300 rounded-lg px-4 py-2 text-sm bg-white hover:bg-gray-50">&#128438; Export PDF</button>
+          <div class="search-wrap" style="min-width:220px;">
+            <input type="text" placeholder="Search student..." value="${s.name}" class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white w-full focus:outline-none focus:ring-2 focus:ring-sahyog-gold/30" onfocus="openStudentSearch(this,'reports')" oninput="filterStudentSearch(this,'reports')">
+            <div id="search-results-reports" class="search-results"></div>
+          </div>
         </div>
       </div>
-
-      <!-- Student Info -->
       <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6 flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full ${s.avatarBg} flex items-center justify-center ${s.avatarText} font-bold">${s.initial}</div>
-        <div class="flex-1">
-          <h3 class="font-semibold text-sm">${s.name}</h3>
-          <p class="text-xs text-gray-500">Age ${s.age} &middot; ${s.diagnosis}</p>
-        </div>
-        <span class="pill ${s.levelClass}">${s.level}</span>
+        <div class="w-10 h-10 rounded-full ${av.bg} flex items-center justify-center ${av.text} font-bold">${av.initial}</div>
+        <div class="flex-1"><h3 class="font-semibold text-sm">${s.name}</h3><p class="text-xs text-gray-500">Age ${s.age||'?'} &middot; ${s.diagnosis||''}</p></div>
+        <span class="pill ${pillClass(s.niepid_level)}">${s.niepid_level||'N/A'}</span>
       </div>
-
-      <!-- Summary Stats -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div class="text-2xl font-bold text-sahyog-gold">${p.tasksCompleted}</div>
+          <div class="text-2xl font-bold text-sahyog-gold">${p.tasksCompleted || '0/0'}</div>
           <div class="text-sm text-gray-500">Tasks Completed</div>
         </div>
         <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div class="text-2xl font-bold text-wa-teal">${p.currentStreak}</div>
+          <div class="text-2xl font-bold text-wa-teal">${p.currentStreak || '-'}</div>
           <div class="text-sm text-gray-500">Current Streak</div>
         </div>
         <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div class="text-2xl font-bold text-purple-600">${p.weeksActive}</div>
+          <div class="text-2xl font-bold text-purple-600">${p.weeksActive || 0}</div>
           <div class="text-sm text-gray-500">Weeks Active</div>
         </div>
         <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <div class="text-2xl font-bold text-green-600">&#9650;</div>
-          <div class="text-sm text-gray-500">${p.trend}</div>
+          <div class="text-sm text-gray-500">${p.trend || 'N/A'}</div>
         </div>
       </div>
-
-      <!-- Bar Chart -->
       <div class="bg-white rounded-xl border border-gray-200 p-5 mb-6">
         <h3 class="font-semibold mb-1">NIEPID Assessment Progress</h3>
-        <p class="text-sm text-gray-400 mb-4">Weekly levels across 5 domains over 6 weeks</p>
+        <p class="text-sm text-gray-400 mb-4">Weekly levels across 5 domains &middot; ${dateRangeLabel}</p>
         <div class="flex gap-4">
           <div class="flex flex-col justify-between text-xs text-gray-400 py-1" style="min-width:90px; height:180px;">
-            <span>Independent</span>
-            <span>PI-Often</span>
-            <span>PI-Sometimes</span>
-            <span>PI-Rarely</span>
-            <span>Dependent</span>
+            <span>Independent</span><span>PI-Often</span><span>PI-Sometimes</span><span>PI-Rarely</span><span>Dependent</span>
           </div>
           <div class="flex-1" style="height:180px; position:relative;">
             <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;">
-              <div style="border-bottom:1px dashed #e5e7eb;"></div>
-              <div style="border-bottom:1px dashed #e5e7eb;"></div>
-              <div style="border-bottom:1px dashed #e5e7eb;"></div>
-              <div style="border-bottom:1px dashed #e5e7eb;"></div>
-              <div style="border-bottom:1px solid #d1d5db;"></div>
+              <div style="border-bottom:1px dashed #e5e7eb;"></div><div style="border-bottom:1px dashed #e5e7eb;"></div><div style="border-bottom:1px dashed #e5e7eb;"></div><div style="border-bottom:1px dashed #e5e7eb;"></div><div style="border-bottom:1px solid #d1d5db;"></div>
             </div>
-            <div style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;padding:0 10px;">
-              ${chartBars}
-            </div>
+            <div id="chart-bars" style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;padding:0 10px;">${chartBars}</div>
           </div>
         </div>
-        <div class="flex flex-wrap gap-4 mt-4 pt-3 border-t border-gray-100 text-sm">
-          ${APP_DATA.domains.slice(0, 5).map(d => `<div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:${d.color};"></span> ${d.name}</div>`).join('')}
+        <div class="flex flex-wrap gap-3 mt-4 pt-3 border-t border-gray-100 text-sm">
+          <div class="domain-filter selected flex items-center gap-1.5" onclick="toggleDomainFilter(-1, ${s.id})" data-domain-idx="-1" style="color:#555;"><span class="w-3 h-3 rounded" style="background:#888;"></span> All</div>
+          ${DOMAINS.slice(0,5).map((d, i) => `<div class="domain-filter selected flex items-center gap-1.5" onclick="toggleDomainFilter(${i}, ${s.id})" data-domain-idx="${i}" style="color:${d.color};"><span class="w-3 h-3 rounded" style="background:${d.color};"></span> ${d.name}</div>`).join('')}
         </div>
       </div>
-
-      <!-- Domain Breakdown -->
       <h3 class="font-semibold mb-3">Domain Breakdown</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        ${domainCards}
-      </div>
-
-      <!-- WhatsApp Engagement -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">${domainCards}</div>
       <div class="bg-white rounded-xl border border-gray-200 p-5">
         <h3 class="font-semibold mb-4 flex items-center gap-2">
           <svg class="w-5 h-5 text-wa-teal" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
           WhatsApp Engagement
         </h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="text-center p-3 bg-green-50 rounded-xl">
-            <div class="text-xl font-bold text-green-700">42</div>
-            <div class="text-xs text-gray-500">Messages Sent</div>
-          </div>
-          <div class="text-center p-3 bg-blue-50 rounded-xl">
-            <div class="text-xl font-bold text-blue-700">28</div>
-            <div class="text-xs text-gray-500">Messages Received</div>
-          </div>
-          <div class="text-center p-3 bg-amber-50 rounded-xl">
-            <div class="text-xl font-bold text-amber-700">67%</div>
-            <div class="text-xs text-gray-500">Response Rate</div>
-          </div>
-          <div class="text-center p-3 bg-purple-50 rounded-xl">
-            <div class="text-xl font-bold text-purple-700">2.5h</div>
-            <div class="text-xs text-gray-500">Avg Response Time</div>
-          </div>
+          <div class="text-center p-3 bg-green-50 rounded-xl"><div class="text-xl font-bold text-green-700">${wa.msgsSent || 0}</div><div class="text-xs text-gray-500">Messages Sent</div></div>
+          <div class="text-center p-3 bg-blue-50 rounded-xl"><div class="text-xl font-bold text-blue-700">${wa.msgsReceived || 0}</div><div class="text-xs text-gray-500">Messages Received</div></div>
+          <div class="text-center p-3 bg-amber-50 rounded-xl"><div class="text-xl font-bold text-amber-700">${wa.responseRate || 0}%</div><div class="text-xs text-gray-500">Response Rate</div></div>
+          <div class="text-center p-3 bg-purple-50 rounded-xl"><div class="text-xl font-bold text-purple-700">${wa.avgResponseTime || '-'}</div><div class="text-xs text-gray-500">Avg Response Time</div></div>
         </div>
       </div>
-    </div>
-  `;
+
+      <!-- Engagement by Domain (All Students) -->
+      <div class="bg-white rounded-xl border border-gray-200 p-5 mt-6">
+        <h3 class="font-semibold mb-1">Engagement by Domain</h3>
+        <p class="text-sm text-gray-400 mb-4">Task completion across all students by NIEPID domain</p>
+        ${domainStats.length === 0
+          ? '<p class="text-center text-gray-400 py-6">No task data available yet.</p>'
+          : `<div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="text-left px-4 py-3 font-semibold text-gray-600">Domain</th>
+                <th class="text-center px-4 py-3 font-semibold text-gray-600">Students</th>
+                <th class="text-center px-4 py-3 font-semibold text-gray-600">Tasks</th>
+                <th class="text-center px-4 py-3 font-semibold text-gray-600">Sent</th>
+                <th class="text-center px-4 py-3 font-semibold text-gray-600">Completed</th>
+                <th class="text-left px-4 py-3 font-semibold text-gray-600" style="min-width:160px">Completion Rate</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              ${domainStats.map(ds => {
+                const d = getDomain(ds.domain);
+                const rate = ds.total_tasks > 0 ? Math.round((ds.completed / ds.total_tasks) * 100) : 0;
+                const barColor = rate >= 60 ? '#22C55E' : rate >= 30 ? '#F59E0B' : '#EF4444';
+                return `<tr>
+                  <td class="px-4 py-3 font-medium"><span class="inline-block w-2.5 h-2.5 rounded-full ${d.dotClass} mr-2"></span>${ds.domain}</td>
+                  <td class="px-4 py-3 text-center text-gray-500">${ds.students}</td>
+                  <td class="px-4 py-3 text-center text-gray-500">${ds.total_tasks}</td>
+                  <td class="px-4 py-3 text-center">${ds.sent}</td>
+                  <td class="px-4 py-3 text-center font-medium">${ds.completed}</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                      <div class="flex-1 bg-gray-100 rounded-full h-2"><div class="h-2 rounded-full" style="width:${rate}%;background:${barColor};"></div></div>
+                      <span class="text-xs font-medium w-8 text-right">${rate}%</span>
+                    </div>
+                  </td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>`}
+      </div>
+
+      <!-- Per-Student Domain Heatmap -->
+      ${studentDomain.length > 0 ? `
+      <div class="bg-white rounded-xl border border-gray-200 p-5 mt-6">
+        <h3 class="font-semibold mb-1">Student x Domain Breakdown</h3>
+        <p class="text-sm text-gray-400 mb-4">Individual completion by domain across all students</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="text-left px-4 py-3 font-semibold text-gray-600">Student</th>
+                ${[...new Set(studentDomain.map(sd => sd.domain))].map(domain => {
+                  const d = getDomain(domain);
+                  return `<th class="text-center px-3 py-3 font-semibold text-gray-600"><span class="inline-block w-2 h-2 rounded-full ${d.dotClass} mr-1"></span>${domain}</th>`;
+                }).join('')}
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              ${(() => {
+                const byStudent = {};
+                studentDomain.forEach(sd => {
+                  if (!byStudent[sd.student_id]) byStudent[sd.student_id] = { name: sd.student_name, domains: {} };
+                  byStudent[sd.student_id].domains[sd.domain] = { total: sd.total, completed: sd.completed };
+                });
+                const allDomains = [...new Set(studentDomain.map(sd => sd.domain))];
+                return Object.entries(byStudent).map(([sid, st]) => {
+                  return `<tr class="cursor-pointer hover:bg-gray-50" onclick="navigate('#/reports/${sid}')">
+                    <td class="px-4 py-3 font-medium">${st.name}</td>
+                    ${allDomains.map(dom => {
+                      const cell = st.domains[dom];
+                      if (!cell) return '<td class="px-3 py-3 text-center text-gray-300">-</td>';
+                      const rate = cell.total > 0 ? Math.round((cell.completed / cell.total) * 100) : 0;
+                      const bg = rate >= 60 ? 'bg-green-100 text-green-700' : rate >= 30 ? 'bg-amber-100 text-amber-700' : rate > 0 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-500';
+                      return `<td class="px-3 py-3 text-center"><span class="inline-block px-2 py-0.5 rounded text-xs font-medium ${bg}">${cell.completed}/${cell.total}</span></td>`;
+                    }).join('')}
+                  </tr>`;
+                }).join('');
+              })()}
+            </tbody>
+          </table>
+        </div>
+      </div>` : ''}
+    </div>`;
 }
 </script>
 </body>
